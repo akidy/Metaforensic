@@ -35,8 +35,8 @@
                   <Group type="102" attributes="0">
                       <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
-                          <Component id="jProgressBar1" min="-2" pref="433" max="-2" attributes="0"/>
+                          <Component id="lbLoading" min="-2" max="-2" attributes="0"/>
+                          <Component id="pbLoading" min="-2" pref="433" max="-2" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -50,9 +50,9 @@
               <EmptySpace max="-2" attributes="0"/>
               <Component id="lbImg" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
+              <Component id="lbLoading" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="32767" attributes="0"/>
-              <Component id="jProgressBar1" min="-2" pref="5" max="-2" attributes="0"/>
+              <Component id="pbLoading" min="-2" pref="5" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -67,7 +67,7 @@
         </Property>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="jLabel8">
+    <Component class="javax.swing.JLabel" name="lbLoading">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Tahoma" size="11" style="1"/>
@@ -75,7 +75,7 @@
         <Property name="text" type="java.lang.String" value="Loading"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JProgressBar" name="jProgressBar1">
+    <Component class="javax.swing.JProgressBar" name="pbLoading">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="0" green="cc" red="33" type="rgb"/>

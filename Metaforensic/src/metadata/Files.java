@@ -11,7 +11,7 @@ import java.sql.Time;
  *
  * @author andy737-1
  */
-public abstract class File implements Metadata{
+public abstract class Files implements Metadata{
     
     protected String hash;
     protected String tipo_hash;

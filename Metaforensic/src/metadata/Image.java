@@ -8,7 +8,7 @@ package metadata;
  *
  * @author andy737-1
  */
-public class Image extends File{
+public class Image extends Files{
 
     @Override
     public void CollectorAlgorithm() {

@@ -1,4 +1,0 @@
-sistemadecontroldeventas.splash$1
-sistemadecontroldeventas.splash$2
-sistemadecontroldeventas.splash$3
-sistemadecontroldeventas.splash
