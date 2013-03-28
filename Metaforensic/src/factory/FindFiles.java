@@ -16,6 +16,7 @@ public class FindFiles {
 
     private List<File> resultados = null;
 
+
     private void ActionPerformed(Collector values) {
 
         resultados = new ArrayList<>();
@@ -31,7 +32,7 @@ public class FindFiles {
     }
 
 //agrega un archivo a la lista de resultados
-    private void AddFind(File archivo) {
+    private void addResultado(File archivo) {
         resultados.add(archivo);
     }
 
