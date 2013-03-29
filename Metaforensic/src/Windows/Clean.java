@@ -29,10 +29,12 @@ import java.awt.Component;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 /**
- * Clase encargada de limpiar formularios (textbox, combobox, checkbox)
+ * Clase encargada de limpiar formularios (textbox, combobox, checkbox,
+ * radiobutton)
  *
  * @author andy737-1
  * @version 1.0
@@ -92,6 +94,19 @@ public class Clean {
         for (int i = 0; i < arr.length; i++) {
             if (arr[i] instanceof JCheckBox) {
                 ((JCheckBox) arr[i]).setSelected(false);
+            }
+        }
+    }
+
+    /**
+     * Limpia JRadioButton
+     */
+    public static void CleanRadio() {
+
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] instanceof JRadioButton) {
+                ((JRadioButton) arr[i]).setEnabled(false);
+                ((JRadioButton) arr[i]).setSelected(false);
             }
         }
     }

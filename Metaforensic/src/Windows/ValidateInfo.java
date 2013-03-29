@@ -34,51 +34,84 @@ import factory.Collector;
  */
 public class ValidateInfo {
 
+    private Collector values;
+    private Boolean estado;
+    private int error;
+
     /**
      *
-     * @param values
-     * @return el estado de la validacion true correcto y false para error
      */
-    public boolean GeneralValidate(Collector values) {
+    public ValidateInfo() {
 
-        boolean estado = false;
+        values = null;
+        estado = false;
+        error = 0;
 
-        if (!"".equals(values.getDirectorioRecoleccion()) || !"".equals(values.getDirectorioSalida()) || (values.getTipoArchivo().isEmpty() != true) || values.getTipoHash() != null) {
-            estado = true;
-        }
-
-        return estado;
     }
 
     /**
-     *
-     * @param values que contiene al obejto colector para recibir los parametros asignados en el GUI
-     * @return el valor del error generado
+     * Valida los campos y opciones dle frame para enviar confirmacion de
+     * limpieza o salida del mismo
      */
-    public int EspecificValidate(Collector values) {
+    public void GeneralValidate() {
+        if (!"".equals(values.getDirectorioRecoleccion()) || !"".equals(values.getDirectorioSalida()) || (values.getTipoArchivo().isEmpty() != true) || values.getTipoHash() != null) {
+            estado = true;
+        } else {
+            estado = false;
+        }
+    }
+
+    /**
+     * Valida las opciones y campos del frame para inciar recolección
+     */
+    public void EspecificValidate() {
 
         if (!"".equals(values.getDirectorioRecoleccion())) {
             if (!"".equals(values.getDirectorioSalida())) {
                 if (values.getTipoHash() != null) {
                     if ((values.getTipoArchivo().isEmpty() != true)) {
                         if (!values.getDirectorioRecoleccion().equalsIgnoreCase(values.getDirectorioSalida())) {
-                            return 6;
+                            error = 6;
                         } else {
-                            return 5;
+                            error = 5;
                         }
                     } else {
-                        return 4;
+                        error = 4;
                     }
                 } else {
-                    return 3;
+                    error = 3;
                 }
 
             } else {
-                return 2;
+                error = 2;
             }
 
         } else {
-            return 1;
+            error = 1;
         }
+    }
+
+    /**
+     *
+     * @param values que contiene los valores del objeto Collector
+     */
+    public void setValues(Collector values) {
+        this.values = values;
+    }
+
+    /**
+     *
+     * @return tipo de error generado
+     */
+    public int getError() {
+        return error;
+    }
+
+    /**
+     *
+     * @return false error, true correcto
+     */
+    public Boolean getEstado() {
+        return estado;
     }
 }

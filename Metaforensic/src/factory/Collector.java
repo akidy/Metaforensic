@@ -19,6 +19,7 @@ public class Collector {
     private String DirectorioSalida;
     private String TipoHash;
     private JFrame j;
+    private Boolean Recursivo;
 
     public void setDirectorioRecoleccion(String DirectorioRecoleccion) {
         this.DirectorioRecoleccion = DirectorioRecoleccion;
@@ -48,6 +49,14 @@ public class Collector {
         return TipoHash;
     }
 
+    public void setRecursivo(Boolean Recursivo) {
+        this.Recursivo = Recursivo;
+    }
+
+    public Boolean getRecursivo() {
+        return Recursivo;
+    }
+
     public ArrayList getTipoArchivo() {
 
         Component[] arr;
@@ -61,8 +70,8 @@ public class Collector {
                     }
                 }
             }
-            
-                return chk;
+
+            return chk;
 
         }
         return null;

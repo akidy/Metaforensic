@@ -37,13 +37,20 @@ import javax.swing.ImageIcon;
  */
 public class FrameIcons {
 
-    ArrayList<Image> iconos = new ArrayList();
-            
+    ArrayList<Image> iconos;
+
+    /**
+     * Constructor inicializa arraylist de iconos;
+     */
+    public FrameIcons() {
+        iconos = null;
+    }
     /*
      * Metodo que inicializa los iconos de apliación disponibles
-     */            
-    private void InitialIcons() {
+     */
 
+    private void InitialIcons() {
+        iconos = new ArrayList();
         iconos.add(new ImageIcon(getClass().getResource("/Images/icono16.png")).getImage());
         iconos.add(new ImageIcon(getClass().getResource("/Images/icono32.png")).getImage());
         iconos.add(new ImageIcon(getClass().getResource("/Images/icono48.png")).getImage());
@@ -62,6 +69,7 @@ public class FrameIcons {
 
     /**
      * Retorno iconos
+     *
      * @return iconos para mostrar en entorno Windows
      */
     public ArrayList<Image> GetIcon() {

@@ -25,9 +25,11 @@
  */
 package factory;
 
+import File.FindFiles;
 import Windows.Clean;
 import Windows.FrameIcons;
 import Windows.ModalDialog;
+import Windows.RunnableViewer;
 import Windows.ValidateInfo;
 import Windows.WindowsStyle;
 import java.io.File;
@@ -81,7 +83,9 @@ public class CollectorGUI extends javax.swing.JFrame {
         valinfo = new ValidateInfo();
         int estado = 0;
         SetValues();
-        if (valinfo.GeneralValidate(gs)) {
+        valinfo.setValues(gs);
+        valinfo.GeneralValidate();
+        if (valinfo.getEstado()) {
             md = new ModalDialog();
             md.setDialogo(dialogo);
             md.setTitulo(titulo);
@@ -91,6 +95,7 @@ public class CollectorGUI extends javax.swing.JFrame {
                 Clean.CleanTxt();
                 Clean.CleanCombo();
                 Clean.CleanCheck();
+                Clean.CleanRadio();
                 estado = 1;
             }
             estado = estado + 1;
@@ -104,10 +109,165 @@ public class CollectorGUI extends javax.swing.JFrame {
         gs.setDirectorioRecoleccion(txtDirectorioRecoleccion.getText());
         gs.setDirectorioSalida(txtDirectorioSalida.getText());
         gs.setTipoArchivo(this);
+        gs.setRecursivo(rdbRecursivo.isSelected());
         if (cmbHashTipo.getSelectedItem() != null) {
             gs.setTipoHash(cmbHashTipo.getSelectedItem().toString());
         } else {
             gs.setTipoHash(null);
+        }
+
+    }
+
+    private boolean SelectDir(JTextField txt) {
+
+        boolean ciclo = false;
+        ThreadDead();
+
+        int rseleccion = fchSeleccion.showDialog(this, "Aceptar");
+        if (rseleccion == JFileChooser.APPROVE_OPTION) {
+            File directorio = new File(fchSeleccion.getSelectedFile().toPath().toString());
+            if (directorio.isDirectory()) {
+                txt.setText(directorio.getPath());
+                rdbRecursivo.setEnabled(true);
+                ciclo = false;
+            } else {
+                txt.setText("");
+                md = new ModalDialog();
+                md.setDialogo("El directorio no existe.");
+                md.setTitulo("Error de ruta");
+                md.setFrame(this);
+                md.DialogErrFix();
+                txt.requestFocus(true);
+                rdbRecursivo.setEnabled(false);
+                rdbRecursivo.setSelected(false);
+                ciclo = true;
+            }
+        }
+        return ciclo;
+
+    }
+
+    private void ValidateForm() {
+
+        ThreadDead();
+        valinfo = new ValidateInfo();
+        SetValues();
+        valinfo.setValues(gs);
+        valinfo.EspecificValidate();
+        int err = valinfo.getError();
+        switch (err) {
+            case 1:
+                md = new ModalDialog();
+                md.setDialogo("Ingresa un directorio para la recolección.");
+                md.setFrame(this);
+                md.setTitulo("Error de validación");
+                md.DialogErrFix();
+                txtDirectorioRecoleccion.requestFocus();
+                break;
+            case 2:
+                md = new ModalDialog();
+                md.setDialogo("Ingresa un directorio para almacenar el archivo\ngenerado que contiene los metadatos recolectados.");
+                md.setFrame(this);
+                md.setTitulo("Error de validación");
+                md.DialogErrFix();
+                txtDirectorioSalida.requestFocus();
+                break;
+            case 3:
+                md = new ModalDialog();
+                md.setDialogo("Selecciona un tipo de hash para firmar los archivos\nque serán sometidos a la recolección de metadatos.");
+                md.setFrame(this);
+                md.setTitulo("Error de validación");
+                md.DialogErrFix();
+                cmbHashTipo.requestFocus();
+                break;
+            case 4:
+                md = new ModalDialog();
+                md.setDialogo("Selecciona almenos un tipo de archivo para reacolección de metadatos.");
+                md.setFrame(this);
+                md.setTitulo("Error de validación");
+                md.DialogErrFix();
+                chkbDocx.requestFocus();
+                break;
+            case 5:
+                md = new ModalDialog();
+                md.setDialogo("Para preservar la integridad de los directorios y archivos analizados para recolección de metadatos, el directorio de\nrecolección y el directorio donde se almacenara el archivo de salida deben ser distintos.");
+                md.setFrame(this);
+                md.setTitulo("Error de validación");
+                md.DialogErrFix();
+                txtDirectorioSalida.requestFocus();
+                break;
+            case 6:
+                CollectMetadata();
+                break;
+            default:
+                System.exit(0);
+        }
+    }
+
+    private void CollectMetadata() {
+
+        this.setVisible(false);
+        SetValues();
+        RunnableViewer vw = new RunnableViewer(this, gs);
+        Thread op = new Thread(vw);
+        op.start();
+
+    }
+
+    private void ThreadDead() {
+
+        if (t != null) {
+            t.interrupt();
+        }
+    }
+
+    private void InputDir(JTextField txt) {
+
+        if (!txt.getText().equals("")) {
+            File directorio = new File(txt.getText());
+            if (directorio.isDirectory()) {
+                txt.setText(directorio.getPath());
+                rdbRecursivo.setEnabled(true);
+            } else {
+                md = new ModalDialog();
+                md.setDialogo("El directorio no existe.");
+                md.setTitulo("Error de ruta");
+                md.setFrame(this);
+                t = md.DialogErr();
+                t.start();
+                txt.requestFocus();
+                txt.setText("");
+                rdbRecursivo.setEnabled(false);
+                rdbRecursivo.setSelected(false);
+            }
+        }
+
+    }
+
+    private void SelectAll(String chk) {
+
+        if (chk.equals("open")) {
+            if (chkbOdt.isSelected() && chkbOds.isSelected() && chkbOdp.isSelected()) {
+                chkbOdt.setSelected(false);
+                chkbOds.setSelected(false);
+                chkbOdp.setSelected(false);
+            } else {
+                chkbOdt.setSelected(true);
+                chkbOds.setSelected(true);
+                chkbOdp.setSelected(true);
+            }
+        } else {
+            if (chk.equals("private")) {
+                if (chkbDocx.isSelected() && chkbXlsx.isSelected() && chkbPptx.isSelected()) {
+                    chkbDocx.setSelected(false);
+                    chkbXlsx.setSelected(false);
+                    chkbPptx.setSelected(false);
+                } else {
+                    chkbDocx.setSelected(true);
+                    chkbXlsx.setSelected(true);
+                    chkbPptx.setSelected(true);
+                }
+            }
         }
 
     }
@@ -122,6 +282,7 @@ public class CollectorGUI extends javax.swing.JFrame {
     private void initComponents() {
 
         fchSeleccion = new javax.swing.JFileChooser();
+        jRadioButton1 = new javax.swing.JRadioButton();
         jSeparator1 = new javax.swing.JSeparator();
         jLabel1 = new javax.swing.JLabel();
         txtDirectorioRecoleccion = new javax.swing.JTextField();
@@ -155,6 +316,8 @@ public class CollectorGUI extends javax.swing.JFrame {
         chkbPdf = new javax.swing.JCheckBox();
         chkbJpg = new javax.swing.JCheckBox();
         jLabel9 = new javax.swing.JLabel();
+        rdbRecursivo = new javax.swing.JRadioButton();
+        jLabel7 = new javax.swing.JLabel();
 
         fchSeleccion.setAcceptAllFileFilterUsed(false);
         fchSeleccion.setDialogType(javax.swing.JFileChooser.CUSTOM_DIALOG);
@@ -164,6 +327,8 @@ public class CollectorGUI extends javax.swing.JFrame {
         fchSeleccion.setDialogTitle("Selecciona un directorio");
         fchSeleccion.setFileSelectionMode(javax.swing.JFileChooser.DIRECTORIES_ONLY);
         fchSeleccion.setFont(new java.awt.Font("Microsoft YaHei", 0, 12)); // NOI18N
+
+        jRadioButton1.setText("jRadioButton1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Metaforensic [Recolector]");
@@ -182,6 +347,7 @@ public class CollectorGUI extends javax.swing.JFrame {
 
         txtDirectorioRecoleccion.setFont(new java.awt.Font("Microsoft YaHei", 0, 12)); // NOI18N
         txtDirectorioRecoleccion.setToolTipText("Directorio que contiene archivos para recolección de metadatos");
+        txtDirectorioRecoleccion.setName(""); // NOI18N
         txtDirectorioRecoleccion.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 txtDirectorioRecoleccionFocusLost(evt);
@@ -341,6 +507,12 @@ public class CollectorGUI extends javax.swing.JFrame {
 
         jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/small_metaforensic_logo.png"))); // NOI18N
 
+        rdbRecursivo.setText("Recolección recursiva entre directorios");
+        rdbRecursivo.setToolTipText("");
+        rdbRecursivo.setEnabled(false);
+
+        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/repeat-2.png"))); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -361,117 +533,118 @@ public class CollectorGUI extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnSeleccionDirectorioR))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 451, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(jLabel4))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(jLabel3))
+                        .addContainerGap()
+                        .addComponent(jLabel7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(rdbRecursivo))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(txtDirectorioSalida, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnSeleccionDirectorioS))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 451, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(144, 144, 144)
-                        .addComponent(btnRecolectar)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnLimpiar)
-                        .addGap(10, 10, 10)
-                        .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 451, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 451, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(40, 40, 40)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(cmbHashTipo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(10, 10, 10)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(jLabel5)
-                                            .addComponent(jLabel9))))
-                                .addGap(27, 27, 27)
-                                .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(51, 51, 51)
-                                        .addComponent(jLabel8)
-                                        .addGap(0, 0, Short.MAX_VALUE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addGap(13, 13, 13)
-                                                .addComponent(lbOfficeWAll))
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addComponent(jLabel10)
-                                                    .addComponent(lbOfficeOAll)
-                                                    .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addComponent(chkbDocx)
-                                                    .addComponent(chkbOdt))
-                                                .addGap(18, 18, 18)
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addGroup(layout.createSequentialGroup()
-                                                        .addComponent(chkbXlsx)
-                                                        .addGap(18, 18, 18)
-                                                        .addComponent(chkbPptx))
-                                                    .addGroup(layout.createSequentialGroup()
-                                                        .addComponent(chkbOds)
-                                                        .addGap(18, 18, 18)
-                                                        .addComponent(chkbOdp))))
-                                            .addComponent(chkbPdf)
-                                            .addComponent(chkbJpg))))))))
+                                .addGap(134, 134, 134)
+                                .addComponent(btnRecolectar)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnLimpiar)
+                                .addGap(10, 10, 10)
+                                .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel3)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(txtDirectorioSalida, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnSeleccionDirectorioS))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 451, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addGap(40, 40, 40)
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(cmbHashTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addGap(10, 10, 10)
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                .addComponent(jLabel5)
+                                                .addComponent(jLabel9))))
+                                    .addGap(27, 27, 27)
+                                    .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addGap(51, 51, 51)
+                                            .addComponent(jLabel8)
+                                            .addGap(0, 0, Short.MAX_VALUE))
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addGroup(layout.createSequentialGroup()
+                                                    .addGap(13, 13, 13)
+                                                    .addComponent(lbOfficeWAll))
+                                                .addGroup(layout.createSequentialGroup()
+                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(jLabel10)
+                                                        .addComponent(lbOfficeOAll)
+                                                        .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addGroup(layout.createSequentialGroup()
+                                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(chkbDocx)
+                                                        .addComponent(chkbOdt))
+                                                    .addGap(18, 18, 18)
+                                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addGroup(layout.createSequentialGroup()
+                                                            .addComponent(chkbXlsx)
+                                                            .addGap(18, 18, 18)
+                                                            .addComponent(chkbPptx))
+                                                        .addGroup(layout.createSequentialGroup()
+                                                            .addComponent(chkbOds)
+                                                            .addGap(18, 18, 18)
+                                                            .addComponent(chkbOdp))))
+                                                .addComponent(chkbPdf)
+                                                .addComponent(chkbJpg))))))
+                            .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 451, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(11, 11, 11)
+                        .addComponent(jLabel1))
+                    .addComponent(lbAcercaDe))
+                .addGap(18, 18, 18)
+                .addComponent(jLabel2)
+                .addGap(7, 7, 7)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(1, 1, 1)
+                        .addComponent(txtDirectorioRecoleccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnSeleccionDirectorioR))
+                .addGap(12, 12, 12)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(rdbRecursivo)
+                    .addComponent(jLabel7))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(6, 6, 6)
+                .addComponent(jLabel4)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel3)
+                .addGap(6, 6, 6)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(1, 1, 1)
+                        .addComponent(txtDirectorioSalida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnSeleccionDirectorioS))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGap(186, 186, 186)
                         .addComponent(jLabel9))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(11, 11, 11)
-                                .addComponent(jLabel1))
-                            .addComponent(lbAcercaDe))
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel2)
-                        .addGap(7, 7, 7)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(1, 1, 1)
-                                .addComponent(txtDirectorioRecoleccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(btnSeleccionDirectorioR))
-                        .addGap(18, 18, 18)
-                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(6, 6, 6)
-                        .addComponent(jLabel4)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel3)
-                        .addGap(6, 6, 6)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(1, 1, 1)
-                                .addComponent(txtDirectorioSalida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(btnSeleccionDirectorioS))
-                        .addGap(18, 18, 18)
                         .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(6, 6, 6)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -531,58 +704,6 @@ public class CollectorGUI extends javax.swing.JFrame {
         ExitApp();
     }//GEN-LAST:event_btnSalirActionPerformed
 
-    private boolean SelectDir(JTextField txt) {
-
-        boolean ciclo = false;
-        ThreadDead();
-
-        int rseleccion = fchSeleccion.showDialog(this, "Aceptar");
-        if (rseleccion == JFileChooser.APPROVE_OPTION) {
-            File directorio = new File(fchSeleccion.getSelectedFile().toPath().toString());
-            if (directorio.isDirectory()) {
-                txt.setText(directorio.getPath());
-                ciclo = false;
-            } else {
-                txt.setText("");
-                md = new ModalDialog();
-                md.setDialogo("El directorio no existe.");
-                md.setTitulo("Error de ruta");
-                md.setFrame(this);
-                md.DialogErrFix();
-                txt.requestFocus(true);
-                ciclo = true;
-            }
-        }
-        return ciclo;
-
-    }
-
-    private void ThreadDead() {
-
-        if (t != null) {
-            t.interrupt();
-        }
-    }
-
-    private void InputDir(JTextField txt) {
-
-        if (!txt.getText().equals("")) {
-            File directorio = new File(txt.getText());
-            if (directorio.isDirectory()) {
-                txt.setText(directorio.getPath());
-            } else {
-                md = new ModalDialog();
-                md.setDialogo("El directorio no existe.");
-                md.setTitulo("Error de ruta");
-                md.setFrame(this);
-                t = md.DialogErr();
-                t.start();
-                txt.requestFocus();
-                txt.setText("");
-            }
-        }
-
-    }
     private void btnSeleccionDirectorioRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionDirectorioRActionPerformed
         boolean ciclo = true;
         while (ciclo) {
@@ -597,34 +718,6 @@ public class CollectorGUI extends javax.swing.JFrame {
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
         CleanGUI();
     }//GEN-LAST:event_btnLimpiarActionPerformed
-
-    private void SelectAll(String chk) {
-
-        if (chk.equals("open")) {
-            if (chkbOdt.isSelected() && chkbOds.isSelected() && chkbOdp.isSelected()) {
-                chkbOdt.setSelected(false);
-                chkbOds.setSelected(false);
-                chkbOdp.setSelected(false);
-            } else {
-                chkbOdt.setSelected(true);
-                chkbOds.setSelected(true);
-                chkbOdp.setSelected(true);
-            }
-        } else {
-            if (chk.equals("private")) {
-                if (chkbDocx.isSelected() && chkbXlsx.isSelected() && chkbPptx.isSelected()) {
-                    chkbDocx.setSelected(false);
-                    chkbXlsx.setSelected(false);
-                    chkbPptx.setSelected(false);
-                } else {
-                    chkbDocx.setSelected(true);
-                    chkbXlsx.setSelected(true);
-                    chkbPptx.setSelected(true);
-                }
-            }
-        }
-
-    }
 
     private void lbOfficeWAllMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbOfficeWAllMouseClicked
         SelectAll("private");
@@ -654,66 +747,6 @@ public class CollectorGUI extends javax.swing.JFrame {
     private void btnRecolectarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRecolectarActionPerformed
         ValidateForm();
     }//GEN-LAST:event_btnRecolectarActionPerformed
-
-    private void ValidateForm() {
-
-        ThreadDead();
-        valinfo = new ValidateInfo();
-        SetValues();
-        int err = valinfo.EspecificValidate(gs);
-        switch (err) {
-            case 1:
-                md = new ModalDialog();
-                md.setDialogo("Ingresa un directorio para la recolección.");
-                md.setFrame(this);
-                md.setTitulo("Error de validación");
-                md.DialogErrFix();
-                txtDirectorioRecoleccion.requestFocus();
-                break;
-            case 2:
-                md = new ModalDialog();
-                md.setDialogo("Ingresa un directorio para almacenar el archivo\ngenerado que contiene los metadatos recolectados.");
-                md.setFrame(this);
-                md.setTitulo("Error de validación");
-                md.DialogErrFix();
-                txtDirectorioSalida.requestFocus();
-                break;
-            case 3:
-                md = new ModalDialog();
-                md.setDialogo("Selecciona un tipo de hash para firmar los archivos\nque serán sometidos a la recolección de metadatos.");
-                md.setFrame(this);
-                md.setTitulo("Error de validación");
-                md.DialogErrFix();
-                cmbHashTipo.requestFocus();
-                break;
-            case 4:
-                md = new ModalDialog();
-                md.setDialogo("Selecciona almenos un tipo de archivo para reacolección de metadatos.");
-                md.setFrame(this);
-                md.setTitulo("Error de validación");
-                md.DialogErrFix();
-                chkbDocx.requestFocus();
-                break;
-            case 5:
-                md = new ModalDialog();
-                md.setDialogo("Para preservar la integridad de los directorios y archivos analizados para recolección de metadatos, el directorio de\nrecolección y el directorio donde se almacenara el archivo de salida deben ser distintos.");
-                md.setFrame(this);
-                md.setTitulo("Error de validación");
-                md.DialogErrFix();
-                txtDirectorioSalida.requestFocus();
-                break;
-            case 6:
-                CollectMetadata();
-                break;
-            default:
-                System.exit(0);
-        }
-    }
-
-    private void CollectMetadata() {
-        
-        
-    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLimpiar;
     private javax.swing.JButton btnRecolectar;
@@ -738,8 +771,10 @@ public class CollectorGUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
@@ -747,6 +782,7 @@ public class CollectorGUI extends javax.swing.JFrame {
     private javax.swing.JLabel lbAcercaDe;
     private javax.swing.JLabel lbOfficeOAll;
     private javax.swing.JLabel lbOfficeWAll;
+    private javax.swing.JRadioButton rdbRecursivo;
     private javax.swing.JTextField txtDirectorioRecoleccion;
     private javax.swing.JTextField txtDirectorioSalida;
     // End of variables declaration//GEN-END:variables
