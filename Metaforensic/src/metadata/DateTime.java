@@ -15,6 +15,10 @@ import java.util.GregorianCalendar;
  */
 public class DateTime {
 
+    /**
+     *
+     * @return
+     */
     public static Date getDate() {
         Calendar cal = Calendar.getInstance();
         Date utilDate = new Date();
@@ -29,6 +33,10 @@ public class DateTime {
 
     }
 
+    /**
+     *
+     * @return
+     */
     public static Time getTime() {
         int hora, minutos, segundos;
         Calendar cal = new GregorianCalendar();

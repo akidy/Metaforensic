@@ -226,7 +226,15 @@ public class CollectorGUI extends javax.swing.JFrame {
                     break;
                 case 7:
                     try {
-                        CollectMetadata();
+                        md = new ModalDialog();
+                        md.setDialogo("La recolección de metadatos es una operación que puede\ntardar un tiempo considerable y no se puede cancelar o abortar.\n¿Deseas continuar?");
+                        md.setFrame(this);
+                        md.setTitulo("Advertencia");
+                        md.DialogAd();
+                        if (md.getSeleccion() == 0) {
+                            CollectMetadata();
+                        }
+
                     } catch (IOException ex) {
                         Logger.getLogger(CollectorGUI.class.getName()).log(Level.SEVERE, null, ex);
                     }

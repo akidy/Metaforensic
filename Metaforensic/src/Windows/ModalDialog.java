@@ -52,12 +52,21 @@ public class ModalDialog {
     }
 
     /**
-     * Muestra dialogo
+     * Muestra dialogo de confirmación
      */
     public void Dialog() {
 
         seleccion = JOptionPane.showOptionDialog(j,
                 dialogo, titulo, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"Aceptar", "Cancelar"}, "Cancelar");
+    }
+
+    /**
+     * Muestra dialogo de advertencia
+     */
+    public void DialogAd() {
+
+        seleccion = JOptionPane.showOptionDialog(j,
+                dialogo, titulo, JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, new Object[]{"Aceptar", "Cancelar"}, "Cancelar");
     }
 
     /**

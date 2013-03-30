@@ -16,7 +16,7 @@ public interface FileI {
 
     public String CreateChecksum(File archivo);
 
-    public void VerifyChecksum();
+    public Boolean VerifyChecksum(File archivo);
 
     public void OpenFile();
 
