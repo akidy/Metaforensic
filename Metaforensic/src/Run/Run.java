@@ -25,7 +25,7 @@
  */
 package Run;
 
-import factory.CollectorGUI;
+import GUI.CollectorGUI;
 
 /**
  * Clase encargada de iniciar la aplicación "Metaforensic"

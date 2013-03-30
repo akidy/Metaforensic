@@ -25,7 +25,9 @@
  */
 package Windows;
 
-import factory.Collector;
+import GUI.Collector;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * Clase encargada de validar la información ingresada por el usuario
@@ -36,6 +38,7 @@ public class ValidateInfo {
 
     private Collector values;
     private Boolean estado;
+    private Boolean st;
     private int error;
 
     /**
@@ -46,7 +49,7 @@ public class ValidateInfo {
         values = null;
         estado = false;
         error = 0;
-
+        st = false;
     }
 
     /**
@@ -61,17 +64,38 @@ public class ValidateInfo {
         }
     }
 
+    private Boolean ValidateRecursive(File a, File b) throws IOException {
+        a = a.getCanonicalFile();
+        b = b.getCanonicalFile();
+
+        File parentFile = b;
+        while (parentFile != null) {
+            if (a.equals(parentFile)) {
+                return true;
+            }
+            parentFile = parentFile.getParentFile();
+        }
+        return false;
+    }
+
     /**
      * Valida las opciones y campos del frame para inciar recolección
      */
-    public void EspecificValidate() {
+    public void EspecificValidate() throws IOException {
 
         if (!"".equals(values.getDirectorioRecoleccion())) {
             if (!"".equals(values.getDirectorioSalida())) {
                 if (values.getTipoHash() != null) {
                     if ((values.getTipoArchivo().isEmpty() != true)) {
                         if (!values.getDirectorioRecoleccion().equalsIgnoreCase(values.getDirectorioSalida())) {
-                            error = 6;
+                            File flR = new File(values.getDirectorioRecoleccion());
+                            File flS = new File(values.getDirectorioSalida());
+                            if (!ValidateRecursive(flR, flS)) {
+                                error = 7;
+                            } else {
+                                error = 6;
+                            }
+
                         } else {
                             error = 5;
                         }

@@ -4,9 +4,9 @@
  */
 package Windows;
 
-import File.FindFiles;
-import factory.Collector;
-import factory.CollectorGUI;
+import Factory.CollectorFiles;
+import GUI.Collector;
+import GUI.CollectorGUI;
 
 /**
  *
@@ -24,7 +24,7 @@ public class RunnableViewer implements Runnable {
 
     @Override
     public void run() {
-        FindFiles ff = new FindFiles(gui);
+        CollectorFiles ff = new CollectorFiles(gui);
         ff.setValues(values);
         ff.ActionPerformed();
     }
