@@ -133,7 +133,7 @@ public class CollectorFiles extends FileName implements FileI {
         if (values.getRecursivo()) {
             rc = "recursiva ";
         }
-        opr.setText("Iniciando recolección " + rc + "de metadatos...\n\n"
+        opr.setText("Iniciando recolección " + rc + "de metadatos.....\n\n"
                 + "Directorio Raiz [recolección]: " + values.getDirectorioRecoleccion() + "\n");
         opr.Append();
         WriteFile("Iniciando recolección " + rc + "de metadatos...\n\n"
@@ -236,6 +236,9 @@ public class CollectorFiles extends FileName implements FileI {
 
     private void PrintTot() {
 
+        opr.setText("Recolección finalizada con exito.....\n\n");
+        opr.Append();
+        WriteFile("Total de archivos sometidos a recolección: " + very.size() + "\n");
         opr.setText("Total de archivos sometidos a recolección: " + very.size() + "\n");
         opr.Append();
         WriteFile("Total de archivos sometidos a recolección: " + very.size() + "\n");
