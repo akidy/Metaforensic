@@ -1,6 +1,27 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * *****************************************************************************
+ *
+ * Metaforensic version 1.0 - Análisis forense de metadatos en archivos
+ * electrónicos Copyright (C) 2012-2013 TSU. Andrés de Jesús Hernández Martínez,
+ * All Rights Reserved, https://github.com/andy737
+ *
+ * This program is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation; either version 2 of the License, or (at your option) any later
+ * version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
+ * Place - Suite 330, Boston, MA 02111-1307, USA.
+ *
+ * E-mail: andy1818ster@gmail.com
+ *
+ *******************************************************************************
  */
 package GUI;
 
@@ -10,8 +31,11 @@ import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 
 /**
+ * Clase collector para manejar los datos (get,set) ante otras clases que los re
+ * quieran
  *
  * @author andy737-1
+ * @since 1.0
  */
 public class Collector {
 
@@ -21,42 +45,94 @@ public class Collector {
     private JFrame j;
     private Boolean Recursivo;
 
+    /**
+     * Set directorio de recolección
+     *
+     * @param DirectorioRecoleccion directorio raíz para recolección
+     */
     public void setDirectorioRecoleccion(String DirectorioRecoleccion) {
         this.DirectorioRecoleccion = DirectorioRecoleccion;
     }
 
+    /**
+     * Set directorio de salida
+     *
+     * @param DirectorioSalida directorio de salida para almacenar log y archivo
+     * con metadatos extraídos
+     */
     public void setDirectorioSalida(String DirectorioSalida) {
         this.DirectorioSalida = DirectorioSalida;
     }
 
+    /**
+     * Set tipo de hash
+     *
+     * @param TipoHash para firmar cada archivo leído por la aplicación
+     */
     public void setTipoHash(String TipoHash) {
         this.TipoHash = TipoHash;
     }
 
+    /**
+     * Set tipo de archivo (extención), recibe el frame actual para leer los
+     * controles activados y definir los tipos de archivo seleccionados
+     *
+     * @param j frame padre
+     */
     public void setTipoArchivo(JFrame j) {
         this.j = j;
     }
 
+    /**
+     * Get directorio de recolección
+     *
+     * @return el directorio raíz para iniciar recolección
+     */
     public String getDirectorioRecoleccion() {
         return DirectorioRecoleccion;
     }
 
+    /**
+     * Get directorio de salida
+     *
+     * @return el directorio para almacenar el log y archivo .afa
+     */
     public String getDirectorioSalida() {
         return DirectorioSalida;
     }
 
+    /**
+     * Get tipo de hash
+     *
+     * @return el nombre del algoritmo para checksum
+     */
     public String getTipoHash() {
         return TipoHash;
     }
 
+    /**
+     * Set si la recolección sera recursiva
+     *
+     * @param Recursivo determina si se realizara recursión en la recolección
+     */
     public void setRecursivo(Boolean Recursivo) {
         this.Recursivo = Recursivo;
     }
 
+    /**
+     * Get recursivo (true=si, false=no)
+     *
+     * @return si hay recursividad en la recolección
+     */
     public Boolean getRecursivo() {
         return Recursivo;
     }
 
+    /**
+     * Get los tipos de archivo a someter a recolección
+     *
+     * @return un arreglo con los tipos de archivo seleccionados por el usuario
+     */
     public ArrayList getTipoArchivo() {
 
         Component[] arr;

@@ -62,7 +62,8 @@ public class ModalDialog {
 
     /**
      *
-     * @return hilo que maneja al joptionpane para evitar errores de ejecucion visual
+     * @return hilo que maneja al joptionpane para evitar errores de ejecucion
+     * visual
      */
     public Thread DialogErr() {
         Thread t = new Thread(new Runnable() {
@@ -76,7 +77,8 @@ public class ModalDialog {
     }
 
     /**
-     * Metodo que muestra un joptionpane sin uso de hilos, utilizado errores en para validaciones especificas
+     * Metodo que muestra un joptionpane sin uso de hilos, utilizado errores en
+     * para validaciones especificas
      */
     public void DialogErrFix() {
 

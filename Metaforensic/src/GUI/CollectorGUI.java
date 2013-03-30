@@ -31,6 +31,7 @@ import Windows.ModalDialog;
 import Windows.RunnableViewer;
 import Windows.ValidateInfo;
 import Windows.WindowsStyle;
+import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -39,6 +40,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JTextField;
 
 /**
+ * Clase que gestiona y crea la interfaz de usuario
  *
  * @author andy737-1
  * @version 1.0
@@ -65,8 +67,7 @@ public class CollectorGUI extends javax.swing.JFrame {
         t = null;
     }
 
-    private void ExitApp() throws IOException {
-        ThreadDead();
+    private void ExitApp() {
         int estado = CleanDialog("Salir", "La recolección no se ha completado.\n\n¿Deseas salir de la aplicación?");
         if (estado == 2) {
             System.exit(0);
@@ -76,10 +77,13 @@ public class CollectorGUI extends javax.swing.JFrame {
     }
 
     private void CleanGUI() throws IOException {
-        ThreadDead();
+
         CleanDialog("Limpiar", "¿Deseas limpiar los campos y opciones?");
     }
 
+    /**
+     * Limpieza de interfaz
+     */
     public void CleanGUIDirect() {
         if (this != null) {
             Clean.getAllComponents(this);
@@ -133,13 +137,12 @@ public class CollectorGUI extends javax.swing.JFrame {
     private boolean SelectDir(JTextField txt) throws IOException {
 
         boolean ciclo = false;
-        ThreadDead();
-
         int rseleccion = fchSeleccion.showDialog(this, "Aceptar");
         if (rseleccion == JFileChooser.APPROVE_OPTION) {
             File directorio = new File(fchSeleccion.getSelectedFile().toPath().toString());
             if (directorio.isDirectory()) {
                 txt.setText(directorio.getPath());
+                txt.setForeground(Color.black);
                 rdbRecursivo.setEnabled(true);
                 ciclo = false;
             } else {
@@ -159,73 +162,81 @@ public class CollectorGUI extends javax.swing.JFrame {
 
     }
 
-    private void ValidateForm() throws IOException {
+    private void ValidateForm() {
 
-        ThreadDead();
-        valinfo = new ValidateInfo();
-        SetValues();
-        valinfo.setValues(gs);
-        valinfo.EspecificValidate();
-        int err = valinfo.getError();
-        switch (err) {
-            case 1:
-                md = new ModalDialog();
-                md.setDialogo("Ingresa un directorio para la recolección.");
-                md.setFrame(this);
-                md.setTitulo("Error de validación");
-                md.DialogErrFix();
-                txtDirectorioRecoleccion.requestFocus();
-                break;
-            case 2:
-                md = new ModalDialog();
-                md.setDialogo("Ingresa un directorio para almacenar el archivo\ngenerado que contiene los metadatos recolectados.");
-                md.setFrame(this);
-                md.setTitulo("Error de validación");
-                md.DialogErrFix();
-                txtDirectorioSalida.requestFocus();
-                break;
-            case 3:
-                md = new ModalDialog();
-                md.setDialogo("Selecciona un tipo de hash para firmar los archivos\nque serán sometidos a la recolección de metadatos.");
-                md.setFrame(this);
-                md.setTitulo("Error de validación");
-                md.DialogErrFix();
-                cmbHashTipo.requestFocus();
-                break;
-            case 4:
-                md = new ModalDialog();
-                md.setDialogo("Selecciona almenos un tipo de archivo para reacolección de metadatos.");
-                md.setFrame(this);
-                md.setTitulo("Error de validación");
-                md.DialogErrFix();
-                chkbDocx.requestFocus();
-                break;
-            case 5:
-                md = new ModalDialog();
-                md.setDialogo("Para preservar la integridad de los directorios y archivos analizados para recolección de metadatos, el directorio de\nrecolección y el directorio donde se almacenara el archivo de salida deben ser distintos.");
-                md.setFrame(this);
-                md.setTitulo("Error de validación");
-                md.DialogErrFix();
-                txtDirectorioSalida.requestFocus();
-                break;
-            case 6:
-                md = new ModalDialog();
-                md.setDialogo("Para preservar la integridad de los directorios y archivos analizados para recolección de metadatos, el directorio raiz de\nrecolección no debe contener al directorio donde se almacenara el archivo de salida.");
-                md.setFrame(this);
-                md.setTitulo("Error de validación");
-                md.DialogErrFix();
-                txtDirectorioSalida.requestFocus();
-                break;
-            case 7:
-                try {
-                    CollectMetadata();
-                } catch (IOException ex) {
-                    Logger.getLogger(CollectorGUI.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                break;
-            default:
-                System.exit(0);
+        if (InputDir(txtDirectorioRecoleccion) && InputDir(txtDirectorioSalida)) {
+
+            valinfo = new ValidateInfo();
+            SetValues();
+            valinfo.setValues(gs);
+            try {
+                valinfo.EspecificValidate();
+            } catch (IOException ex) {
+                Logger.getLogger(CollectorGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            int err = valinfo.getError();
+            switch (err) {
+                case 1:
+                    md = new ModalDialog();
+                    md.setDialogo("Ingresa un directorio para la recolección.");
+                    md.setFrame(this);
+                    md.setTitulo("Error de validación");
+                    md.DialogErrFix();
+                    txtDirectorioRecoleccion.requestFocus();
+                    break;
+                case 2:
+                    md = new ModalDialog();
+                    md.setDialogo("Ingresa un directorio para almacenar el archivo\ngenerado que contiene los metadatos recolectados.");
+                    md.setFrame(this);
+                    md.setTitulo("Error de validación");
+                    md.DialogErrFix();
+                    txtDirectorioSalida.requestFocus();
+                    break;
+                case 3:
+                    md = new ModalDialog();
+                    md.setDialogo("Selecciona un tipo de hash para firmar los archivos\nque serán sometidos a la recolección de metadatos.");
+                    md.setFrame(this);
+                    md.setTitulo("Error de validación");
+                    md.DialogErrFix();
+                    cmbHashTipo.requestFocus();
+                    break;
+                case 4:
+                    md = new ModalDialog();
+                    md.setDialogo("Selecciona almenos un tipo de archivo para reacolección de metadatos.");
+                    md.setFrame(this);
+                    md.setTitulo("Error de validación");
+                    md.DialogErrFix();
+                    chkbDocx.requestFocus();
+                    break;
+                case 5:
+                    md = new ModalDialog();
+                    md.setDialogo("Para preservar la integridad de los directorios y archivos analizados para recolección de metadatos, el directorio de\nrecolección y el directorio donde se almacenara el archivo de salida deben ser distintos.");
+                    md.setFrame(this);
+                    md.setTitulo("Error de validación");
+                    md.DialogErrFix();
+                    txtDirectorioSalida.requestFocus();
+                    break;
+                case 6:
+                    md = new ModalDialog();
+                    md.setDialogo("Para preservar la integridad de los directorios y archivos analizados para recolección de metadatos, el directorio raiz de\nrecolección no debe contener al directorio donde se almacenara el archivo de salida.");
+                    md.setFrame(this);
+                    md.setTitulo("Error de validación");
+                    md.DialogErrFix();
+                    txtDirectorioSalida.requestFocus();
+                    break;
+                case 7:
+                    try {
+                        CollectMetadata();
+                    } catch (IOException ex) {
+                        Logger.getLogger(CollectorGUI.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    break;
+                default:
+                    System.exit(0);
+            }
+
         }
+
     }
 
     private void CollectMetadata() throws IOException {
@@ -237,20 +248,14 @@ public class CollectorGUI extends javax.swing.JFrame {
         op.start();
     }
 
-    private void ThreadDead() throws IOException {
-
-        if (t != null) {
-            t.interrupt();
-        }
-    }
-
-    private void InputDir(JTextField txt) {
+    private Boolean InputDir(JTextField txt) {
 
         if (!txt.getText().equals("")) {
             File directorio = new File(txt.getText());
             if (directorio.isDirectory()) {
                 txt.setText(directorio.getPath());
                 rdbRecursivo.setEnabled(true);
+                return true;
             } else {
                 md = new ModalDialog();
                 md.setDialogo("El directorio no existe.");
@@ -262,7 +267,10 @@ public class CollectorGUI extends javax.swing.JFrame {
                 txt.setText("");
                 rdbRecursivo.setEnabled(false);
                 rdbRecursivo.setSelected(false);
+                return false;
             }
+        } else {
+            return true;
         }
 
     }
@@ -372,6 +380,9 @@ public class CollectorGUI extends javax.swing.JFrame {
         txtDirectorioRecoleccion.setToolTipText("Directorio que contiene archivos para recolección de metadatos");
         txtDirectorioRecoleccion.setName(""); // NOI18N
         txtDirectorioRecoleccion.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtDirectorioRecoleccionFocusGained(evt);
+            }
             public void focusLost(java.awt.event.FocusEvent evt) {
                 txtDirectorioRecoleccionFocusLost(evt);
             }
@@ -400,6 +411,9 @@ public class CollectorGUI extends javax.swing.JFrame {
         txtDirectorioSalida.setFont(new java.awt.Font("Microsoft YaHei", 0, 12)); // NOI18N
         txtDirectorioSalida.setToolTipText("Directorio donde se guardara el archivo con los metadatos extraídos");
         txtDirectorioSalida.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtDirectorioSalidaFocusGained(evt);
+            }
             public void focusLost(java.awt.event.FocusEvent evt) {
                 txtDirectorioSalidaFocusLost(evt);
             }
@@ -435,6 +449,11 @@ public class CollectorGUI extends javax.swing.JFrame {
         lbAcercaDe.setText("Acerca de");
         lbAcercaDe.setToolTipText("Información general de la aplicación");
         lbAcercaDe.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lbAcercaDe.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lbAcercaDeMouseClicked(evt);
+            }
+        });
 
         jLabel8.setFont(new java.awt.Font("Microsoft YaHei", 1, 12)); // NOI18N
         jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/tag-3.png"))); // NOI18N
@@ -733,11 +752,7 @@ public class CollectorGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
-        try {
-            ExitApp();
-        } catch (IOException ex) {
-            Logger.getLogger(CollectorGUI.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        ExitApp();
     }//GEN-LAST:event_btnSalirActionPerformed
 
     private void btnSeleccionDirectorioRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionDirectorioRActionPerformed
@@ -752,11 +767,7 @@ public class CollectorGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSeleccionDirectorioRActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        try {
-            ExitApp();
-        } catch (IOException ex) {
-            Logger.getLogger(CollectorGUI.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        ExitApp();
     }//GEN-LAST:event_formWindowClosing
 
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
@@ -789,19 +800,36 @@ public class CollectorGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSeleccionDirectorioSActionPerformed
 
     private void txtDirectorioRecoleccionFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtDirectorioRecoleccionFocusLost
-        InputDir(txtDirectorioRecoleccion);
+        if (!txtDirectorioRecoleccion.getText().equals("")) {
+            File directorio = new File(txtDirectorioRecoleccion.getText());
+            if (directorio.isDirectory()) {
+                txtDirectorioRecoleccion.setForeground(Color.black);
+                rdbRecursivo.setEnabled(true);
+            } else {
+                txtDirectorioRecoleccion.setForeground(Color.red);
+                txtDirectorioRecoleccion.setText("ERROR");
+                rdbRecursivo.setEnabled(false);
+                rdbRecursivo.setSelected(false);
+
+            }
+        }
     }//GEN-LAST:event_txtDirectorioRecoleccionFocusLost
 
     private void txtDirectorioSalidaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtDirectorioSalidaFocusLost
-        InputDir(txtDirectorioSalida);
+        if (!txtDirectorioSalida.getText().equals("")) {
+            File directorio = new File(txtDirectorioSalida.getText());
+            if (directorio.isDirectory()) {
+                txtDirectorioSalida.setForeground(Color.black);
+
+            } else {
+                txtDirectorioSalida.setForeground(Color.red);
+                txtDirectorioSalida.setText("ERROR");
+            }
+        }
     }//GEN-LAST:event_txtDirectorioSalidaFocusLost
 
     private void btnRecolectarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRecolectarActionPerformed
-        try {
-            ValidateForm();
-        } catch (IOException ex) {
-            Logger.getLogger(CollectorGUI.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        ValidateForm();
     }//GEN-LAST:event_btnRecolectarActionPerformed
 
     private void lbPdfMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbPdfMouseClicked
@@ -819,6 +847,27 @@ public class CollectorGUI extends javax.swing.JFrame {
             chkbJpg.setSelected(true);
         }
     }//GEN-LAST:event_lbJpgMouseClicked
+
+    private void lbAcercaDeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbAcercaDeMouseClicked
+        AboutUs au = new AboutUs(this, true);
+        au.setVisible(true);
+    }//GEN-LAST:event_lbAcercaDeMouseClicked
+
+    private void txtDirectorioRecoleccionFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtDirectorioRecoleccionFocusGained
+        if (txtDirectorioRecoleccion.getText().equals("ERROR")) {
+            txtDirectorioRecoleccion.setForeground(Color.black);
+            txtDirectorioRecoleccion.setText("");
+            rdbRecursivo.setEnabled(false);
+            rdbRecursivo.setSelected(false);
+        }
+    }//GEN-LAST:event_txtDirectorioRecoleccionFocusGained
+
+    private void txtDirectorioSalidaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtDirectorioSalidaFocusGained
+        if (txtDirectorioSalida.getText().equals("ERROR")) {
+            txtDirectorioSalida.setForeground(Color.black);
+            txtDirectorioSalida.setText("");
+        }
+    }//GEN-LAST:event_txtDirectorioSalidaFocusGained
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLimpiar;
     private javax.swing.JButton btnRecolectar;

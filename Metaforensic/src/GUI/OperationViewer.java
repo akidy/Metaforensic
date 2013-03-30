@@ -1,16 +1,38 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * *****************************************************************************
+ *
+ * Metaforensic version 1.0 - Análisis forense de metadatos en archivos
+ * electrónicos Copyright (C) 2012-2013 TSU. Andrés de Jesús Hernández Martínez,
+ * All Rights Reserved, https://github.com/andy737
+ *
+ * This program is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation; either version 2 of the License, or (at your option) any later
+ * version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
+ * Place - Suite 330, Boston, MA 02111-1307, USA.
+ *
+ * E-mail: andy1818ster@gmail.com
+ *
+ *******************************************************************************
  */
 package GUI;
 
 import Windows.FrameIcons;
 import Windows.WindowsStyle;
-import java.awt.Color;
 
 /**
+ * Clase que muestra las operaciones en una interfaz de usuario
  *
  * @author andy737-1
+ * @version 1.0
  */
 public class OperationViewer extends javax.swing.JFrame {
 
@@ -19,7 +41,9 @@ public class OperationViewer extends javax.swing.JFrame {
     private Boolean exit;
 
     /**
-     * Creates new form OperationViewer
+     * Crea un nuevo form OperationViewer
+     *
+     * @param gui frame padre
      */
     @SuppressWarnings("LeakingThisInConstructor")
     public OperationViewer(CollectorGUI gui) {
@@ -35,28 +59,39 @@ public class OperationViewer extends javax.swing.JFrame {
         exit = false;
     }
 
-    public void Animation(){
-    
-    }
+    /**
+     * Set operaciones en tiempo real
+     *
+     * @param operaciones string que contiene las operaciones realizadas en
+     * tiempo real
+     */
     public void setText(String operaciones) {
         this.operaciones = operaciones;
     }
 
+    /**
+     * Set habilita salida del frame
+     *
+     * @param exit estado del proceso para habilitar salida de frame
+     */
     public void setExit(Boolean exit) {
         this.exit = exit;
     }
 
-    public void setColor(Color col) {
-        txtaOperaciones.setForeground(col);
-        txtaOperaciones.setDisabledTextColor(col);
-    }
-
+    /**
+     * Procesa la información y la muestra en el textarea
+     */
     public void Append() {
         txtaOperaciones.append(operaciones);
         txtaOperaciones.setCaretPosition(txtaOperaciones.getText().length());
 
     }
 
+    /**
+     * Set enable boton salir
+     *
+     * @param vl estado de operaciones
+     */
     public void setExitButtonEnabled(Boolean vl) {
         btnSalir.setEnabled(true);
     }

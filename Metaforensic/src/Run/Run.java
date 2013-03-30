@@ -37,12 +37,13 @@ import GUI.CollectorGUI;
 public class Run {
 
     /**
+     * Inicio de la aplicación
      *
      * @param args (valor default)
      */
     public static void main(String[] args) {
 
-        splash.RunSplash();
+        Splash.RunSplash(null, false);
         CollectorGUI cl = new CollectorGUI();
         cl.setVisible(true);
 

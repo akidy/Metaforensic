@@ -42,7 +42,7 @@ public class ValidateInfo {
     private int error;
 
     /**
-     *
+     * Inicializa variables
      */
     public ValidateInfo() {
 
@@ -80,6 +80,8 @@ public class ValidateInfo {
 
     /**
      * Valida las opciones y campos del frame para inciar recolección
+     *
+     * @throws IOException
      */
     public void EspecificValidate() throws IOException {
 

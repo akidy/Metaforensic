@@ -30,16 +30,16 @@ import java.util.logging.Logger;
 import javax.swing.UnsupportedLookAndFeelException;
 
 /**
- *Clase encargada de mostrar el GUI de la aplicación con el estilo
- * Windows del host
- * 
+ * Clase encargada de mostrar el GUI de la aplicación con el estilo Windows del
+ * host
+ *
  * @author andy737-1
  * @version 1.0
  */
 public class WindowsStyle {
-    
+
     /**
-     *Metodo que setaea el estilo ventana por el tipo "Windows"
+     * Metodo que setaea el estilo ventana por el tipo "Windows"
      */
     public void SetStyle() {
 
