@@ -1,27 +1,28 @@
-/**
+/*
  * *****************************************************************************
- *
+ *    
  * Metaforensic version 1.0 - Análisis forense de metadatos en archivos
  * electrónicos Copyright (C) 2012-2013 TSU. Andrés de Jesús Hernández Martínez,
- * All Rights Reserved, https://github.com/andy737
+ * TSU. Idania Aquino Cruz, All Rights Reserved, https://github.com/andy737   
+ * 
+ * This file is part of Metaforensic.
  *
- * This program is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation; either version 2 of the License, or (at your option) any later
- * version.
+ * Metaforensic is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * Metaforensic is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
- * Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * You should have received a copy of the GNU General Public License
+ * along with Metaforensic.  If not, see <http://www.gnu.org/licenses/>.
+ * 
  * E-mail: andy1818ster@gmail.com
- *
- *******************************************************************************
+ * 
+ * *****************************************************************************
  */
 package GUI;
 
@@ -35,10 +36,12 @@ import Windows.WindowsStyle;
  * @version 1.0
  */
 public class OperationViewer extends javax.swing.JFrame {
-
+    
     private String operaciones;
     private CollectorGUI gui;
     private Boolean exit;
+    private FrameIcons ic;
+    private Boolean pac;
 
     /**
      * Crea un nuevo form OperationViewer
@@ -47,16 +50,20 @@ public class OperationViewer extends javax.swing.JFrame {
      */
     @SuppressWarnings("LeakingThisInConstructor")
     public OperationViewer(CollectorGUI gui) {
-        WindowsStyle ws = new WindowsStyle();
-        FrameIcons ic = new FrameIcons();
-        ws.SetStyle();
+        ic = FrameIcons.getInstance();
+        WindowsStyle.SetStyle();
         ic.SetIcon();
         this.setIconImages(ic.GetIcon());
         initComponents();
         this.setLocationRelativeTo(null);
-        operaciones = "";
         this.gui = gui;
+        InitVal();
+    }
+    
+    private void InitVal() {
+        operaciones = "";
         exit = false;
+        pac = false;
     }
 
     /**
@@ -84,7 +91,7 @@ public class OperationViewer extends javax.swing.JFrame {
     public void Append() {
         txtaOperaciones.append(operaciones);
         txtaOperaciones.setCaretPosition(txtaOperaciones.getText().length());
-
+        
     }
 
     /**
@@ -94,6 +101,30 @@ public class OperationViewer extends javax.swing.JFrame {
      */
     public void setExitButtonEnabled(Boolean vl) {
         btnSalir.setEnabled(true);
+    }
+
+    /*
+     * Salida de la interfaz de usuario
+     */
+    private void Exit() {
+        if (exit) {
+            this.dispose();
+            gui.CleanGUIDirect();
+            gui.setVisible(true);
+        }
+    }
+
+    /**
+     * Cancela procesos
+     *
+     * @return true para cancelar
+     */
+    public Boolean getPanic() {
+        return pac;
+    }
+    
+    private void setPanic(Boolean pac) {
+        this.pac = pac;
     }
 
     /**
@@ -115,6 +146,7 @@ public class OperationViewer extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Procesando archivos");
@@ -146,6 +178,13 @@ public class OperationViewer extends javax.swing.JFrame {
         });
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/watch.png"))); // NOI18N
+        jLabel2.setToolTipText("Panic (Cuidado puedes dañar archivos)");
+        jLabel2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel2MouseClicked(evt);
+            }
+        });
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/folder-duplicate.png"))); // NOI18N
 
@@ -158,6 +197,15 @@ public class OperationViewer extends javax.swing.JFrame {
         jLabel6.setFont(new java.awt.Font("Microsoft YaHei", 1, 10)); // NOI18N
         jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/spam-2.png"))); // NOI18N
         jLabel6.setText("Las operaciones visualizadas se almacenarán  dentro del directorio de salida en un archivo .log");
+
+        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/close.png"))); // NOI18N
+        jLabel7.setToolTipText("Cancelar operaciones");
+        jLabel7.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel7.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel7MouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -177,7 +225,10 @@ public class OperationViewer extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(jLabel4)
                                 .addGap(18, 18, 18)
-                                .addComponent(jLabel5))
+                                .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel7)
+                                .addGap(31, 31, 31))
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 678, Short.MAX_VALUE)
                             .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.LEADING))
                         .addGap(0, 0, Short.MAX_VALUE))
@@ -196,7 +247,8 @@ public class OperationViewer extends javax.swing.JFrame {
                     .addComponent(jLabel1)
                     .addComponent(jLabel3)
                     .addComponent(jLabel4)
-                    .addComponent(jLabel5))
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 313, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -212,18 +264,20 @@ public class OperationViewer extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        if (exit) {
-            this.dispose();
-            gui.setVisible(true);
-        }
+        Exit();
     }//GEN-LAST:event_formWindowClosing
-
+    
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
-        if (exit) {
-            this.dispose();
-            gui.setVisible(true);
-        }
+        Exit();
     }//GEN-LAST:event_btnSalirActionPerformed
+    
+    private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
+        setPanic(true);
+    }//GEN-LAST:event_jLabel7MouseClicked
+    
+    private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
+        System.exit(0);
+    }//GEN-LAST:event_jLabel2MouseClicked
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSalir;
     private javax.swing.JLabel jLabel1;
@@ -232,6 +286,7 @@ public class OperationViewer extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTextArea txtaOperaciones;

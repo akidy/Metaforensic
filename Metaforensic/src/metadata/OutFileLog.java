@@ -1,6 +1,28 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * *****************************************************************************
+ *    
+ * Metaforensic version 1.0 - Análisis forense de metadatos en archivos
+ * electrónicos Copyright (C) 2012-2013 TSU. Andrés de Jesús Hernández Martínez,
+ * TSU. Idania Aquino Cruz, All Rights Reserved, https://github.com/andy737   
+ * 
+ * This file is part of Metaforensic.
+ *
+ * Metaforensic is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Metaforensic is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Metaforensic.  If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * E-mail: andy1818ster@gmail.com
+ * 
+ * *****************************************************************************
  */
 package metadata;
 
@@ -9,22 +31,23 @@ import java.io.BufferedWriter;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import javax.swing.JFrame;
 
 /**
  *
  * @author andy737-1
+ * @version 1.0
  */
-public class OutFileLog {
+public class OutFileLog extends FilesCommon {
 
-    private String nombre;
-    private String path;
     private FileOutputStream log;
     private OutputStreamWriter outlog;
     private BufferedWriter outfinal;
     private String txt;
     private ModalDialog md;
-    private JFrame f;
+    private FileFea fif;
+    /**
+     * Encabezado de log
+     */
     public static String titulo = "************************************************************************************\n"
             + " * Metaforensic version 1.0 - Análisis forense de metadatos en archivos\n"
             + " * electrónicos Copyright (C) 2012-2013 TSU. Andrés de Jesús Hernández Martínez, TSU Idania Aquino Cruz,\n"
@@ -32,68 +55,73 @@ public class OutFileLog {
             + " * [Recolector] Log de operaciones y eventos\n"
             + "************************************************************************************\n\n";
 
+    /**
+     * Inicia variables
+     */
     public OutFileLog() {
-        nombre = "";
-        path = "";
+        md = new ModalDialog();
         log = null;
         outlog = null;
         outfinal = null;
         txt = "";
-        md = null;
-        f = null;
+        fif = fif.getInstance();
     }
 
-    public void setNameFile(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public void setPath(String path) {
-        this.path = path;
-    }
-
+    /**
+     *
+     * @param txt proceso que se efectuo sobre el archivo
+     */
     public void setText(String txt) {
 
         this.txt = txt;
     }
 
-    public void setFrame(JFrame f) {
-        this.f = f;
-    }
-
+    /**
+     * Crea un archivo de extención .log
+     */
+    @Override
     public void CreateFile() {
         try {
-            log = new FileOutputStream(path + "\\" + nombre + ".log");
+            log = new FileOutputStream(fif.getPath() + "\\" + fif.getNameFile() + ".log");
             outlog = new OutputStreamWriter(log, "UTF-8");
             outfinal = new BufferedWriter(outlog);
         } catch (IOException ex) {
-            md.setDialogo("No se pudo crear el archivo " + nombre + ".log" + " en la carpeta: \n" + path);
+            md.setDialogo("No se pudo crear el archivo " + fif.getNameFile() + ".log" + " en la carpeta: \n" + fif.getPath());
             md.setTitulo("Error de archivo");
-            md.setFrame(f);
+            md.setFrame(fif.getFrame());
             md.DialogErr();
         }
 
     }
 
+    /**
+     * Escribe los procesos sobre el archivo .log
+     */
+    @Override
     public void WriteFile() {
         try {
             outfinal.write(txt);
             outfinal.flush();
         } catch (IOException ex) {
-            md.setDialogo("Error de escritura en el archivo " + nombre + ".log" + "ubicado en la carpeta: \n" + path);
+            md.setDialogo("Error de escritura en el archivo " + fif.getNameFile() + ".log" + "ubicado en la carpeta: \n" + fif.getPath());
             md.setTitulo("Error de archivo");
-            md.setFrame(f);
+            md.setFrame(fif.getFrame());
             md.DialogErr();
         }
 
     }
 
-    public void closeFile() {
+    /**
+     * Finaliza la escritura sobre el archivo .log
+     */
+    @Override
+    public void CloseFile() {
         try {
             outfinal.close();
         } catch (IOException ex) {
-            md.setDialogo("Error al cerrar el archivo " + nombre + ".log" + "ubicado en la carpeta: \n" + path);
+            md.setDialogo("Error al cerrar el archivo " + fif.getNameFile() + ".log" + "ubicado en la carpeta: \n" + fif.getPath());
             md.setTitulo("Error de archivo");
-            md.setFrame(f);
+            md.setFrame(fif.getFrame());
             md.DialogErr();
         }
     }

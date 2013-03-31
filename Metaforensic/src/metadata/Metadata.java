@@ -8,9 +8,9 @@ package metadata;
  *
  * @author andy737-1
  */
-public interface Metadata{    
+public abstract class Metadata{    
     
-    void Collector();
-    void SaveMetadata();
+    public abstract void CollectorMeta();
+    public abstract void SaveMetadata();
        
 }

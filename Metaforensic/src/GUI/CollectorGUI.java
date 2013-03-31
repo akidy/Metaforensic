@@ -1,27 +1,28 @@
-/**
+/*
  * *****************************************************************************
- *
+ *    
  * Metaforensic version 1.0 - Análisis forense de metadatos en archivos
  * electrónicos Copyright (C) 2012-2013 TSU. Andrés de Jesús Hernández Martínez,
- * All Rights Reserved, https://github.com/andy737
+ * TSU. Idania Aquino Cruz, All Rights Reserved, https://github.com/andy737   
+ * 
+ * This file is part of Metaforensic.
  *
- * This program is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation; either version 2 of the License, or (at your option) any later
- * version.
+ * Metaforensic is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * Metaforensic is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
- * Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * You should have received a copy of the GNU General Public License
+ * along with Metaforensic.  If not, see <http://www.gnu.org/licenses/>.
+ * 
  * E-mail: andy1818ster@gmail.com
- *
- *******************************************************************************
+ * 
+ * *****************************************************************************
  */
 package GUI;
 
@@ -51,22 +52,36 @@ public class CollectorGUI extends javax.swing.JFrame {
     private ValidateInfo valinfo;
     private ModalDialog md;
     private Thread t;
+    private FrameIcons ic;
 
     /**
      * Constructor de GUI
      */
     public CollectorGUI() {
 
-        WindowsStyle ws = new WindowsStyle();
-        FrameIcons ic = new FrameIcons();
-        ws.SetStyle();
+        ic = FrameIcons.getInstance();
+        WindowsStyle.SetStyle();
         ic.SetIcon();
         this.setIconImages(ic.GetIcon());
         initComponents();
         this.setLocationRelativeTo(null);
-        t = null;
+        InitVar();
     }
 
+    /*
+     * Inicializa variable locales
+     */
+    private void InitVar() {
+        t = null;
+        gs = null;
+        valinfo = null;
+        md = null;
+
+    }
+
+    /*
+     * Dialogo de comprobación de recolección no iniciada.
+     */
     private void ExitApp() {
         int estado = CleanDialog("Salir", "La recolección no se ha completado.\n\n¿Deseas salir de la aplicación?");
         if (estado == 2) {
@@ -76,8 +91,10 @@ public class CollectorGUI extends javax.swing.JFrame {
         }
     }
 
+    /*
+     * Dialogo de validación de limpieza de interfaz
+     */
     private void CleanGUI() throws IOException {
-
         CleanDialog("Limpiar", "¿Deseas limpiar los campos y opciones?");
     }
 
@@ -94,12 +111,14 @@ public class CollectorGUI extends javax.swing.JFrame {
         }
     }
 
+    /*
+     * Validacion para limpiar interfaz
+     */
     private int CleanDialog(String titulo, String dialogo) {
 
         valinfo = new ValidateInfo();
         int estado = 0;
         SetValues();
-        valinfo.setValues(gs);
         valinfo.GeneralValidate();
         if (valinfo.getEstado()) {
             md = new ModalDialog();
@@ -119,9 +138,12 @@ public class CollectorGUI extends javax.swing.JFrame {
         return estado;
     }
 
+    /*
+     * Cracion del objeto Collector que contendra los valores asignados por usuario
+     */
     private void SetValues() {
 
-        gs = new Collector();
+        gs = Collector.getInstance();
         gs.setDirectorioRecoleccion(txtDirectorioRecoleccion.getText());
         gs.setDirectorioSalida(txtDirectorioSalida.getText());
         gs.setTipoArchivo(this);
@@ -134,6 +156,9 @@ public class CollectorGUI extends javax.swing.JFrame {
 
     }
 
+    /*
+     * Selector de directorio (recolección, salida) 
+     */
     private boolean SelectDir(JTextField txt) throws IOException {
 
         boolean ciclo = false;
@@ -162,13 +187,14 @@ public class CollectorGUI extends javax.swing.JFrame {
 
     }
 
+    /*
+     * Validación para inicar recolección
+     */
     private void ValidateForm() {
 
         if (InputDir(txtDirectorioRecoleccion) && InputDir(txtDirectorioSalida)) {
-
             valinfo = new ValidateInfo();
             SetValues();
-            valinfo.setValues(gs);
             try {
                 valinfo.EspecificValidate();
             } catch (IOException ex) {
@@ -227,7 +253,7 @@ public class CollectorGUI extends javax.swing.JFrame {
                 case 7:
                     try {
                         md = new ModalDialog();
-                        md.setDialogo("La recolección de metadatos es una operación que puede\ntardar un tiempo considerable y no se puede cancelar o abortar.\n¿Deseas continuar?");
+                        md.setDialogo("La recolección de metadatos es una operación que puede\ntardar un tiempo considerable.\n\n¿Deseas continuar?");
                         md.setFrame(this);
                         md.setTitulo("Advertencia");
                         md.DialogAd();
@@ -247,15 +273,21 @@ public class CollectorGUI extends javax.swing.JFrame {
 
     }
 
+    /*
+     * Incia recolección de metadatos y visuzalición del proceso
+     */
     private void CollectMetadata() throws IOException {
 
         this.setVisible(false);
         SetValues();
-        RunnableViewer vw = new RunnableViewer(this, gs);
+        RunnableViewer vw = new RunnableViewer(this);
         Thread op = new Thread(vw);
         op.start();
     }
 
+    /*
+     * Validación en tiempo real de los directorios ingresados por el usuario
+     */
     private Boolean InputDir(JTextField txt) {
 
         if (!txt.getText().equals("")) {
@@ -283,20 +315,13 @@ public class CollectorGUI extends javax.swing.JFrame {
 
     }
 
+    /*
+     * Selector de tipos de archivo
+     */
     private void SelectAll(String chk) {
 
-        if (chk.equals("open")) {
-            if (chkbOdt.isSelected() && chkbOds.isSelected() && chkbOdp.isSelected()) {
-                chkbOdt.setSelected(false);
-                chkbOds.setSelected(false);
-                chkbOdp.setSelected(false);
-            } else {
-                chkbOdt.setSelected(true);
-                chkbOds.setSelected(true);
-                chkbOdp.setSelected(true);
-            }
-        } else {
-            if (chk.equals("private")) {
+        switch (chk) {
+            case "2010":
                 if (chkbDocx.isSelected() && chkbXlsx.isSelected() && chkbPptx.isSelected()) {
                     chkbDocx.setSelected(false);
                     chkbXlsx.setSelected(false);
@@ -306,9 +331,104 @@ public class CollectorGUI extends javax.swing.JFrame {
                     chkbXlsx.setSelected(true);
                     chkbPptx.setSelected(true);
                 }
-            }
+                break;
+            case "2003":
+                if (chkbDoc.isSelected() && chkbXls.isSelected() && chkbPpt.isSelected()) {
+                    chkbDoc.setSelected(false);
+                    chkbXls.setSelected(false);
+                    chkbPpt.setSelected(false);
+                } else {
+                    chkbDoc.setSelected(true);
+                    chkbXls.setSelected(true);
+                    chkbPpt.setSelected(true);
+                }
+                break;
+            case "open":
+                if (chkbOdt.isSelected() && chkbOds.isSelected() && chkbOdp.isSelected()) {
+                    chkbOdt.setSelected(false);
+                    chkbOds.setSelected(false);
+                    chkbOdp.setSelected(false);
+                } else {
+                    chkbOdt.setSelected(true);
+                    chkbOds.setSelected(true);
+                    chkbOdp.setSelected(true);
+                }
+                break;
+            case "img":
+                if (chkbJpg.isSelected() && chkbPng.isSelected()) {
+                    chkbJpg.setSelected(false);
+                    chkbPng.setSelected(false);
+                } else {
+                    chkbJpg.setSelected(true);
+                    chkbPng.setSelected(true);
+
+                }
+                break;
+            case "pdf":
+                if (chkbPdf.isSelected()) {
+                    chkbPdf.setSelected(false);
+                } else {
+                    chkbPdf.setSelected(true);
+
+                }
+                break;
         }
 
+    }
+
+    /*
+     * Envia texto de error al perder el foco
+     */
+    private void TxtError(JTextField txt) {
+        if (!txt.getText().equals("") && txt == txtDirectorioRecoleccion) {
+            File directorio = new File(txt.getText());
+            if (directorio.isDirectory()) {
+                txt.setForeground(Color.black);
+                rdbRecursivo.setEnabled(true);
+            } else {
+                txt.setForeground(Color.red);
+                txt.setText("ERROR");
+                rdbRecursivo.setEnabled(false);
+                rdbRecursivo.setSelected(false);
+
+            }
+        } else {
+            if (!txt.getText().equals("") && txt == txtDirectorioSalida) {
+                File directorio = new File(txt.getText());
+                if (directorio.isDirectory()) {
+                    txt.setForeground(Color.black);
+
+                } else {
+                    txt.setForeground(Color.red);
+                    txt.setText("ERROR");
+                }
+            }
+        }
+    }
+    /*
+     * Verifica el error de directorio incorrecto al ganar el foco
+     */
+
+    private void VerifyErrorTxt(JTextField txt) {
+        if (txt.getText().equals("ERROR") && txt == txtDirectorioRecoleccion) {
+            txt.setForeground(Color.black);
+            txt.setText("");
+            rdbRecursivo.setEnabled(false);
+            rdbRecursivo.setSelected(false);
+        } else {
+            if (txt.getText().equals("ERROR") && txt == txtDirectorioSalida) {
+                txt.setForeground(Color.black);
+                txt.setText("");
+            }
+        }
+    }
+
+    /*
+     * Muestra la interfaz informativa Acerca de
+     */
+    private void CallAboutUS() {
+        AboutUs au = new AboutUs(this, true);
+        au.setVisible(true);
     }
 
     /**
@@ -357,11 +477,11 @@ public class CollectorGUI extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         rdbRecursivo = new javax.swing.JRadioButton();
         jLabel7 = new javax.swing.JLabel();
-        jCheckBox1 = new javax.swing.JCheckBox();
+        chkbDoc = new javax.swing.JCheckBox();
         jLabel10 = new javax.swing.JLabel();
-        jCheckBox2 = new javax.swing.JCheckBox();
-        jCheckBox3 = new javax.swing.JCheckBox();
-        jCheckBox4 = new javax.swing.JCheckBox();
+        chkbXls = new javax.swing.JCheckBox();
+        chkbPpt = new javax.swing.JCheckBox();
+        chkbPng = new javax.swing.JCheckBox();
 
         fchSeleccion.setAcceptAllFileFilterUsed(false);
         fchSeleccion.setDialogType(javax.swing.JFileChooser.CUSTOM_DIALOG);
@@ -473,7 +593,7 @@ public class CollectorGUI extends javax.swing.JFrame {
         jLabel8.setText("Tipo de archivos");
 
         lbOfficeWAll.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/imgoffice.png"))); // NOI18N
-        lbOfficeWAll.setToolTipText("Seleccionar todos (Windows Office)");
+        lbOfficeWAll.setToolTipText("Seleccionar todos (docx, xlsx, pptx)");
         lbOfficeWAll.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         lbOfficeWAll.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -491,7 +611,7 @@ public class CollectorGUI extends javax.swing.JFrame {
         });
 
         lbJpg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/imagenicon.png"))); // NOI18N
-        lbJpg.setToolTipText("Seleccionar todo (jpg)");
+        lbJpg.setToolTipText("Seleccionar todo (jpg, png)");
         lbJpg.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         lbJpg.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -533,7 +653,7 @@ public class CollectorGUI extends javax.swing.JFrame {
         });
 
         lbOfficeOAll.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/imgopenoff.png"))); // NOI18N
-        lbOfficeOAll.setToolTipText("Seleccionar todos (OpenOffice)");
+        lbOfficeOAll.setToolTipText("Seleccionar todos (odt, ods, odp)");
         lbOfficeOAll.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         lbOfficeOAll.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -555,11 +675,11 @@ public class CollectorGUI extends javax.swing.JFrame {
         chkbPptx.setToolTipText("");
 
         chkbOdt.setFont(new java.awt.Font("Microsoft YaHei", 0, 10)); // NOI18N
-        chkbOdt.setMnemonic('t');
+        chkbOdt.setMnemonic('w');
         chkbOdt.setText("odt");
 
         chkbOds.setFont(new java.awt.Font("Microsoft YaHei", 0, 10)); // NOI18N
-        chkbOds.setMnemonic('t');
+        chkbOds.setMnemonic('z');
         chkbOds.setText("ods");
 
         chkbOdp.setFont(new java.awt.Font("Microsoft YaHei", 0, 10)); // NOI18N
@@ -582,21 +702,31 @@ public class CollectorGUI extends javax.swing.JFrame {
 
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/repeat-2.png"))); // NOI18N
 
-        jCheckBox1.setFont(new java.awt.Font("Microsoft YaHei", 0, 10)); // NOI18N
-        jCheckBox1.setText("doc");
-        jCheckBox1.setToolTipText("");
+        chkbDoc.setFont(new java.awt.Font("Microsoft YaHei", 0, 10)); // NOI18N
+        chkbDoc.setMnemonic('c');
+        chkbDoc.setText("doc");
+        chkbDoc.setToolTipText("");
 
         jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Office.png"))); // NOI18N
-        jLabel10.setToolTipText("");
+        jLabel10.setToolTipText("Seleccionar todos (doc, xls, ppt)");
+        jLabel10.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel10.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel10MouseClicked(evt);
+            }
+        });
 
-        jCheckBox2.setFont(new java.awt.Font("Microsoft YaHei", 0, 10)); // NOI18N
-        jCheckBox2.setText("xls");
+        chkbXls.setFont(new java.awt.Font("Microsoft YaHei", 0, 10)); // NOI18N
+        chkbXls.setMnemonic('l');
+        chkbXls.setText("xls");
 
-        jCheckBox3.setFont(new java.awt.Font("Microsoft YaHei", 0, 10)); // NOI18N
-        jCheckBox3.setText("ppt");
+        chkbPpt.setFont(new java.awt.Font("Microsoft YaHei", 0, 10)); // NOI18N
+        chkbPpt.setMnemonic('t');
+        chkbPpt.setText("ppt");
 
-        jCheckBox4.setFont(new java.awt.Font("Microsoft YaHei", 0, 10)); // NOI18N
-        jCheckBox4.setText("png");
+        chkbPng.setFont(new java.awt.Font("Microsoft YaHei", 0, 10)); // NOI18N
+        chkbPng.setMnemonic('n');
+        chkbPng.setText("png");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -671,7 +801,7 @@ public class CollectorGUI extends javax.swing.JFrame {
                                             .addGroup(layout.createSequentialGroup()
                                                 .addGap(0, 0, Short.MAX_VALUE)
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addComponent(jCheckBox1)
+                                                    .addComponent(chkbDoc)
                                                     .addGroup(layout.createSequentialGroup()
                                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                             .addComponent(chkbDocx)
@@ -679,7 +809,7 @@ public class CollectorGUI extends javax.swing.JFrame {
                                                             .addComponent(chkbJpg))
                                                         .addGap(18, 18, 18)
                                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                            .addComponent(jCheckBox4)
+                                                            .addComponent(chkbPng)
                                                             .addGroup(layout.createSequentialGroup()
                                                                 .addComponent(chkbXlsx)
                                                                 .addGap(18, 18, 18)
@@ -687,10 +817,10 @@ public class CollectorGUI extends javax.swing.JFrame {
                                                             .addGroup(layout.createSequentialGroup()
                                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                                     .addComponent(chkbOds)
-                                                                    .addComponent(jCheckBox2))
+                                                                    .addComponent(chkbXls))
                                                                 .addGap(18, 18, 18)
                                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                                    .addComponent(jCheckBox3)
+                                                                    .addComponent(chkbPpt)
                                                                     .addComponent(chkbOdp)))))))
                                             .addGroup(layout.createSequentialGroup()
                                                 .addComponent(chkbPdf)
@@ -765,15 +895,15 @@ public class CollectorGUI extends javax.swing.JFrame {
                         .addGap(15, 15, 15)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jCheckBox1)
-                                .addComponent(jCheckBox2)
-                                .addComponent(jCheckBox3))
+                                .addComponent(chkbDoc)
+                                .addComponent(chkbXls)
+                                .addComponent(chkbPpt))
                             .addComponent(jLabel10))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(chkbJpg)
-                                .addComponent(jCheckBox4))
+                                .addComponent(chkbPng))
                             .addComponent(lbJpg))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -786,8 +916,7 @@ public class CollectorGUI extends javax.swing.JFrame {
                         .addGap(6, 6, 6)
                         .addComponent(cmbHashTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(41, 41, 41)
-                        .addComponent(jLabel9)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(jLabel9)))
                 .addGap(18, 18, 18)
                 .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(6, 6, 6)
@@ -811,7 +940,8 @@ public class CollectorGUI extends javax.swing.JFrame {
             try {
                 ciclo = SelectDir(txtDirectorioRecoleccion);
             } catch (IOException ex) {
-                Logger.getLogger(CollectorGUI.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(CollectorGUI.class
+                        .getName()).log(Level.SEVERE, null, ex);
             }
         }
     }//GEN-LAST:event_btnSeleccionDirectorioRActionPerformed
@@ -824,12 +954,13 @@ public class CollectorGUI extends javax.swing.JFrame {
         try {
             CleanGUI();
         } catch (IOException ex) {
-            Logger.getLogger(CollectorGUI.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CollectorGUI.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnLimpiarActionPerformed
 
     private void lbOfficeWAllMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbOfficeWAllMouseClicked
-        SelectAll("private");
+        SelectAll("2010");
     }//GEN-LAST:event_lbOfficeWAllMouseClicked
 
     private void lbOfficeOAllMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbOfficeOAllMouseClicked
@@ -837,45 +968,23 @@ public class CollectorGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_lbOfficeOAllMouseClicked
 
     private void btnSeleccionDirectorioSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionDirectorioSActionPerformed
-
         boolean ciclo = true;
         while (ciclo) {
             try {
                 ciclo = SelectDir(txtDirectorioSalida);
             } catch (IOException ex) {
-                Logger.getLogger(CollectorGUI.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(CollectorGUI.class
+                        .getName()).log(Level.SEVERE, null, ex);
             }
         }
-
     }//GEN-LAST:event_btnSeleccionDirectorioSActionPerformed
 
     private void txtDirectorioRecoleccionFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtDirectorioRecoleccionFocusLost
-        if (!txtDirectorioRecoleccion.getText().equals("")) {
-            File directorio = new File(txtDirectorioRecoleccion.getText());
-            if (directorio.isDirectory()) {
-                txtDirectorioRecoleccion.setForeground(Color.black);
-                rdbRecursivo.setEnabled(true);
-            } else {
-                txtDirectorioRecoleccion.setForeground(Color.red);
-                txtDirectorioRecoleccion.setText("ERROR");
-                rdbRecursivo.setEnabled(false);
-                rdbRecursivo.setSelected(false);
-
-            }
-        }
+        TxtError(txtDirectorioRecoleccion);
     }//GEN-LAST:event_txtDirectorioRecoleccionFocusLost
 
     private void txtDirectorioSalidaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtDirectorioSalidaFocusLost
-        if (!txtDirectorioSalida.getText().equals("")) {
-            File directorio = new File(txtDirectorioSalida.getText());
-            if (directorio.isDirectory()) {
-                txtDirectorioSalida.setForeground(Color.black);
-
-            } else {
-                txtDirectorioSalida.setForeground(Color.red);
-                txtDirectorioSalida.setText("ERROR");
-            }
-        }
+        TxtError(txtDirectorioSalida);
     }//GEN-LAST:event_txtDirectorioSalidaFocusLost
 
     private void btnRecolectarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRecolectarActionPerformed
@@ -883,62 +992,48 @@ public class CollectorGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnRecolectarActionPerformed
 
     private void lbPdfMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbPdfMouseClicked
-        if (chkbPdf.isSelected()) {
-            chkbPdf.setSelected(false);
-        } else {
-            chkbPdf.setSelected(true);
-        }
+        SelectAll("pdf");
     }//GEN-LAST:event_lbPdfMouseClicked
 
     private void lbJpgMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbJpgMouseClicked
-        if (chkbJpg.isSelected()) {
-            chkbJpg.setSelected(false);
-        } else {
-            chkbJpg.setSelected(true);
-        }
+        SelectAll("img");
     }//GEN-LAST:event_lbJpgMouseClicked
 
     private void lbAcercaDeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbAcercaDeMouseClicked
-        AboutUs au = new AboutUs(this, true);
-        au.setVisible(true);
+        CallAboutUS();
     }//GEN-LAST:event_lbAcercaDeMouseClicked
 
     private void txtDirectorioRecoleccionFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtDirectorioRecoleccionFocusGained
-        if (txtDirectorioRecoleccion.getText().equals("ERROR")) {
-            txtDirectorioRecoleccion.setForeground(Color.black);
-            txtDirectorioRecoleccion.setText("");
-            rdbRecursivo.setEnabled(false);
-            rdbRecursivo.setSelected(false);
-        }
+        VerifyErrorTxt(txtDirectorioRecoleccion);
     }//GEN-LAST:event_txtDirectorioRecoleccionFocusGained
 
     private void txtDirectorioSalidaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtDirectorioSalidaFocusGained
-        if (txtDirectorioSalida.getText().equals("ERROR")) {
-            txtDirectorioSalida.setForeground(Color.black);
-            txtDirectorioSalida.setText("");
-        }
+        VerifyErrorTxt(txtDirectorioSalida);
     }//GEN-LAST:event_txtDirectorioSalidaFocusGained
 
+    private void jLabel10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel10MouseClicked
+        SelectAll("2003");
+    }//GEN-LAST:event_jLabel10MouseClicked
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLimpiar;
     private javax.swing.JButton btnRecolectar;
     private javax.swing.JButton btnSalir;
     private javax.swing.JButton btnSeleccionDirectorioR;
     private javax.swing.JButton btnSeleccionDirectorioS;
+    private javax.swing.JCheckBox chkbDoc;
     private javax.swing.JCheckBox chkbDocx;
     private javax.swing.JCheckBox chkbJpg;
     private javax.swing.JCheckBox chkbOdp;
     private javax.swing.JCheckBox chkbOds;
     private javax.swing.JCheckBox chkbOdt;
     private javax.swing.JCheckBox chkbPdf;
+    private javax.swing.JCheckBox chkbPng;
+    private javax.swing.JCheckBox chkbPpt;
     private javax.swing.JCheckBox chkbPptx;
+    private javax.swing.JCheckBox chkbXls;
     private javax.swing.JCheckBox chkbXlsx;
     private javax.swing.JComboBox cmbHashTipo;
     private javax.swing.JFileChooser fchSeleccion;
-    private javax.swing.JCheckBox jCheckBox1;
-    private javax.swing.JCheckBox jCheckBox2;
-    private javax.swing.JCheckBox jCheckBox3;
-    private javax.swing.JCheckBox jCheckBox4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;

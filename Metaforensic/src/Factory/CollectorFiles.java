@@ -1,27 +1,28 @@
-/**
+/*
  * *****************************************************************************
- *
+ *    
  * Metaforensic version 1.0 - Análisis forense de metadatos en archivos
  * electrónicos Copyright (C) 2012-2013 TSU. Andrés de Jesús Hernández Martínez,
- * All Rights Reserved, https://github.com/andy737
+ * TSU. Idania Aquino Cruz, All Rights Reserved, https://github.com/andy737   
+ * 
+ * This file is part of Metaforensic.
  *
- * This program is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation; either version 3 of the License, or (at your option) any later
- * version.
+ * Metaforensic is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * Metaforensic is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
- * Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * You should have received a copy of the GNU General Public License
+ * along with Metaforensic.  If not, see <http://www.gnu.org/licenses/>.
+ * 
  * E-mail: andy1818ster@gmail.com
- *
- *******************************************************************************
+ * 
+ * *****************************************************************************
  */
 package Factory;
 
@@ -38,7 +39,8 @@ import jonelo.jacksum.JacksumAPI;
 import jonelo.jacksum.algorithm.AbstractChecksum;
 import metadata.DateTime;
 import metadata.ElapsedTime;
-import metadata.FileI;
+import metadata.FileFea;
+import metadata.ProcessFile;
 import metadata.Hash;
 import metadata.InfoCompu;
 import metadata.OutFileLog;
@@ -47,13 +49,14 @@ import metadata.OutFileLog;
  *
  * @author andy737-1
  */
-public class CollectorFiles extends FileName implements FileI {
+public class CollectorFiles extends FileName implements ProcessFile {
 
     private Collector values;
     private OperationViewer op;
     private CollectorGUI gui;
     private OperationViewer opr;
     private OutFileLog out;
+    private FileFea fif;
     private AbstractChecksum checksum;
     private Hash hashob;
     private List<Hash> very;
@@ -63,46 +66,58 @@ public class CollectorFiles extends FileName implements FileI {
     private int subdir;
     private int pdf;
     private int jpg;
+    private int png;
     private int docx;
     private int xlsx;
     private int pptx;
+    private int doc;
+    private int xls;
+    private int ppt;
     private int odt;
     private int ods;
     private int odp;
 
     public CollectorFiles(CollectorGUI gui) {
         this.gui = gui;
-        values = null;
+        InitVar();
+    }
+
+    private void InitViewer() {
         opr = new OperationViewer(gui);
         opr.setVisible(true);
+    }
+
+    private void InitVar() {
+        values = Collector.getInstance();
+        InitViewer();
         hashob = new Hash();
         very = new ArrayList<>();
         fail = new ArrayList<>();
         et = new ElapsedTime();
+        fif = fif.getInstance();
         pdf = 0;
         error = 0;
         subdir = 0;
         jpg = 0;
+        png = 0;
         docx = 0;
         xlsx = 0;
         pptx = 0;
+        doc = 0;
+        xls = 0;
+        ppt = 0;
         odt = 0;
         ods = 0;
         odp = 0;
-
     }
 
     public final void OutLog() {
         out = new OutFileLog();
-        out.setPath(values.getDirectorioSalida());
-        out.setNameFile(DateTime.getDate().toString().replace("-", "") + "_" + DateTime.getTime().toString().replace(":", "") + "_" + InfoCompu.getUser());
-        out.setFrame(op);
+        fif.setPath(values.getDirectorioSalida());
+        fif.setNameFile(DateTime.getDate().toString().replace("-", "") + "_" + DateTime.getTimeMilli().toString().replace(":", "") + "_" + InfoCompu.getUser());
+        fif.setFrame(op);
         out.CreateFile();
 
-    }
-
-    public void setValues(Collector values) {
-        this.values = values;
     }
 
     public void setConsole(OperationViewer op) {
@@ -110,53 +125,33 @@ public class CollectorFiles extends FileName implements FileI {
     }
 
     private void TypeFile() {
-        opr.setText("Tipos de archivo [recolección]:");
-        opr.Append();
-        WriteFile("Tipos de archivo [recolección]:");
+        SetProcessTxt("Tipos de archivo [recolección]:");
         for (int i = 0; i < values.getTipoArchivo().size(); i++) {
-            opr.setText(" " + values.getTipoArchivo().get(i).toString() + " |");
-            opr.Append();
-            WriteFile(" " + values.getTipoArchivo().get(i).toString() + " |");
+            SetProcessTxt(" " + values.getTipoArchivo().get(i).toString() + " |");
         }
-        opr.setText("\n");
-        opr.Append();
-        WriteFile("\n");
-        opr.setText("Tipo hash [checksum]: " + values.getTipoHash() + "\n");
-        opr.Append();
-        WriteFile("Tipo hash [checksum]: " + values.getTipoHash() + "\n");
+        SetProcessTxt("\n");
+        SetProcessTxt("Tipo hash [checksum]: " + values.getTipoHash() + "\n");
+    }
+
+    private void GeneralData(String rc) {
+        SetProcessTxt("Iniciando recolección " + rc + "de metadatos.....\n\n"
+                + "Directorio Raiz [recolección]: " + values.getDirectorioRecoleccion() + "\n");
+        TypeFile();
+        SetProcessTxt("Nombre del equipo: " + InfoCompu.getPCName() + "\n");
+        SetProcessTxt("Nombre del usuario: " + InfoCompu.getUser() + "\n");
+        SetProcessTxt("Sistema operativo: " + InfoCompu.getSO() + "\n");
+        SetProcessTxt("SO versión: " + InfoCompu.getSOVer() + "\n");
+        SetProcessTxt("Arquitectura: " + InfoCompu.getSOAq() + "\n\n");
     }
 
     public void InitAction() {
-
         String rc = "";
         OutLog();
-        opr.setText(OutFileLog.titulo);
-        opr.Append();
-        WriteFile(OutFileLog.titulo);
+        SetProcessTxt(OutFileLog.titulo);
         if (values.getRecursivo()) {
             rc = "recursiva ";
         }
-        opr.setText("Iniciando recolección " + rc + "de metadatos.....\n\n"
-                + "Directorio Raiz [recolección]: " + values.getDirectorioRecoleccion() + "\n");
-        opr.Append();
-        WriteFile("Iniciando recolección " + rc + "de metadatos...\n\n"
-                + "Directorio Raiz [recolección]: " + values.getDirectorioRecoleccion() + "\n");
-        TypeFile();
-        opr.setText("Nombre del equipo: " + InfoCompu.getPCName() + "\n");
-        opr.Append();
-        WriteFile("Nombre del equipo: " + InfoCompu.getPCName() + "\n");
-        opr.setText("Nombre del usuario: " + InfoCompu.getUser() + "\n");
-        opr.Append();
-        WriteFile("Nombre del usuario: " + InfoCompu.getUser() + "\n");
-        opr.setText("Sistema operativo: " + InfoCompu.getSO() + "\n");
-        opr.Append();
-        WriteFile("Sistema operativo: " + InfoCompu.getSO() + "\n");
-        opr.setText("SO versión: " + InfoCompu.getSOVer() + "\n");
-        opr.Append();
-        WriteFile("SO versión: " + InfoCompu.getSOVer() + "\n");
-        opr.setText("Arquitectura: " + InfoCompu.getSOAq() + "\n\n");
-        opr.Append();
-        WriteFile("Arquitectura: " + InfoCompu.getSOAq() + "\n\n");
+        GeneralData(rc);
     }
 
     public void ActionPerformed() {
@@ -165,13 +160,10 @@ public class CollectorFiles extends FileName implements FileI {
         Find(new File(values.getDirectorioRecoleccion()), values.getTipoArchivo());
         PrintTot();
         et.StopAll();
-        opr.setText("Tiempo total transcurrido: " + et.getElapsedTimeAll() + " segundos aprox.\n");
-        opr.Append();
-        WriteFile("Tiempo total transcurrido: " + et.getElapsedTimeAll() + " segundos aprox.\n");
-        out.closeFile();
+        SetProcessTxt("Tiempo total transcurrido: " + et.getElapsedTimeAll() + " segundos aprox.\n");
+        out.CloseFile();
         opr.setExit(true);
         opr.setExitButtonEnabled(true);
-
         gui.CleanGUIDirect();
     }
 
@@ -181,14 +173,12 @@ public class CollectorFiles extends FileName implements FileI {
     }
 
     private void Find(File raiz, ArrayList tipo) {
-        String ext, check;
+        String ext;
         File[] archivos = null;
         int i = 0;
         archivos = raiz.listFiles();
         for (i = 0; i < archivos.length; i++) {
             try {
-
-                //System.out.println(i + " " + (archivos.length-1));
                 File archivo = archivos[i];
                 if (archivo.isDirectory() && values.getRecursivo()) {
                     subdir++;
@@ -196,27 +186,32 @@ public class CollectorFiles extends FileName implements FileI {
                 } else {
                     ext = extension(archivo);
                     if (tipo.contains(ext)) {
-                        //opr.setColor(Color.white);
-                        et.Start();
-                        SumType(ext);
-                        check = CreateChecksum(archivo);
-                        FeaturesFile(archivo, ext, check);
-                        VerifyChecksum(archivo);
-                        et.Stop();
-                        opr.setText("[" + DateTime.getDate() + " " + DateTime.getTime() + "] [ELAPSED]:[TIME] " + et.getElapsedTime() + " segundos aprox.\n\n");
-                        opr.Append();
-                        WriteFile("[" + DateTime.getDate() + " " + DateTime.getTime() + "] [ELAPSED]:[TIME] " + et.getElapsedTime() + " segundos aprox.\n\n");
+                        if (!opr.getPanic()) {
+                            ProcessFile(ext, archivo);
+                        } else {
+                            break;
+                        }
                     }
                 }
             } catch (Exception ex) {
-                //opr.setColor(Color.red);
                 error++;
-                opr.setText("[" + DateTime.getDate() + " " + DateTime.getTime() + "] [ERROR]:[DIR/FILE] " + archivos[i].toString() + "\n");
-                opr.Append();
-                WriteFile("[" + DateTime.getDate() + " " + DateTime.getTime() + "] [ERROR]:[DIR/FILE] " + archivos[i].toString() + "\n");
+                SetProcessTxt("[" + DateTime.getDate() + " " + DateTime.getTimeMilli() + "] [ERROR]:[DIR/FILE] " + archivos[i].toString() + "\\ \n");
                 continue;
             }
         }
+    }
+
+    private void ProcessFile(String ext, File archivo) {
+        String check;
+        SetProcessTxt("[" + DateTime.getDate() + " " + DateTime.getTimeMilli() + "] [START]:[PROCESS]\n");
+        et.Start();
+        SumType(ext);
+        check = CreateChecksum(archivo);
+        FeaturesFile(archivo, ext, check);
+        VerifyChecksum(archivo);
+        SetProcessTxt("[" + DateTime.getDate() + " " + DateTime.getTimeMilli() + "] [END]:[PROCESS]\n");
+        et.Stop();
+        SetProcessTxt("[" + DateTime.getDate() + " " + DateTime.getTimeMilli() + "] [ELAPSED]:[TIME] " + et.getElapsedTime() + " segundos aprox.\n\n");
     }
 
     private void SumType(String ext) {
@@ -227,6 +222,9 @@ public class CollectorFiles extends FileName implements FileI {
             case "jpg":
                 jpg++;
                 break;
+            case "png":
+                png++;
+                break;
             case "docx":
                 docx++;
                 break;
@@ -235,6 +233,15 @@ public class CollectorFiles extends FileName implements FileI {
                 break;
             case "pptx":
                 pptx++;
+                break;
+            case "doc":
+                doc++;
+                break;
+            case "xls":
+                xls++;
+                break;
+            case "ppt":
+                ppt++;
                 break;
             case "odt":
                 odt++;
@@ -248,184 +255,154 @@ public class CollectorFiles extends FileName implements FileI {
         }
     }
 
-    private void PrintTot() {
-
-        opr.setText("Recolección finalizada con exito.....\n\n");
-        opr.Append();
-        WriteFile("Recolección finalizada con exito.....\n\n");
-        WriteFile("Total de archivos sometidos a recolección: " + very.size() + "\n");
-        opr.setText("Total de archivos sometidos a recolección: " + very.size() + "\n");
-        opr.Append();
-        WriteFile("Total de archivos sometidos a recolección: " + very.size() + "\n");
-        opr.setText("Total de directorios sometidos a recolección: " + (subdir + 1) + "\n");
-        opr.Append();
-        WriteFile("Total de directorios sometidos a recolección: " + (subdir + 1) + "\n");
-        opr.setText("Total de errores de recolección: " + error + "\n");
-        opr.Append();
-        WriteFile("Total de errores de recolección: " + error + "\n");
-        opr.setText("Total de errores de integridad: " + fail.size() + "\n");
-        opr.Append();
-        WriteFile("Total de errores de integridad: " + fail.size() + "\n");
+    private void DefineExtView() {
         if (pdf > 0) {
-            opr.setText("Número de archivos pdf: " + pdf + "\n");
-            opr.Append();
-            WriteFile("Número de archivos pdf: " + pdf + " \n");
+            SetProcessTxt("Número de archivos pdf: " + pdf + "\n");
         }
         if (jpg > 0) {
-            opr.setText("Número de archivos jpg: " + jpg + "\n");
-            opr.Append();
-            WriteFile("Número de archivos jpg: " + jpg + " \n");
+            SetProcessTxt("Número de archivos jpg: " + jpg + "\n");
         }
-
+        if (png > 0) {
+            SetProcessTxt("Número de archivos png: " + png + "\n");
+        }
         if (docx > 0) {
-            opr.setText("Número de archivos docx: " + docx + "\n");
-            opr.Append();
-            WriteFile("Número de archivos docx: " + docx + " \n");
+            SetProcessTxt("Número de archivos docx: " + docx + "\n");
         }
         if (xlsx > 0) {
-            opr.setText("Número de archivos xlsx: " + xlsx + "\n");
-            opr.Append();
-            WriteFile("Número de archivos xlsx: " + xlsx + " \n");
+            SetProcessTxt("Número de archivos xlsx: " + xlsx + "\n");
         }
         if (pptx > 0) {
-            opr.setText("Número de archivos pptx: " + pptx + "\n");
-            opr.Append();
-            WriteFile("Número de archivos pptx: " + pptx + " \n");
+            SetProcessTxt("Número de archivos pptx: " + pptx + "\n");
+        }
+        if (doc > 0) {
+            SetProcessTxt("Número de archivos doc: " + doc + "\n");
+        }
+        if (xls > 0) {
+            SetProcessTxt("Número de archivos xls: " + xls + "\n");
+        }
+        if (ppt > 0) {
+            SetProcessTxt("Número de archivos ppt: " + ppt + "\n");
         }
         if (odt > 0) {
-            opr.setText("Número de archivos odt: " + odt + "\n");
-            opr.Append();
-            WriteFile("Número de archivos odt: " + odt + " \n");
+            SetProcessTxt("Número de archivos odt: " + odt + "\n");
         }
         if (ods > 0) {
-            opr.setText("Número de archivos ods: " + ods + "\n");
-            opr.Append();
-            WriteFile("Número de archivos ods: " + ods + " \n");
+            SetProcessTxt("Número de archivos ods: " + ods + "\n");
         }
         if (odp > 0) {
-            opr.setText("Número de archivos odp: " + odp + "\n");
-            opr.Append();
-            WriteFile("Número de archivos odp: " + odp + " \n");
+            SetProcessTxt("Número de archivos odp: " + odp + "\n");
         }
+    }
+
+    private void ValMsgOpAll() {
+        if (opr.getPanic()) {
+            SetProcessTxt("\nProceso cancelado.....\n\n");
+        } else {
+            if (fail.size() > 0 || error > 0 && very.size() > 0) {
+                SetProcessTxt("\nRecolección finalizada con errores.....\n\n");
+            } else {
+                if (very.size() > 0) {
+                    SetProcessTxt("\nRecolección finalizada con exito.....\n\n");
+                } else {
+                    SetProcessTxt("\nNo se encontraron archivos.....\n\n");
+                }
+            }
+        }
+    }
+
+    private void PrintTot() {
+        ValMsgOpAll();
+        SetProcessTxt("Total de archivos sometidos a recolección: " + very.size() + "\n");
+        SetProcessTxt("Total de directorios sometidos a recolección: " + (subdir + 1) + "\n");
+        SetProcessTxt("Total de errores de recolección: " + error + "\n");
+        SetProcessTxt("Total de errores de integridad: " + fail.size() + "\n");
+        DefineExtView();
+    }
+
+    private double SizeFile(File archivo) {
+        double bytes = archivo.length();
+        double kb = bytes / 1024;
+        return kb;
+    }
+
+    private void SetProcessTxt(String txt) {
+        opr.setText(txt);
+        opr.Append();
+        WriteFile(txt);
     }
 
     @Override
     public void CollectorAlgorithm() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
+
     /*
      * Implementacion de la API jacksum ver. 1.7.0 (Licencia GNU) para firmado de archivos
      * 
      * Credits to: http://www.jonelo.de/java/jacksum
      */
-
     @Override
     public String CreateChecksum(File archivo) {
-
         String hash;
+        StringTokenizer st;
         try {
             checksum = JacksumAPI.getChecksumInstance(values.getTipoHash());
 
         } catch (NoSuchAlgorithmException ex) {
-            opr.setText("[" + DateTime.getDate() + " " + DateTime.getTime() + "] [ERROR]:[TYPE]:[CHECKSUM] No se pudo ejecutar el algoritmo elegido.\n");
-            opr.Append();
-            WriteFile("[" + DateTime.getDate() + " " + DateTime.getTime() + "] [ERROR]:[TYPE]:[CHECKSUM] No se pudo ejecutar el algoritmo elegido.\n");
+            SetProcessTxt("[" + DateTime.getDate() + " " + DateTime.getTimeMilli() + "] [ERROR]:[TYPE]:[CHECKSUM] No se pudo ejecutar el algoritmo elegido.\n");
         }
         try {
             checksum.readFile(archivo.toString());
         } catch (IOException ex) {
-            opr.setText("[" + DateTime.getDate() + " " + DateTime.getTime() + "] [ERROR]:[FILE]:[CHECKSUM] EL archivo no pudo ser firmado.\n");
-            opr.Append();
-            WriteFile("[" + DateTime.getDate() + " " + DateTime.getTime() + "] [ERROR]:[FILE]:[CHECKSUM] EL archivo no pudo ser firmado.\n");
+            SetProcessTxt("[" + DateTime.getDate() + " " + DateTime.getTimeMilli() + "] [ERROR]:[FILE]:[CHECKSUM] EL archivo no pudo ser firmado.\n");
         }
-
-        StringTokenizer st = new StringTokenizer(checksum.toString());
+        st = new StringTokenizer(checksum.toString());
         hash = st.nextElement().toString();
         hashob.setFile(archivo);
         hashob.setHash(hash);
         very.add(hashob);
-
         return hash;
-
     }
+
     /*
      * Implementacion de la API jacksum ver. 1.7.0 (Licencia GNU) para verificación de integridad de archivos
      * 
      * Credits to: http://www.jonelo.de/java/jacksum
      */
-
     @Override
     public Boolean VerifyChecksum(File archivo) {
         String hash;
+        StringTokenizer st;
         try {
             checksum = JacksumAPI.getChecksumInstance(values.getTipoHash());
 
         } catch (NoSuchAlgorithmException ex) {
-            opr.setText("[" + DateTime.getDate() + " " + DateTime.getTime() + "] [ERROR]:[FAIL]:[CHECKSUM] No se pudo ejecutar el algoritmo elegido.\n");
-            opr.Append();
-            WriteFile("[" + DateTime.getDate() + " " + DateTime.getTime() + "] [ERROR]:[FAIL]:[CHECKSUM] No se pudo ejecutar el algoritmo elegido.\n");
+            SetProcessTxt("[" + DateTime.getDate() + " " + DateTime.getTimeMilli() + "] [ERROR]:[FAIL]:[CHECKSUM] No se pudo ejecutar el algoritmo elegido.\n");
         }
         try {
             checksum.readFile(archivo.toString());
         } catch (IOException ex) {
-            opr.setText("[" + DateTime.getDate() + " " + DateTime.getTime() + "] [ERROR]:[FAIL]:[FILE] El archivo no pudo ser verificado.\n");
-            opr.Append();
-            WriteFile("[" + DateTime.getDate() + " " + DateTime.getTime() + "] [ERROR]:[FAIL]:[FILE] El archivo no pudo ser verificado.\n");
+            SetProcessTxt("[" + DateTime.getDate() + " " + DateTime.getTime() + "] [ERROR]:[FAIL]:[FILE] El archivo no pudo ser verificado.\n");
         }
-
-        StringTokenizer st = new StringTokenizer(checksum.toString());
+        st = new StringTokenizer(checksum.toString());
         hash = st.nextElement().toString();
         hashob.setFile(archivo);
         hashob.setHash(hash);
         if (very.contains(hashob)) {
-            opr.setText("[" + DateTime.getDate() + " " + DateTime.getTime() + "] [VERIFY]:[PASSED]:[FILE] El archivo paso la prueba de integridad.\n");
-            opr.Append();
-            WriteFile("[" + DateTime.getDate() + " " + DateTime.getTime() + "] [VERIFY]:[PASSED]:[FILE] El archivo paso la prueba de integridad.\n");
+            SetProcessTxt("[" + DateTime.getDate() + " " + DateTime.getTimeMilli() + "] [VERIFY]:[PASSED]:[FILE] El archivo paso la prueba de integridad.\n");
             return true;
         } else {
-            opr.setText("[" + DateTime.getDate() + " " + DateTime.getTime() + "] [VERIFY]:[FAIL]:[FILE] El archivo no paso la prueba de integridad.\n");
-            opr.Append();
-            WriteFile("[" + DateTime.getDate() + " " + DateTime.getTime() + "] [VERIFY]:[FAIL]:[FILE] El archivo no paso la prueba de integridad.\n");
+            SetProcessTxt("[" + DateTime.getDate() + " " + DateTime.getTimeMilli() + "] [VERIFY]:[FAIL]:[FILE] El archivo no paso la prueba de integridad.\n");
             fail.add(hashob);
             return false;
         }
-
     }
 
-    @Override
-    public void OpenFile() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public void CloseFile() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
     public void FeaturesFile(File archivo, String ext, String check) {
-
-        opr.setText("[" + DateTime.getDate() + " " + DateTime.getTime() + "] [SCAN]:[DIR] " + path(archivo) + "\\" + "\n");
-        opr.Append();
-        opr.setText("[" + DateTime.getDate() + " " + DateTime.getTime() + "] [FOUND]:[FILE] " + filename(archivo) + "." + ext + "\n");
-        opr.Append();
-        opr.setText("[" + DateTime.getDate() + " " + DateTime.getTime() + "] [FILE]:[TYPE] " + ext + "\n");
-        opr.Append();
-        opr.setText("[" + DateTime.getDate() + " " + DateTime.getTime() + "] [FILE]:[SIZE] " + SizeFile(archivo) + " KB\n");
-        opr.Append();
-        opr.setText("[" + DateTime.getDate() + " " + DateTime.getTime() + "] [CHECKSUM]:[FILE] " + check + " \n");
-        opr.Append();
-        WriteFile("[" + DateTime.getDate() + " " + DateTime.getTime() + "] [SCAN]:[DIR] " + path(archivo) + "\\" + "\n");
-        WriteFile("[" + DateTime.getDate() + " " + DateTime.getTime() + "] [FOUND]:[FILE] " + filename(archivo) + "." + ext + "\n");
-        WriteFile("[" + DateTime.getDate() + " " + DateTime.getTime() + "] [FILE]:[TYPE] " + ext + "\n");
-        WriteFile("[" + DateTime.getDate() + " " + DateTime.getTime() + "] [FILE]:[SIZE] " + SizeFile(archivo) + " KB\n");
-        WriteFile("[" + DateTime.getDate() + " " + DateTime.getTime() + "] [CHECKSUM]:[FILE] " + check + " \n");
-    }
-
-    private double SizeFile(File archivo) {
-
-        double bytes = archivo.length();
-        double kb = bytes / 1024;
-        return kb;
+        SetProcessTxt("[" + DateTime.getDate() + " " + DateTime.getTimeMilli() + "] [SCAN]:[DIR] " + path(archivo) + "\\" + "\n");
+        SetProcessTxt("[" + DateTime.getDate() + " " + DateTime.getTimeMilli() + "] [FOUND]:[FILE] " + filename(archivo) + "." + ext + "\n");
+        SetProcessTxt("[" + DateTime.getDate() + " " + DateTime.getTimeMilli() + "] [FILE]:[TYPE] " + ext + "\n");
+        SetProcessTxt("[" + DateTime.getDate() + " " + DateTime.getTimeMilli() + "] [FILE]:[SIZE] " + SizeFile(archivo) + " KB\n");
+        SetProcessTxt("[" + DateTime.getDate() + " " + DateTime.getTimeMilli() + "] [CHECKSUM]:[FILE] " + check + " \n");
     }
 }

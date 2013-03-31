@@ -8,6 +8,16 @@ package metadata;
  *
  * @author andy737-1
  */
-public interface Ofimatico {
+public class Ofimatico extends Metadata{
+
+    @Override
+    public void CollectorMeta() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void SaveMetadata() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
     
 }

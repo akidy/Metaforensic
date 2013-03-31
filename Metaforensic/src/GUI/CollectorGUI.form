@@ -135,7 +135,7 @@
                                           <Group type="102" attributes="0">
                                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                                               <Group type="103" groupAlignment="0" attributes="0">
-                                                  <Component id="jCheckBox1" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="chkbDoc" min="-2" max="-2" attributes="0"/>
                                                   <Group type="102" alignment="0" attributes="0">
                                                       <Group type="103" groupAlignment="0" attributes="0">
                                                           <Component id="chkbDocx" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -144,7 +144,7 @@
                                                       </Group>
                                                       <EmptySpace type="separate" max="-2" attributes="0"/>
                                                       <Group type="103" groupAlignment="0" attributes="0">
-                                                          <Component id="jCheckBox4" min="-2" max="-2" attributes="0"/>
+                                                          <Component id="chkbPng" min="-2" max="-2" attributes="0"/>
                                                           <Group type="102" alignment="0" attributes="0">
                                                               <Component id="chkbXlsx" min="-2" max="-2" attributes="0"/>
                                                               <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -153,11 +153,11 @@
                                                           <Group type="102" alignment="0" attributes="0">
                                                               <Group type="103" groupAlignment="0" attributes="0">
                                                                   <Component id="chkbOds" alignment="0" min="-2" max="-2" attributes="0"/>
-                                                                  <Component id="jCheckBox2" alignment="0" min="-2" max="-2" attributes="0"/>
+                                                                  <Component id="chkbXls" alignment="0" min="-2" max="-2" attributes="0"/>
                                                               </Group>
                                                               <EmptySpace type="separate" max="-2" attributes="0"/>
                                                               <Group type="103" groupAlignment="0" attributes="0">
-                                                                  <Component id="jCheckBox3" min="-2" max="-2" attributes="0"/>
+                                                                  <Component id="chkbPpt" min="-2" max="-2" attributes="0"/>
                                                                   <Component id="chkbOdp" min="-2" max="-2" attributes="0"/>
                                                               </Group>
                                                           </Group>
@@ -263,9 +263,9 @@
                       <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="1" attributes="0">
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jCheckBox1" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jCheckBox2" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jCheckBox3" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="chkbDoc" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="chkbXls" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="chkbPpt" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Component id="jLabel10" min="-2" max="-2" attributes="0"/>
                       </Group>
@@ -273,7 +273,7 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="chkbJpg" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jCheckBox4" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="chkbPng" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Component id="lbJpg" min="-2" max="-2" attributes="0"/>
                       </Group>
@@ -291,7 +291,6 @@
                       <Component id="cmbHashTipo" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="41" max="-2" attributes="0"/>
                       <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -504,7 +503,7 @@
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
           <Image iconType="3" name="/Images/imgoffice.png"/>
         </Property>
-        <Property name="toolTipText" type="java.lang.String" value="Seleccionar todos (Windows Office)"/>
+        <Property name="toolTipText" type="java.lang.String" value="Seleccionar todos (docx, xlsx, pptx)"/>
         <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
           <Color id="Cursor de Mano"/>
         </Property>
@@ -532,7 +531,7 @@
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
           <Image iconType="3" name="/Images/imagenicon.png"/>
         </Property>
-        <Property name="toolTipText" type="java.lang.String" value="Seleccionar todo (jpg)"/>
+        <Property name="toolTipText" type="java.lang.String" value="Seleccionar todo (jpg, png)"/>
         <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
           <Color id="Cursor de Mano"/>
         </Property>
@@ -596,7 +595,7 @@
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
           <Image iconType="3" name="/Images/imgopenoff.png"/>
         </Property>
-        <Property name="toolTipText" type="java.lang.String" value="Seleccionar todos (OpenOffice)"/>
+        <Property name="toolTipText" type="java.lang.String" value="Seleccionar todos (odt, ods, odp)"/>
         <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
           <Color id="Cursor de Mano"/>
         </Property>
@@ -638,7 +637,7 @@
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Microsoft YaHei" size="10" style="0"/>
         </Property>
-        <Property name="mnemonic" type="int" value="116"/>
+        <Property name="mnemonic" type="int" value="119"/>
         <Property name="text" type="java.lang.String" value="odt"/>
       </Properties>
     </Component>
@@ -647,7 +646,7 @@
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Microsoft YaHei" size="10" style="0"/>
         </Property>
-        <Property name="mnemonic" type="int" value="116"/>
+        <Property name="mnemonic" type="int" value="122"/>
         <Property name="text" type="java.lang.String" value="ods"/>
       </Properties>
     </Component>
@@ -699,11 +698,12 @@
         </Property>
       </Properties>
     </Component>
-    <Component class="javax.swing.JCheckBox" name="jCheckBox1">
+    <Component class="javax.swing.JCheckBox" name="chkbDoc">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Microsoft YaHei" size="10" style="0"/>
         </Property>
+        <Property name="mnemonic" type="int" value="99"/>
         <Property name="text" type="java.lang.String" value="doc"/>
         <Property name="toolTipText" type="java.lang.String" value=""/>
       </Properties>
@@ -713,30 +713,39 @@
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
           <Image iconType="3" name="/Images/Office.png"/>
         </Property>
-        <Property name="toolTipText" type="java.lang.String" value=""/>
+        <Property name="toolTipText" type="java.lang.String" value="Seleccionar todos (doc, xls, ppt)"/>
+        <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
+          <Color id="Cursor de Mano"/>
+        </Property>
       </Properties>
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jLabel10MouseClicked"/>
+      </Events>
     </Component>
-    <Component class="javax.swing.JCheckBox" name="jCheckBox2">
+    <Component class="javax.swing.JCheckBox" name="chkbXls">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Microsoft YaHei" size="10" style="0"/>
         </Property>
+        <Property name="mnemonic" type="int" value="108"/>
         <Property name="text" type="java.lang.String" value="xls"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JCheckBox" name="jCheckBox3">
+    <Component class="javax.swing.JCheckBox" name="chkbPpt">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Microsoft YaHei" size="10" style="0"/>
         </Property>
+        <Property name="mnemonic" type="int" value="116"/>
         <Property name="text" type="java.lang.String" value="ppt"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JCheckBox" name="jCheckBox4">
+    <Component class="javax.swing.JCheckBox" name="chkbPng">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Microsoft YaHei" size="10" style="0"/>
         </Property>
+        <Property name="mnemonic" type="int" value="110"/>
         <Property name="text" type="java.lang.String" value="png"/>
       </Properties>
     </Component>

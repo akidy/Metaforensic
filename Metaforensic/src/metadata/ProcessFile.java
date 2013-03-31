@@ -10,7 +10,7 @@ import java.io.File;
  *
  * @author andy737-1
  */
-public interface FileI {
+public interface ProcessFile {
 
     public void CollectorAlgorithm();
 
@@ -18,9 +18,4 @@ public interface FileI {
 
     public Boolean VerifyChecksum(File archivo);
 
-    public void OpenFile();
-
-    public void CloseFile();
-
-    public void FeaturesFile(File archivo, String ext, String check);
 }

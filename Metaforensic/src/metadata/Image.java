@@ -8,5 +8,15 @@ package metadata;
  *
  * @author andy737-1
  */
-public class Image {
+public class Image extends Metadata {
+
+    @Override
+    public void CollectorMeta() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void SaveMetadata() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }
