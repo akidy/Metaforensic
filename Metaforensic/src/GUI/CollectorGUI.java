@@ -357,6 +357,11 @@ public class CollectorGUI extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         rdbRecursivo = new javax.swing.JRadioButton();
         jLabel7 = new javax.swing.JLabel();
+        jCheckBox1 = new javax.swing.JCheckBox();
+        jLabel10 = new javax.swing.JLabel();
+        jCheckBox2 = new javax.swing.JCheckBox();
+        jCheckBox3 = new javax.swing.JCheckBox();
+        jCheckBox4 = new javax.swing.JCheckBox();
 
         fchSeleccion.setAcceptAllFileFilterUsed(false);
         fchSeleccion.setDialogType(javax.swing.JFileChooser.CUSTOM_DIALOG);
@@ -485,7 +490,7 @@ public class CollectorGUI extends javax.swing.JFrame {
             }
         });
 
-        lbJpg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/imagenimg.png"))); // NOI18N
+        lbJpg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/imagenicon.png"))); // NOI18N
         lbJpg.setToolTipText("Seleccionar todo (jpg)");
         lbJpg.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         lbJpg.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -577,6 +582,22 @@ public class CollectorGUI extends javax.swing.JFrame {
 
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/repeat-2.png"))); // NOI18N
 
+        jCheckBox1.setFont(new java.awt.Font("Microsoft YaHei", 0, 10)); // NOI18N
+        jCheckBox1.setText("doc");
+        jCheckBox1.setToolTipText("");
+
+        jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Office.png"))); // NOI18N
+        jLabel10.setToolTipText("");
+
+        jCheckBox2.setFont(new java.awt.Font("Microsoft YaHei", 0, 10)); // NOI18N
+        jCheckBox2.setText("xls");
+
+        jCheckBox3.setFont(new java.awt.Font("Microsoft YaHei", 0, 10)); // NOI18N
+        jCheckBox3.setText("ppt");
+
+        jCheckBox4.setFont(new java.awt.Font("Microsoft YaHei", 0, 10)); // NOI18N
+        jCheckBox4.setText("png");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -613,17 +634,17 @@ public class CollectorGUI extends javax.swing.JFrame {
                                 .addComponent(btnSeleccionDirectorioS))
                             .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 451, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(40, 40, 40)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(cmbHashTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(10, 10, 10)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(jLabel5)
-                                            .addComponent(jLabel9))))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel9)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addGap(40, 40, 40)
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(cmbHashTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addGap(10, 10, 10)
+                                            .addComponent(jLabel5))))
                                 .addGap(27, 27, 27)
                                 .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -639,27 +660,41 @@ public class CollectorGUI extends javax.swing.JFrame {
                                             .addGroup(layout.createSequentialGroup()
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addComponent(lbPdf)
                                                     .addComponent(lbOfficeOAll)
-                                                    .addComponent(lbJpg, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                    .addComponent(lbJpg, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(lbPdf)))
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(jLabel10)))
+                                        .addGap(18, 18, 18)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addGroup(layout.createSequentialGroup()
+                                                .addGap(0, 0, Short.MAX_VALUE)
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addComponent(chkbDocx)
-                                                    .addComponent(chkbOdt))
-                                                .addGap(18, 18, 18)
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(jCheckBox1)
                                                     .addGroup(layout.createSequentialGroup()
-                                                        .addComponent(chkbXlsx)
+                                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                            .addComponent(chkbDocx)
+                                                            .addComponent(chkbOdt)
+                                                            .addComponent(chkbJpg))
                                                         .addGap(18, 18, 18)
-                                                        .addComponent(chkbPptx))
-                                                    .addGroup(layout.createSequentialGroup()
-                                                        .addComponent(chkbOds)
-                                                        .addGap(18, 18, 18)
-                                                        .addComponent(chkbOdp))))
-                                            .addComponent(chkbPdf)
-                                            .addComponent(chkbJpg)))))
+                                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                            .addComponent(jCheckBox4)
+                                                            .addGroup(layout.createSequentialGroup()
+                                                                .addComponent(chkbXlsx)
+                                                                .addGap(18, 18, 18)
+                                                                .addComponent(chkbPptx))
+                                                            .addGroup(layout.createSequentialGroup()
+                                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                                    .addComponent(chkbOds)
+                                                                    .addComponent(jCheckBox2))
+                                                                .addGap(18, 18, 18)
+                                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                                    .addComponent(jCheckBox3)
+                                                                    .addComponent(chkbOdp)))))))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(chkbPdf)
+                                                .addGap(0, 0, Short.MAX_VALUE))))))
                             .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 451, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(btnRecolectar)
@@ -668,7 +703,7 @@ public class CollectorGUI extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(12, 12, 12)))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(10, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -710,42 +745,49 @@ public class CollectorGUI extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(jLabel8)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                    .addComponent(chkbDocx)
-                                                    .addComponent(chkbXlsx)
-                                                    .addComponent(chkbPptx)))
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addGap(31, 31, 31)
-                                                .addComponent(lbOfficeWAll)))
-                                        .addGap(18, 18, 18)
+                                        .addComponent(jLabel8)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                            .addComponent(chkbOdt)
-                                            .addComponent(chkbOds)
-                                            .addComponent(chkbOdp)))
-                                    .addComponent(lbOfficeOAll))
+                                            .addComponent(chkbDocx)
+                                            .addComponent(chkbXlsx)
+                                            .addComponent(chkbPptx)))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(31, 31, 31)
+                                        .addComponent(lbOfficeWAll)))
                                 .addGap(18, 18, 18)
-                                .addComponent(chkbPdf))
-                            .addComponent(lbPdf))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(chkbOdt)
+                                    .addComponent(chkbOds)
+                                    .addComponent(chkbOdp)))
+                            .addComponent(lbOfficeOAll))
+                        .addGap(15, 15, 15)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jCheckBox1)
+                                .addComponent(jCheckBox2)
+                                .addComponent(jCheckBox3))
+                            .addComponent(jLabel10))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(chkbJpg)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(chkbJpg)
+                                .addComponent(jCheckBox4))
                             .addComponent(lbJpg))
-                        .addGap(0, 13, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lbPdf, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(chkbPdf, javax.swing.GroupLayout.Alignment.TRAILING)))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel5)
                         .addGap(30, 30, 30)
                         .addComponent(jLabel6)
                         .addGap(6, 6, 6)
                         .addComponent(cmbHashTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(41, 41, 41)
                         .addComponent(jLabel9)
-                        .addGap(19, 19, 19)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGap(18, 18, 18)
                 .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(6, 6, 6)
@@ -876,6 +918,7 @@ public class CollectorGUI extends javax.swing.JFrame {
             txtDirectorioSalida.setText("");
         }
     }//GEN-LAST:event_txtDirectorioSalidaFocusGained
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLimpiar;
     private javax.swing.JButton btnRecolectar;
@@ -892,7 +935,12 @@ public class CollectorGUI extends javax.swing.JFrame {
     private javax.swing.JCheckBox chkbXlsx;
     private javax.swing.JComboBox cmbHashTipo;
     private javax.swing.JFileChooser fchSeleccion;
+    private javax.swing.JCheckBox jCheckBox1;
+    private javax.swing.JCheckBox jCheckBox2;
+    private javax.swing.JCheckBox jCheckBox3;
+    private javax.swing.JCheckBox jCheckBox4;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

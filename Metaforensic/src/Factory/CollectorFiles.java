@@ -37,6 +37,7 @@ import java.util.StringTokenizer;
 import jonelo.jacksum.JacksumAPI;
 import jonelo.jacksum.algorithm.AbstractChecksum;
 import metadata.DateTime;
+import metadata.ElapsedTime;
 import metadata.FileI;
 import metadata.Hash;
 import metadata.InfoCompu;
@@ -57,6 +58,7 @@ public class CollectorFiles extends FileName implements FileI {
     private Hash hashob;
     private List<Hash> very;
     private List<Hash> fail;
+    private ElapsedTime et;
     private int error;
     private int subdir;
     private int pdf;
@@ -76,6 +78,7 @@ public class CollectorFiles extends FileName implements FileI {
         hashob = new Hash();
         very = new ArrayList<>();
         fail = new ArrayList<>();
+        et = new ElapsedTime();
         pdf = 0;
         error = 0;
         subdir = 0;
@@ -157,12 +160,18 @@ public class CollectorFiles extends FileName implements FileI {
     }
 
     public void ActionPerformed() {
+        et.StartAll();
         InitAction();
         Find(new File(values.getDirectorioRecoleccion()), values.getTipoArchivo());
         PrintTot();
+        et.StopAll();
+        opr.setText("Tiempo total transcurrido: " + et.getElapsedTimeAll() + " segundos aprox.\n");
+        opr.Append();
+        WriteFile("Tiempo total transcurrido: " + et.getElapsedTimeAll() + " segundos aprox.\n");
         out.closeFile();
         opr.setExit(true);
         opr.setExitButtonEnabled(true);
+
         gui.CleanGUIDirect();
     }
 
@@ -188,10 +197,15 @@ public class CollectorFiles extends FileName implements FileI {
                     ext = extension(archivo);
                     if (tipo.contains(ext)) {
                         //opr.setColor(Color.white);
+                        et.Start();
                         SumType(ext);
                         check = CreateChecksum(archivo);
                         FeaturesFile(archivo, ext, check);
                         VerifyChecksum(archivo);
+                        et.Stop();
+                        opr.setText("[" + DateTime.getDate() + " " + DateTime.getTime() + "] [ELAPSED]:[TIME] " + et.getElapsedTime() + " segundos aprox.\n\n");
+                        opr.Append();
+                        WriteFile("[" + DateTime.getDate() + " " + DateTime.getTime() + "] [ELAPSED]:[TIME] " + et.getElapsedTime() + " segundos aprox.\n\n");
                     }
                 }
             } catch (Exception ex) {
@@ -238,6 +252,7 @@ public class CollectorFiles extends FileName implements FileI {
 
         opr.setText("Recolección finalizada con exito.....\n\n");
         opr.Append();
+        WriteFile("Recolección finalizada con exito.....\n\n");
         WriteFile("Total de archivos sometidos a recolección: " + very.size() + "\n");
         opr.setText("Total de archivos sometidos a recolección: " + very.size() + "\n");
         opr.Append();
@@ -363,14 +378,14 @@ public class CollectorFiles extends FileName implements FileI {
         hashob.setFile(archivo);
         hashob.setHash(hash);
         if (very.contains(hashob)) {
-            opr.setText("[" + DateTime.getDate() + " " + DateTime.getTime() + "] [VERIFY]:[PASSED]:[FILE] El archivo paso la prueba de integridad.\n\n");
+            opr.setText("[" + DateTime.getDate() + " " + DateTime.getTime() + "] [VERIFY]:[PASSED]:[FILE] El archivo paso la prueba de integridad.\n");
             opr.Append();
-            WriteFile("[" + DateTime.getDate() + " " + DateTime.getTime() + "] [VERIFY]:[PASSED]:[FILE] El archivo paso la prueba de integridad.\n\n");
+            WriteFile("[" + DateTime.getDate() + " " + DateTime.getTime() + "] [VERIFY]:[PASSED]:[FILE] El archivo paso la prueba de integridad.\n");
             return true;
         } else {
-            opr.setText("[" + DateTime.getDate() + " " + DateTime.getTime() + "] [VERIFY]:[FAIL]:[FILE] El archivo no paso la prueba de integridad.\n\n");
+            opr.setText("[" + DateTime.getDate() + " " + DateTime.getTime() + "] [VERIFY]:[FAIL]:[FILE] El archivo no paso la prueba de integridad.\n");
             opr.Append();
-            WriteFile("[" + DateTime.getDate() + " " + DateTime.getTime() + "] [VERIFY]:[FAIL]:[FILE] El archivo no paso la prueba de integridad.\n\n");
+            WriteFile("[" + DateTime.getDate() + " " + DateTime.getTime() + "] [VERIFY]:[FAIL]:[FILE] El archivo no paso la prueba de integridad.\n");
             fail.add(hashob);
             return false;
         }
@@ -404,7 +419,6 @@ public class CollectorFiles extends FileName implements FileI {
         WriteFile("[" + DateTime.getDate() + " " + DateTime.getTime() + "] [FOUND]:[FILE] " + filename(archivo) + "." + ext + "\n");
         WriteFile("[" + DateTime.getDate() + " " + DateTime.getTime() + "] [FILE]:[TYPE] " + ext + "\n");
         WriteFile("[" + DateTime.getDate() + " " + DateTime.getTime() + "] [FILE]:[SIZE] " + SizeFile(archivo) + " KB\n");
-        WriteFile("[" + DateTime.getDate() + " " + DateTime.getTime() + "] [TYPE]:[CHECKSUM] " + values.getTipoHash() + " \n");
         WriteFile("[" + DateTime.getDate() + " " + DateTime.getTime() + "] [CHECKSUM]:[FILE] " + check + " \n");
     }
 

@@ -25,12 +25,12 @@ public class OutFileLog {
     private String txt;
     private ModalDialog md;
     private JFrame f;
-    public static String titulo = "*********************************************************************************\n"
+    public static String titulo = "************************************************************************************\n"
             + " * Metaforensic version 1.0 - Análisis forense de metadatos en archivos\n"
-            + " * electrónicos Copyright (C) 2012-2013 TSU. Andrés de Jesús Hernández Martínez,\n"
+            + " * electrónicos Copyright (C) 2012-2013 TSU. Andrés de Jesús Hernández Martínez, TSU Idania Aquino Cruz,\n"
             + " * All Rights Reserved, https://github.com/andy737\n"
             + " * [Recolector] Log de operaciones y eventos\n"
-            + "*********************************************************************************\n\n";
+            + "************************************************************************************\n\n";
 
     public OutFileLog() {
         nombre = "";
