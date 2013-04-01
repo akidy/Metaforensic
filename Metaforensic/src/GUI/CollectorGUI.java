@@ -26,11 +26,12 @@
  */
 package GUI;
 
+import Process.Collector;
+import Process.ValidateInfo;
 import Windows.Clean;
 import Windows.FrameIcons;
 import Windows.ModalDialog;
 import Windows.RunnableViewer;
-import Windows.ValidateInfo;
 import Windows.WindowsStyle;
 import java.awt.Color;
 import java.io.File;
@@ -53,7 +54,7 @@ public class CollectorGUI extends javax.swing.JFrame {
     private ModalDialog md;
     private Thread t;
     private FrameIcons ic;
-
+   
     /**
      * Constructor de GUI
      */
@@ -89,6 +90,7 @@ public class CollectorGUI extends javax.swing.JFrame {
         } else if (estado == 0) {
             System.exit(0);
         }
+       
     }
 
     /*

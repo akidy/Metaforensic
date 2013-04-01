@@ -27,6 +27,8 @@
 package Run;
 
 import GUI.CollectorGUI;
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
 
 /**
  * Clase encargada de iniciar la aplicación "Metaforensic"
@@ -37,16 +39,19 @@ import GUI.CollectorGUI;
  */
 public class Run {
 
+    static Logger logger = Logger.getLogger(Run.class);
+
     /**
      * Inicio de la aplicación
      *
      * @param args (valor default)
      */
     public static void main(String[] args) {
-
+        BasicConfigurator.configure();
+        logger.info("Ingresando a la aplicación");
         Splash.RunSplash(null, false);
         CollectorGUI cl = new CollectorGUI();
         cl.setVisible(true);
-
+        
     }
 }

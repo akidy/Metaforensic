@@ -26,7 +26,7 @@
  */
 package Windows;
 
-import Factory.CollectorFiles;
+import Process.CollectorFiles;
 import GUI.CollectorGUI;
 
 /**

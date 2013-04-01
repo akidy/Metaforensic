@@ -24,7 +24,7 @@
  * 
  * *****************************************************************************
  */
-package metadata;
+package Process;
 
 import java.io.File;
 
@@ -38,13 +38,18 @@ public class Hash {
 
     private String hash;
     private File archivo;
+    private static Hash instance = new Hash();
 
     /**
      * Incialización de variables
      */
-    public Hash() {
+    private Hash() {
         hash = "";
         archivo = null;
+    }
+
+    public static Hash getInstance() {
+        return instance;
     }
 
     /**

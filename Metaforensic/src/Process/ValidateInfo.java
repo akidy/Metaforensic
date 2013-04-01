@@ -24,9 +24,8 @@
  * 
  * *****************************************************************************
  */
-package Windows;
+package Process;
 
-import GUI.Collector;
 import java.io.File;
 import java.io.IOException;
 

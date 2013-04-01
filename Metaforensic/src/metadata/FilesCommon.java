@@ -10,13 +10,15 @@ package metadata;
  */
 public abstract class FilesCommon {
 
-    public abstract void WriteFile();
+    public abstract Boolean WriteFile();
 
-    public abstract void CloseFile();
+    public abstract Boolean CloseFile();
 
-    public void CreateFile() {
+    public Boolean CreateFile() {
+        return null;
     }
 
-    public void OpenFile() {
+    public Boolean OpenFile() {
+        return null;
     }
 }

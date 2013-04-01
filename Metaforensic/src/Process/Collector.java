@@ -24,7 +24,7 @@
  * 
  * *****************************************************************************
  */
-package GUI;
+package Process;
 
 import java.awt.Component;
 import java.util.ArrayList;
@@ -150,7 +150,7 @@ public class Collector {
     public ArrayList getTipoArchivo() {
 
         Component[] arr;
-        ArrayList chk = new ArrayList<>();
+        ArrayList<String> chk = new ArrayList<>();
         if (j.getContentPane().getComponents() != null) {
             arr = j.getContentPane().getComponents();
             for (int i = 0; i < arr.length; i++) {

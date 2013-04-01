@@ -4,42 +4,37 @@
  */
 package metadata;
 
+import java.io.File;
+
 /**
  *
  * @author andy737-1
  */
-public class FileMeta extends FileFea {
+public class FileMeta {
 
-    private String archivo;
-    private Boolean escribir;
+    private File archivo;
+    private static FileMeta instance = new FileMeta();
 
     /**
      * Inicia variables
      */
-    public FileMeta() {
-        archivo = "";
-        escribir = true;
+    private FileMeta() {
+        archivo = null;
+    }
+
+    public static FileMeta getInstance() {
+        return instance;
     }
 
     /**
      *
      * @param nombre del archivo sometido a recolección
      */
-    @Override
-    public void setNameFile(String archivo) {
+    public void setNameFile(File archivo) {
         this.archivo = archivo;
     }
 
-    @Override
-    public String getNameFile() {
+    public File getNameFile() {
         return archivo;
-    }
-
-    public void setEscribir(Boolean escribir) {
-        this.escribir = escribir;
-    }
-
-    public Boolean getEscribir() {
-        return escribir;
     }
 }

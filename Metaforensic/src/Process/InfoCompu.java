@@ -24,79 +24,53 @@
  * 
  * *****************************************************************************
  */
-package metadata;
+package Process;
 
 /**
- * Clase que calcula el tiempo trasncurrido entre operaciones y totaliza el
- * tiempo de todas las operaciones
+ * Clase que retorna diversos valores del entorno sometido a recolección
  *
  * @author andy737-1
- * @version 1.0
+ * @verision 1.0
  */
-public class ElapsedTime {
-
-    private double T1;
-    private double T2;
-    private double t1;
-    private double t2;
-    private double elapsed;
+public class InfoCompu {
 
     /**
-     * Inicaliza variables
+     *
+     * @return nombre del equipo
      */
-    public void EpalsedTime() {
-        T1 = 0;
-        T2 = 0;
-        t1 = 0;
-        t2 = 0;
-        elapsed = 0;
+    public static String getPCName() {
+        return System.getenv("COMPUTERNAME");
     }
 
     /**
      *
-     * @return el tiempo de una operacion individual
+     * @return usuario logueado del equipo
      */
-    public double getElapsedTime() {
-        double r = T2 - T1;
-        elapsed = r / 1000000000.0;
-        return elapsed;
+    public static String getUser() {
+        return System.getProperty("user.name");
     }
 
     /**
      *
-     * @return el tiempo de todas las operaciones
+     * @return nombre del SO
      */
-    public double getElapsedTimeAll() {
-        double r = t2 - t1;
-        elapsed = r / 1000000000.0;
-        return elapsed;
+    public static String getSO() {
+        return System.getProperty("os.name");
     }
 
     /**
-     * Recoge el la hora de inicio en nanosegundo (individual)
+     *
+     * @return versión del SO
      */
-    public void Start() {
-        T1 = System.nanoTime();
+    public static String getSOVer() {
+        return System.getProperty("os.version");
     }
 
     /**
-     * Recoge la hora final en nanosegundos (individual)
+     *
+     * @return arquitectura del SO
      */
-    public void Stop() {
-        T2 = System.nanoTime();
-    }
-
-    /**
-     * Recoge la hora de inicio en nanosegundos (all)
-     */
-    public void StartAll() {
-        t1 = System.nanoTime();
-    }
-
-    /**
-     * Recoge la hora final en nanosegundos (all)
-     */
-    public void StopAll() {
-        t2 = System.nanoTime();
+    public static String getSOAq() {
+        return System.getProperty("os.arch");
     }
 }

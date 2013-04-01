@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package metadata;
+package Process;
 
 import java.io.File;
 
@@ -12,10 +12,9 @@ import java.io.File;
  */
 public interface ProcessFile {
 
-    public void CollectorAlgorithm();
+    public void CollectorAlgorithm(String ext, File Archivo);
 
     public String CreateChecksum(File archivo);
 
-    public Boolean VerifyChecksum(File archivo);
-
+    public void VerifyChecksum(File archivo);
 }

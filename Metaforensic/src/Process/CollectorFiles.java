@@ -24,9 +24,10 @@
  * 
  * *****************************************************************************
  */
-package Factory;
+package Process;
 
-import GUI.Collector;
+import Factory.CollectorFactory;
+import Factory.CollectorFactoryMethod;
 import GUI.CollectorGUI;
 import GUI.OperationViewer;
 import java.io.File;
@@ -37,13 +38,7 @@ import java.util.List;
 import java.util.StringTokenizer;
 import jonelo.jacksum.JacksumAPI;
 import jonelo.jacksum.algorithm.AbstractChecksum;
-import metadata.DateTime;
-import metadata.ElapsedTime;
-import metadata.FileFea;
-import metadata.ProcessFile;
-import metadata.Hash;
-import metadata.InfoCompu;
-import metadata.OutFileLog;
+import metadata.FileMeta;
 
 /**
  *
@@ -61,7 +56,9 @@ public class CollectorFiles extends FileName implements ProcessFile {
     private Hash hashob;
     private List<Hash> very;
     private List<Hash> fail;
+    private List<File> failmeta;
     private ElapsedTime et;
+    private ErroCollectorMeta erm;
     private int error;
     private int subdir;
     private int pdf;
@@ -90,11 +87,13 @@ public class CollectorFiles extends FileName implements ProcessFile {
     private void InitVar() {
         values = Collector.getInstance();
         InitViewer();
-        hashob = new Hash();
+        hashob = Hash.getInstance();
         very = new ArrayList<>();
         fail = new ArrayList<>();
         et = new ElapsedTime();
-        fif = fif.getInstance();
+        fif = FileFea.getInstance();
+        failmeta = new ArrayList<>();
+        erm = null;
         pdf = 0;
         error = 0;
         subdir = 0;
@@ -167,6 +166,17 @@ public class CollectorFiles extends FileName implements ProcessFile {
         gui.CleanGUIDirect();
     }
 
+    private void PrintErrorExcepFile() {
+        erm = new ErroCollectorMeta(failmeta);
+        if (failmeta.size() > 0) {
+            if (!erm.OpenFile() && !erm.WriteErrorFiles() && !erm.CloseFile()) {
+                SetProcessTxt("[" + DateTime.getDate() + " " + DateTime.getTimeMilli() + "] [ERROR]:[PRINT]:[EXCEPTION] No se imprimierón los archivos con excepciones de recolección.\n");
+            } else {
+                SetProcessTxt("[" + DateTime.getDate() + " " + DateTime.getTimeMilli() + "] [PRINT]:[EXCEPTION] Se imprimierón los archivos con excepciones de recolección.\n");
+            }
+        }
+    }
+
     private void WriteFile(String txt) {
         out.setText(txt);
         out.WriteFile();
@@ -185,6 +195,9 @@ public class CollectorFiles extends FileName implements ProcessFile {
                     Find(archivo, tipo);
                 } else {
                     ext = extension(archivo);
+                    if (ext.equals("jpeg")) {
+                        ext = "png";
+                    }
                     if (tipo.contains(ext)) {
                         if (!opr.getPanic()) {
                             ProcessFile(ext, archivo);
@@ -208,6 +221,7 @@ public class CollectorFiles extends FileName implements ProcessFile {
         SumType(ext);
         check = CreateChecksum(archivo);
         FeaturesFile(archivo, ext, check);
+        CollectorAlgorithm(ext, archivo);
         VerifyChecksum(archivo);
         SetProcessTxt("[" + DateTime.getDate() + " " + DateTime.getTimeMilli() + "] [END]:[PROCESS]\n");
         et.Stop();
@@ -332,8 +346,18 @@ public class CollectorFiles extends FileName implements ProcessFile {
     }
 
     @Override
-    public void CollectorAlgorithm() {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public void CollectorAlgorithm(String ext, File archivo) {
+        SetProcessTxt("[" + DateTime.getDate() + " " + DateTime.getTimeMilli() + "] [COLLECTOR]:[LAUNCH]:[FILE] Recolectando metadatos del archivo.\n");
+        FileMeta fn = FileMeta.getInstance();
+        fn.setNameFile(archivo);
+        CollectorFactoryMethod factory = new CollectorFactory();
+        Boolean estadoC = factory.InitCollector(ext);
+        if (estadoC) {
+            SetProcessTxt("[" + DateTime.getDate() + " " + DateTime.getTimeMilli() + "] [COLLECTOR]:[CLOSE]:[FILE] Finaliza recolección de metadatos.\n");
+        } else {
+            failmeta.add(archivo);
+            SetProcessTxt("[" + DateTime.getDate() + " " + DateTime.getTimeMilli() + "] [COLLECTOR]:[FAIL]:[FILE] Error en la recolección de metadatos.\n");
+        }
     }
 
     /*
@@ -370,7 +394,7 @@ public class CollectorFiles extends FileName implements ProcessFile {
      * Credits to: http://www.jonelo.de/java/jacksum
      */
     @Override
-    public Boolean VerifyChecksum(File archivo) {
+    public void VerifyChecksum(File archivo) {
         String hash;
         StringTokenizer st;
         try {
@@ -390,11 +414,9 @@ public class CollectorFiles extends FileName implements ProcessFile {
         hashob.setHash(hash);
         if (very.contains(hashob)) {
             SetProcessTxt("[" + DateTime.getDate() + " " + DateTime.getTimeMilli() + "] [VERIFY]:[PASSED]:[FILE] El archivo paso la prueba de integridad.\n");
-            return true;
         } else {
             SetProcessTxt("[" + DateTime.getDate() + " " + DateTime.getTimeMilli() + "] [VERIFY]:[FAIL]:[FILE] El archivo no paso la prueba de integridad.\n");
             fail.add(hashob);
-            return false;
         }
     }
 

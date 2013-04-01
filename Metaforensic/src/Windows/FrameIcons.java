@@ -52,7 +52,7 @@ public class FrameIcons {
      */
 
     private void InitialIcons() {
-        iconos = new ArrayList();
+        iconos = new ArrayList<>();
         iconos.add(new ImageIcon(getClass().getResource("/Images/icono16.png")).getImage());
         iconos.add(new ImageIcon(getClass().getResource("/Images/icono32.png")).getImage());
         iconos.add(new ImageIcon(getClass().getResource("/Images/icono48.png")).getImage());
