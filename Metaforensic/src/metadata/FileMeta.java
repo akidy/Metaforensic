@@ -1,14 +1,38 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * *****************************************************************************
+ *    
+ * Metaforensic version 1.0 - Análisis forense de metadatos en archivos
+ * electrónicos Copyright (C) 2012-2013 TSU. Andrés de Jesús Hernández Martínez,
+ * TSU. Idania Aquino Cruz, All Rights Reserved, https://github.com/andy737   
+ * 
+ * This file is part of Metaforensic.
+ *
+ * Metaforensic is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Metaforensic is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Metaforensic.  If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * E-mail: andy1818ster@gmail.com
+ * 
+ * *****************************************************************************
  */
 package metadata;
 
 import java.io.File;
 
 /**
+ * Clase para objetos clean
  *
  * @author andy737-1
+ * @version 1.0
  */
 public class FileMeta {
 
@@ -22,18 +46,26 @@ public class FileMeta {
         archivo = null;
     }
 
+    /**
+     *
+     * @return la instacia de esta clase
+     */
     public static FileMeta getInstance() {
         return instance;
     }
 
     /**
      *
-     * @param nombre del archivo sometido a recolección
+     * @param archivo que sera sometido a recolección
      */
     public void setNameFile(File archivo) {
         this.archivo = archivo;
     }
 
+    /**
+     *
+     * @return archivo para recolección
+     */
     public File getNameFile() {
         return archivo;
     }

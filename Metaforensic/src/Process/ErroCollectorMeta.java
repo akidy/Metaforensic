@@ -1,27 +1,46 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * *****************************************************************************
+ *    
+ * Metaforensic version 1.0 - Análisis forense de metadatos en archivos
+ * electrónicos Copyright (C) 2012-2013 TSU. Andrés de Jesús Hernández Martínez,
+ * TSU. Idania Aquino Cruz, All Rights Reserved, https://github.com/andy737   
+ * 
+ * This file is part of Metaforensic.
+ *
+ * Metaforensic is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Metaforensic is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Metaforensic.  If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * E-mail: andy1818ster@gmail.com
+ * 
+ * *****************************************************************************
  */
 package Process;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.apache.tika.metadata.Metadata;
-import org.apache.tika.parser.AutoDetectParser;
-import org.apache.tika.sax.BodyContentHandler;
 
 /**
+ * Clase encargada de imprimir en el archivo .afa los errores de recolección de
+ * metadatos colocando al archivo de la incidencia en estado descartado
  *
  * @author andy737-1
+ * @version 1.0
  */
 public class ErroCollectorMeta {
 
@@ -31,6 +50,11 @@ public class ErroCollectorMeta {
     private FileOutputStream er;
     private BufferedWriter outfinal;
 
+    /**
+     *
+     * @param error recibe una lista de los archivos mercados con error de
+     * recolección
+     */
     public ErroCollectorMeta(List<File> error) {
         this.error = error;
         fif = FileFea.getInstance();
@@ -39,15 +63,19 @@ public class ErroCollectorMeta {
         outfinal = null;
     }
 
+    /**
+     *
+     * @return el error de escritura
+     */
     public Boolean WriteErrorFiles() {
         try {
             outfinal.write("******************************************************************************************************\n");
             outfinal.flush();
-            for (int i = 0; i < error.size()-1; i++) {
+            for (int i = 0; i < error.size(); i++) {
                 outfinal.write("[file:Fail]:" + error.get(i) + "\n");
-            outfinal.flush();
+                outfinal.flush();
             }
-            
+
             return true;
         } catch (Exception ex) {
             return false;
@@ -55,6 +83,10 @@ public class ErroCollectorMeta {
 
     }
 
+    /**
+     *
+     * @return el error de cierre
+     */
     public Boolean CloseFile() {
         try {
             outfinal.close();
@@ -64,6 +96,10 @@ public class ErroCollectorMeta {
         }
     }
 
+    /**
+     *
+     * @return error de apertura
+     */
     public Boolean OpenFile() {
         try {
             er = new FileOutputStream(NameFileC(), true);

@@ -41,8 +41,10 @@ import jonelo.jacksum.algorithm.AbstractChecksum;
 import metadata.FileMeta;
 
 /**
+ * Clase encarga del porcesamiento de archivos sometidos a recolección
  *
  * @author andy737-1
+ * @version 1.0
  */
 public class CollectorFiles extends FileName implements ProcessFile {
 
@@ -58,9 +60,11 @@ public class CollectorFiles extends FileName implements ProcessFile {
     private List<Hash> fail;
     private List<File> failmeta;
     private ElapsedTime et;
+    private Thread oft;
     private ErroCollectorMeta erm;
     private int error;
     private int subdir;
+    private int reco;
     private int pdf;
     private int jpg;
     private int png;
@@ -74,6 +78,10 @@ public class CollectorFiles extends FileName implements ProcessFile {
     private int ods;
     private int odp;
 
+    /**
+     *
+     * @param gui frame padre
+     */
     public CollectorFiles(CollectorGUI gui) {
         this.gui = gui;
         InitVar();
@@ -94,6 +102,7 @@ public class CollectorFiles extends FileName implements ProcessFile {
         fif = FileFea.getInstance();
         failmeta = new ArrayList<>();
         erm = null;
+        oft = null;
         pdf = 0;
         error = 0;
         subdir = 0;
@@ -108,8 +117,12 @@ public class CollectorFiles extends FileName implements ProcessFile {
         odt = 0;
         ods = 0;
         odp = 0;
+        reco = 0;
     }
 
+    /**
+     * Impresión del log
+     */
     public final void OutLog() {
         out = new OutFileLog();
         fif.setPath(values.getDirectorioSalida());
@@ -119,6 +132,10 @@ public class CollectorFiles extends FileName implements ProcessFile {
 
     }
 
+    /**
+     *
+     * @param op instancia a la clase genradora del viewer process
+     */
     public void setConsole(OperationViewer op) {
         this.op = op;
     }
@@ -143,6 +160,9 @@ public class CollectorFiles extends FileName implements ProcessFile {
         SetProcessTxt("Arquitectura: " + InfoCompu.getSOAq() + "\n\n");
     }
 
+    /**
+     * Inicio del procesamiento de archivos
+     */
     public void InitAction() {
         String rc = "";
         OutLog();
@@ -153,10 +173,14 @@ public class CollectorFiles extends FileName implements ProcessFile {
         GeneralData(rc);
     }
 
+    /**
+     * Desencadenador de lectura de archivos
+     */
     public void ActionPerformed() {
         et.StartAll();
         InitAction();
         Find(new File(values.getDirectorioRecoleccion()), values.getTipoArchivo());
+        PrintErrorExcepFile();
         PrintTot();
         et.StopAll();
         SetProcessTxt("Tiempo total transcurrido: " + et.getElapsedTimeAll() + " segundos aprox.\n");
@@ -169,12 +193,22 @@ public class CollectorFiles extends FileName implements ProcessFile {
     private void PrintErrorExcepFile() {
         erm = new ErroCollectorMeta(failmeta);
         if (failmeta.size() > 0) {
-            if (!erm.OpenFile() && !erm.WriteErrorFiles() && !erm.CloseFile()) {
-                SetProcessTxt("[" + DateTime.getDate() + " " + DateTime.getTimeMilli() + "] [ERROR]:[PRINT]:[EXCEPTION] No se imprimierón los archivos con excepciones de recolección.\n");
+            if (erm.OpenFile()) {
+                if (erm.WriteErrorFiles()) {
+                    reco++;
+                    SetProcessTxt("[" + DateTime.getDate() + " " + DateTime.getTimeMilli() + "] [PRINT]:[EXCEPTION] Se imprimierón los archivos con excepciones de recolección.\n\n");
+                } else {
+                    SetProcessTxt("[" + DateTime.getDate() + " " + DateTime.getTimeMilli() + "] [ERROR]:[PRINT]:[EXCEPTION] Talvez no se imprimierón los archivos con excepciones de recolección.\n\n");
+                }
+
             } else {
-                SetProcessTxt("[" + DateTime.getDate() + " " + DateTime.getTimeMilli() + "] [PRINT]:[EXCEPTION] Se imprimierón los archivos con excepciones de recolección.\n");
+                SetProcessTxt("[" + DateTime.getDate() + " " + DateTime.getTimeMilli() + "] [ERROR]:[PRINT]:[EXCEPTION] No se imprimierón los archivos con excepciones de recolección.\n\n");
+            }
+            if (!erm.CloseFile()) {
+                SetProcessTxt("[" + DateTime.getDate() + " " + DateTime.getTimeMilli() + "] [ERROR]:[PRINT]:[EXCEPTION] Talvez no se imprimierón los archivos con excepciones de recolección.\n\n");
             }
         }
+
     }
 
     private void WriteFile(String txt) {
@@ -185,36 +219,60 @@ public class CollectorFiles extends FileName implements ProcessFile {
     private void Find(File raiz, ArrayList tipo) {
         String ext;
         File[] archivos = null;
+        File archivo;
         int i = 0;
         archivos = raiz.listFiles();
-        for (i = 0; i < archivos.length; i++) {
-            try {
-                File archivo = archivos[i];
-                if (archivo.isDirectory() && values.getRecursivo()) {
-                    subdir++;
-                    Find(archivo, tipo);
-                } else {
-                    ext = extension(archivo);
-                    if (ext.equals("jpeg")) {
-                        ext = "png";
-                    }
-                    if (tipo.contains(ext)) {
-                        if (!opr.getPanic()) {
-                            ProcessFile(ext, archivo);
-                        } else {
-                            break;
+        if ((!opr.getPanic())) {
+            for (i = 0; i < archivos.length; i++) {
+                try {
+                    archivo = archivos[i];
+                    if (archivo.isDirectory() && values.getRecursivo()) {
+                        subdir++;
+                        Find(archivo, tipo);
+                    } else {
+                        ext = extension(archivo);
+                        if (ext.equals("jpeg")) {
+                            ext = "png";
+                        }
+                        if (tipo.contains(ext)) {
+                            if (!opr.getPanic()) {
+                                /* process ps = new process(ext, archivo);
+                                 Thread psej = new Thread(ps);                            
+                                 psej.start();*/
+                                ProcessFile(ext, archivo);
+                            } else {
+                                break;
+                            }
                         }
                     }
+                } catch (Exception ex) {
+                    error++;
+                    if (!opr.getPanic()) {
+                        SetProcessTxt("[" + DateTime.getDate() + " " + DateTime.getTimeMilli() + "] [ERROR]:[DIR/FILE] " + archivos[i].toString() + "\\ \n");
+                    }
+                    continue;
                 }
-            } catch (Exception ex) {
-                error++;
-                SetProcessTxt("[" + DateTime.getDate() + " " + DateTime.getTimeMilli() + "] [ERROR]:[DIR/FILE] " + archivos[i].toString() + "\\ \n");
-                continue;
             }
         }
     }
 
-    private void ProcessFile(String ext, File archivo) {
+    /*class process implements Runnable {
+
+     private String ext;
+     private File archivo;
+
+     private process(String ext, File archivo) {
+     this.ext = ext;
+     this.archivo = archivo;
+     }
+
+     @Override
+     public void run() {
+     ProcessFile(ext, archivo);
+     }
+     }*/
+    private void ProcessFile(final String ext, final File archivo) {
+
         String check;
         SetProcessTxt("[" + DateTime.getDate() + " " + DateTime.getTimeMilli() + "] [START]:[PROCESS]\n");
         et.Start();
@@ -226,6 +284,7 @@ public class CollectorFiles extends FileName implements ProcessFile {
         SetProcessTxt("[" + DateTime.getDate() + " " + DateTime.getTimeMilli() + "] [END]:[PROCESS]\n");
         et.Stop();
         SetProcessTxt("[" + DateTime.getDate() + " " + DateTime.getTimeMilli() + "] [ELAPSED]:[TIME] " + et.getElapsedTime() + " segundos aprox.\n\n");
+
     }
 
     private void SumType(String ext) {
@@ -328,8 +387,9 @@ public class CollectorFiles extends FileName implements ProcessFile {
         ValMsgOpAll();
         SetProcessTxt("Total de archivos sometidos a recolección: " + very.size() + "\n");
         SetProcessTxt("Total de directorios sometidos a recolección: " + (subdir + 1) + "\n");
-        SetProcessTxt("Total de errores de recolección: " + error + "\n");
+        SetProcessTxt("Total de archivos/direcorios inaccesibles: " + error + "\n");
         SetProcessTxt("Total de errores de integridad: " + fail.size() + "\n");
+        SetProcessTxt("Total de errores de recolección: " + reco + "\n");
         DefineExtView();
     }
 
@@ -345,6 +405,11 @@ public class CollectorFiles extends FileName implements ProcessFile {
         WriteFile(txt);
     }
 
+    /**
+     *
+     * @param ext extención del archivopara recolección
+     * @param archivo que sera sometido a recolección
+     */
     @Override
     public void CollectorAlgorithm(String ext, File archivo) {
         SetProcessTxt("[" + DateTime.getDate() + " " + DateTime.getTimeMilli() + "] [COLLECTOR]:[LAUNCH]:[FILE] Recolectando metadatos del archivo.\n");
@@ -364,6 +429,11 @@ public class CollectorFiles extends FileName implements ProcessFile {
      * Implementacion de la API jacksum ver. 1.7.0 (Licencia GNU) para firmado de archivos
      * 
      * Credits to: http://www.jonelo.de/java/jacksum
+     */
+    /**
+     *
+     * @param archivo que sera firmado
+     * @return el hash del archivo
      */
     @Override
     public String CreateChecksum(File archivo) {
@@ -393,6 +463,10 @@ public class CollectorFiles extends FileName implements ProcessFile {
      * 
      * Credits to: http://www.jonelo.de/java/jacksum
      */
+    /**
+     *
+     * @param archivo que sera verificado (integridad)
+     */
     @Override
     public void VerifyChecksum(File archivo) {
         String hash;
@@ -420,6 +494,12 @@ public class CollectorFiles extends FileName implements ProcessFile {
         }
     }
 
+    /**
+     *
+     * @param archivo que esta siendo procesado
+     * @param ext del archivo en procesamiento
+     * @param check hash del archivo
+     */
     public void FeaturesFile(File archivo, String ext, String check) {
         SetProcessTxt("[" + DateTime.getDate() + " " + DateTime.getTimeMilli() + "] [SCAN]:[DIR] " + path(archivo) + "\\" + "\n");
         SetProcessTxt("[" + DateTime.getDate() + " " + DateTime.getTimeMilli() + "] [FOUND]:[FILE] " + filename(archivo) + "." + ext + "\n");

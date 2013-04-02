@@ -36,7 +36,7 @@ import Windows.WindowsStyle;
  * @version 1.0
  */
 public class OperationViewer extends javax.swing.JFrame {
-    
+
     private String operaciones;
     private CollectorGUI gui;
     private Boolean exit;
@@ -59,7 +59,7 @@ public class OperationViewer extends javax.swing.JFrame {
         this.gui = gui;
         InitVal();
     }
-    
+
     private void InitVal() {
         operaciones = "";
         exit = false;
@@ -89,10 +89,10 @@ public class OperationViewer extends javax.swing.JFrame {
      * Procesa la información y la muestra en el textarea
      */
     public void Append() {
+        txtaOperaciones.getCaret().setVisible(true);
         txtaOperaciones.append(operaciones);
         txtaOperaciones.setCaretPosition(txtaOperaciones.getText().length());
-        
-    }
+          }
 
     /**
      * Set enable boton salir
@@ -122,7 +122,7 @@ public class OperationViewer extends javax.swing.JFrame {
     public Boolean getPanic() {
         return pac;
     }
-    
+
     private void setPanic(Boolean pac) {
         this.pac = pac;
     }
@@ -163,6 +163,7 @@ public class OperationViewer extends javax.swing.JFrame {
         txtaOperaciones.setForeground(new java.awt.Color(255, 255, 255));
         txtaOperaciones.setLineWrap(true);
         txtaOperaciones.setRows(5);
+        txtaOperaciones.setCaretColor(new java.awt.Color(255, 255, 255));
         txtaOperaciones.setDisabledTextColor(new java.awt.Color(255, 255, 255));
         txtaOperaciones.setEnabled(false);
         jScrollPane2.setViewportView(txtaOperaciones);
@@ -266,15 +267,15 @@ public class OperationViewer extends javax.swing.JFrame {
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         Exit();
     }//GEN-LAST:event_formWindowClosing
-    
+
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
         Exit();
     }//GEN-LAST:event_btnSalirActionPerformed
-    
+
     private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
         setPanic(true);
     }//GEN-LAST:event_jLabel7MouseClicked
-    
+
     private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
         System.exit(0);
     }//GEN-LAST:event_jLabel2MouseClicked
