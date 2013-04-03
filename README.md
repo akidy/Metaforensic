@@ -1,4 +1,4 @@
-![image](http://img853.imageshack.us/img853/3608/metaforensiclogo.png)
+![image](http://i.imgur.com/MiskrJZ.png)
 
 ##Objetivo
 
