@@ -1,7 +1,7 @@
 /*
  * *****************************************************************************
  *    
- * Metaforensic version 1.0 - Análisis forense de metadatos en archivos
+ * Metaforensic version 1.1 - Análisis forense de metadatos en archivos
  * electrónicos Copyright (C) 2012-2013 TSU. Andrés de Jesús Hernández Martínez,
  * TSU. Idania Aquino Cruz, All Rights Reserved, https://github.com/andy737   
  * 
@@ -44,7 +44,7 @@ import metadata.FileMeta;
  * Clase encarga del porcesamiento de archivos sometidos a recolección
  *
  * @author andy737-1
- * @version 1.0
+ * @version 1.1
  */
 public class CollectorFiles extends FileName implements ProcessFile {
 
@@ -60,7 +60,7 @@ public class CollectorFiles extends FileName implements ProcessFile {
     private List<Hash> fail;
     private List<File> failmeta;
     private ElapsedTime et;
-    private Thread oft;
+    //private Thread oft;
     private ErroCollectorMeta erm;
     private int error;
     private int subdir;
@@ -77,6 +77,7 @@ public class CollectorFiles extends FileName implements ProcessFile {
     private int odt;
     private int ods;
     private int odp;
+    private CollectorFactoryMethod factory;
 
     /**
      *
@@ -101,8 +102,9 @@ public class CollectorFiles extends FileName implements ProcessFile {
         et = new ElapsedTime();
         fif = FileFea.getInstance();
         failmeta = new ArrayList<>();
+        factory = new CollectorFactory();
         erm = null;
-        oft = null;
+        //oft = null;
         pdf = 0;
         error = 0;
         subdir = 0;
@@ -128,8 +130,7 @@ public class CollectorFiles extends FileName implements ProcessFile {
         fif.setPath(values.getDirectorioSalida());
         fif.setNameFile(DateTime.getDate().toString().replace("-", "") + "_" + DateTime.getTimeMilli().toString().replace(":", "") + "_" + InfoCompu.getUser());
         fif.setFrame(op);
-        out.CreateFile();
-
+        // out.CreateFile();
     }
 
     /**
@@ -181,9 +182,18 @@ public class CollectorFiles extends FileName implements ProcessFile {
         InitAction();
         Find(new File(values.getDirectorioRecoleccion()), values.getTipoArchivo());
         PrintErrorExcepFile();
+        if (factory.CreateFile() && factory.WriteFile() && factory.CloseFile()) {
+            SetProcessTxt("[" + DateTime.getDate() + " " + DateTime.getTimeMilli() + "] [COLLECTOR]:[FILE] Creando y finalizando archivo .afa.\n");
+        } else {
+            reco++;
+            SetProcessTxt("[" + DateTime.getDate() + " " + DateTime.getTimeMilli() + "] [ERROR]:[COLLECTOR]:[FILE] Errores de creación o finalización del archivo .afa.\n");
+        }
         PrintTot();
         et.StopAll();
         SetProcessTxt("Tiempo total transcurrido: " + et.getElapsedTimeAll() + " segundos aprox.\n");
+        //out.CloseFile();
+        out.CreateFile();
+        out.WriteFile();
         out.CloseFile();
         opr.setExit(true);
         opr.setExitButtonEnabled(true);
@@ -213,7 +223,8 @@ public class CollectorFiles extends FileName implements ProcessFile {
 
     private void WriteFile(String txt) {
         out.setText(txt);
-        out.WriteFile();
+        //out.WriteFile();
+        out.LoadBuffer();
     }
 
     private void Find(File raiz, ArrayList tipo) {
@@ -415,7 +426,6 @@ public class CollectorFiles extends FileName implements ProcessFile {
         SetProcessTxt("[" + DateTime.getDate() + " " + DateTime.getTimeMilli() + "] [COLLECTOR]:[LAUNCH]:[FILE] Recolectando metadatos del archivo.\n");
         FileMeta fn = FileMeta.getInstance();
         fn.setNameFile(archivo);
-        CollectorFactoryMethod factory = new CollectorFactory();
         Boolean estadoC = factory.InitCollector(ext);
         if (estadoC) {
             SetProcessTxt("[" + DateTime.getDate() + " " + DateTime.getTimeMilli() + "] [COLLECTOR]:[CLOSE]:[FILE] Finaliza recolección de metadatos.\n");

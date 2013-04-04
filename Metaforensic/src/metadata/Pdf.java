@@ -1,7 +1,7 @@
 /*
  * *****************************************************************************
  *    
- * Metaforensic version 1.0 - Análisis forense de metadatos en archivos
+ * Metaforensic version 1.1 - Análisis forense de metadatos en archivos
  * electrónicos Copyright (C) 2012-2013 TSU. Andrés de Jesús Hernández Martínez,
  * TSU. Idania Aquino Cruz, All Rights Reserved, https://github.com/andy737   
  * 
@@ -43,10 +43,10 @@ import org.apache.tika.sax.BodyContentHandler;
 import org.xml.sax.SAXException;
 
 /**
- * Clase encarga de recolectar metadatos en archivos pdf
+ * Clase encarga de recolectar metadatos en archivos pdf (Sin implemtación)
  *
  * @author andy737-1
- * @version 1.0
+ * @version 1.1
  */
 public class Pdf extends Metadatas {
 
@@ -69,46 +69,18 @@ public class Pdf extends Metadatas {
         cll = Collector.getInstance();
         metadatosN = null;
         hash = Hash.getInstance();
+        buffer = new StringBuffer();
     }
 
     @Override
     public Boolean WriteFile() {
         try {
-            entrada = new FileInputStream(fim.getNameFile());
-            metadatos = new Metadata();
-            handler = new BodyContentHandler(-1);
-            parser = new AutoDetectParser();
-            parser.parse(entrada, handler, metadatos);
-            metadatosN = metadatos.names();
-            outfinal.write("******************************************************************************************************\n");
+            outfinal.write(buffer.toString());
             outfinal.flush();
-            outfinal.write("[host:Name]:" + InfoCompu.getPCName() + "\n");
-            outfinal.flush();
-            outfinal.write("[host:User]:" + InfoCompu.getUser() + "\n");
-            outfinal.flush();
-            outfinal.write("[host:OS]:" + InfoCompu.getSO() + "\n");
-            outfinal.flush();
-            outfinal.write("[Host:VerOS]:" + InfoCompu.getSOVer() + "\n");
-            outfinal.flush();
-            outfinal.write("[host:Arq]:" + InfoCompu.getSOAq() + "\n");
-            outfinal.flush();
-            outfinal.write("[file:Name]:" + fim.getNameFile().toString() + "\n");
-            outfinal.flush();
-            outfinal.write("[file:Size]:" + SizeFile() + " KB\n");
-            outfinal.flush();
-            outfinal.write("[checksum:Type]:" + cll.getTipoHash() + " KB\n");
-            outfinal.flush();
-            outfinal.write("[checksum:Hash]:" + hash.getHash() + "\n");
-            outfinal.flush();
-            for (String name : metadatosN) {
-                outfinal.write("[" + name + "]" + ":" + metadatos.get(name) + "\n");
-                outfinal.flush();
-            }
             return true;
-        } catch (IOException | SAXException | TikaException ex) {
+        } catch (Exception ex) {
             return false;
         }
-
     }
 
     @Override
@@ -152,5 +124,33 @@ public class Pdf extends Metadatas {
     private String NameFileC() {
         outmeta = fif.getPath() + "\\" + fif.getNameFile() + ".afa";
         return outmeta;
+    }
+
+    @Override
+    public Boolean LoadBuffer() {
+        try {
+            entrada = new FileInputStream(fim.getNameFile());
+            metadatos = new Metadata();
+            handler = new BodyContentHandler(-1);
+            parser = new AutoDetectParser();
+            parser.parse(entrada, handler, metadatos);
+            metadatosN = metadatos.names();
+            buffer.append("******************************************************************************************************\n");
+            buffer.append("[host:Name]:").append(InfoCompu.getPCName()).append("\n");
+            buffer.append("[host:User]:").append(InfoCompu.getUser()).append("\n");
+            buffer.append("[host:OS]:").append(InfoCompu.getSO()).append("\n");
+            buffer.append("[Host:VerOS]:").append(InfoCompu.getSOVer()).append("\n");
+            buffer.append("[host:Arq]:").append(InfoCompu.getSOAq()).append("\n");
+            buffer.append("[file:Name]:").append(fim.getNameFile().toString()).append("\n");
+            buffer.append("[file:Size]:").append(SizeFile()).append(" KB\n");
+            buffer.append("[checksum:Type]:").append(cll.getTipoHash()).append(" KB\n");
+            buffer.append("[checksum:Hash]:").append(hash.getHash()).append("\n");
+            for (String name : metadatosN) {
+                buffer.append("[").append(name).append("]" + ":").append(metadatos.get(name)).append("\n");
+            }
+            return true;
+        } catch (IOException | SAXException | TikaException ex) {
+            return false;
+        }
     }
 }

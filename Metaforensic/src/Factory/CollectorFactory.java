@@ -1,7 +1,7 @@
 /*
  * *****************************************************************************
  *    
- * Metaforensic version 1.0 - Análisis forense de metadatos en archivos
+ * Metaforensic version 1.1 - Análisis forense de metadatos en archivos
  * electrónicos Copyright (C) 2012-2013 TSU. Andrés de Jesús Hernández Martínez,
  * TSU. Idania Aquino Cruz, All Rights Reserved, https://github.com/andy737   
  * 
@@ -26,25 +26,152 @@
  */
 package Factory;
 
-import metadata.Image;
-import metadata.Ofimatico;
-import metadata.Pdf;
+import Process.Collector;
+import Process.FileFea;
+import Process.Hash;
+import Process.InfoCompu;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import metadata.FileMeta;
+import org.apache.tika.exception.TikaException;
+import org.apache.tika.metadata.Metadata;
+import org.apache.tika.parser.AutoDetectParser;
+import org.apache.tika.sax.BodyContentHandler;
+import org.xml.sax.SAXException;
 
 /**
  * Clase factory
  *
  * @author andy737-1
- * @version 1.0
+ * @version 1.1
  */
 public class CollectorFactory implements CollectorFactoryMethod {
-
+    
     private Boolean estado;
-
+    private File test;
+    private FileOutputStream mt;
+    private OutputStreamWriter metaout;
+    private BufferedWriter outfinal;
+    private StringBuffer buffer;
+    private FileFea fif;
+    private FileMeta fim;
+    private String outmeta;
+    private FileInputStream entrada;
+    private Metadata metadatos;
+    private BodyContentHandler handler;
+    private AutoDetectParser parser;
+    private String[] metadatosN;
+    private Collector cll;
+    private Hash hash;
+    
     /**
-     * Inicialización de variables
+     * Incializa variables
      */
     public CollectorFactory() {
+        fim = FileMeta.getInstance();
+        fif = FileFea.getInstance();
+        cll = Collector.getInstance();        
+        hash = Hash.getInstance();
+        buffer = new StringBuffer();
         estado = false;
+        entrada = null;
+        metadatos = null;
+        handler = null;
+        parser = null;
+        outfinal = null;
+        metaout = null;
+        outmeta = "";
+        test = null;
+        mt = null;
+        metadatosN = null;        
+    }
+    
+    @Override
+    public Boolean WriteFile() {
+        try {
+            outfinal.write(buffer.toString());
+            outfinal.flush();
+            return true;
+        } catch (Exception ex) {
+            return false;
+        }
+    }
+    
+    @Override
+    public Boolean CloseFile() {
+        try {
+            outfinal.close();
+            return true;
+        } catch (IOException ex) {
+            return false;
+        }
+    }
+    
+    @Override
+    public Boolean CreateFile() {
+        test = new File(NameFileC());
+        try {
+            if (!test.exists()) {
+                mt = new FileOutputStream(NameFileC());
+                metaout = new OutputStreamWriter(mt, "UTF-8");
+                outfinal = new BufferedWriter(metaout);
+                return true;
+            } else {
+                mt = new FileOutputStream(NameFileC(), true);
+                metaout = new OutputStreamWriter(mt, "UTF-8");
+                outfinal = new BufferedWriter(metaout);
+                return true;
+            }
+        } catch (IOException ex) {
+            return false;
+        }
+        
+    }
+    
+    private double SizeFile() {
+        double bytes = fim.getNameFile().length();
+        double kb = bytes / 1024;
+        return kb;
+    }
+    
+    private String NameFileC() {
+        outmeta = fif.getPath() + "\\" + fif.getNameFile() + ".afa";
+        return outmeta;
+    }
+    
+    /**
+     *
+     * @return true si no hay error de escritura en buffer, false=error
+     */
+    public Boolean LoadBuffer() {
+        try {
+            entrada = new FileInputStream(fim.getNameFile());
+            metadatos = new Metadata();
+            handler = new BodyContentHandler(-1);
+            parser = new AutoDetectParser();
+            parser.parse(entrada, handler, metadatos);
+            metadatosN = metadatos.names();
+            buffer.append("******************************************************************************************************\n");
+            buffer.append("[host:Name]:").append(InfoCompu.getPCName()).append("\n");
+            buffer.append("[host:User]:").append(InfoCompu.getUser()).append("\n");
+            buffer.append("[host:OS]:").append(InfoCompu.getSO()).append("\n");
+            buffer.append("[Host:VerOS]:").append(InfoCompu.getSOVer()).append("\n");
+            buffer.append("[host:Arq]:").append(InfoCompu.getSOAq()).append("\n");
+            buffer.append("[file:Name]:").append(fim.getNameFile().toString()).append("\n");
+            buffer.append("[file:Size]:").append(SizeFile()).append(" KB\n");
+            buffer.append("[checksum:Type]:").append(cll.getTipoHash()).append(" KB\n");
+            buffer.append("[checksum:Hash]:").append(hash.getHash()).append("\n");
+            for (String name : metadatosN) {
+                buffer.append("[").append(name).append("]" + ":").append(metadatos.get(name)).append("\n");
+            }
+            return true;
+        } catch (IOException | SAXException | TikaException ex) {
+            return false;
+        }
     }
 
     /**
@@ -63,22 +190,19 @@ public class CollectorFactory implements CollectorFactoryMethod {
             case "ppt":
             case "ods":
             case "odt":
-            case "odp":
-                Ofimatico offi = new Ofimatico();
-                if (offi.CreateFile() && offi.WriteFile() && offi.CloseFile()) {
+            case "odp":                
+                if (LoadBuffer()) {
                     estado = true;
                 }
                 break;
             case "png":
             case "jpg":
-                Image img = new Image();
-                if (img.CreateFile() && img.WriteFile() && img.CloseFile()) {
+                if (LoadBuffer()) {
                     estado = true;
                 }
                 break;
             case "pdf":
-                Pdf pdf = new Pdf();
-                if (pdf.CreateFile() && pdf.WriteFile() && pdf.CloseFile()) {
+                if (LoadBuffer()) {
                     estado = true;
                 }
                 break;

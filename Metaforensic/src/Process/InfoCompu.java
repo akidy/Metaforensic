@@ -1,7 +1,7 @@
 /*
  * *****************************************************************************
  *    
- * Metaforensic version 1.0 - Análisis forense de metadatos en archivos
+ * Metaforensic version 1.1 - Análisis forense de metadatos en archivos
  * electrónicos Copyright (C) 2012-2013 TSU. Andrés de Jesús Hernández Martínez,
  * TSU. Idania Aquino Cruz, All Rights Reserved, https://github.com/andy737   
  * 
@@ -30,7 +30,7 @@ package Process;
  * Clase que retorna diversos valores del entorno sometido a recolección
  *
  * @author andy737-1
- * @verision 1.0
+ * @verision 1.1
  */
 public class InfoCompu {
 

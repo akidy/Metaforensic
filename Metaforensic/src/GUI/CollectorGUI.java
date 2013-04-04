@@ -1,7 +1,7 @@
 /*
  * *****************************************************************************
  *    
- * Metaforensic version 1.0 - Análisis forense de metadatos en archivos
+ * Metaforensic version 1.1 - Análisis forense de metadatos en archivos
  * electrónicos Copyright (C) 2012-2013 TSU. Andrés de Jesús Hernández Martínez,
  * TSU. Idania Aquino Cruz, All Rights Reserved, https://github.com/andy737   
  * 
@@ -45,7 +45,7 @@ import javax.swing.JTextField;
  * Clase que gestiona y crea la interfaz de usuario
  *
  * @author andy737-1
- * @version 1.0
+ * @version 1.1
  */
 public class CollectorGUI extends javax.swing.JFrame {
 
@@ -54,7 +54,7 @@ public class CollectorGUI extends javax.swing.JFrame {
     private ModalDialog md;
     private Thread t;
     private FrameIcons ic;
-   
+
     /**
      * Constructor de GUI
      */
@@ -90,7 +90,7 @@ public class CollectorGUI extends javax.swing.JFrame {
         } else if (estado == 0) {
             System.exit(0);
         }
-       
+
     }
 
     /*

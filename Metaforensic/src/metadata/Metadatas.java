@@ -1,7 +1,7 @@
 /*
  * *****************************************************************************
  *    
- * Metaforensic version 1.0 - Análisis forense de metadatos en archivos
+ * Metaforensic version 1.1 - Análisis forense de metadatos en archivos
  * electrónicos Copyright (C) 2012-2013 TSU. Andrés de Jesús Hernández Martínez,
  * TSU. Idania Aquino Cruz, All Rights Reserved, https://github.com/andy737   
  * 
@@ -40,9 +40,10 @@ import org.apache.tika.sax.BodyContentHandler;
 
 /**
  * Clase abstracta que define las variables y metadatos utilizados por todas las
- * clases recolectoras de metadatos
+ * clases recolectoras de metadatos (Sin implemtación)
  *
  * @author andy737-1
+ * @version 1.1
  */
 public abstract class Metadatas extends FilesCommon {
 
@@ -106,10 +107,19 @@ public abstract class Metadatas extends FilesCommon {
      * Checksum del archivo sometido a recolección
      */
     protected Hash hash;
+    /*
+     * Buffer temporal de carga de datos
+     */
+    protected StringBuffer buffer;
 
     /**
      *
      * @return tamaño del archivo sometido a recolección
      */
     public abstract double SizeFile();
+
+    /*
+     * Carga de datos al buffer
+     */
+    public abstract Boolean LoadBuffer();
 }

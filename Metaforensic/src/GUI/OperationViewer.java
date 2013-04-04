@@ -1,7 +1,7 @@
 /*
  * *****************************************************************************
  *    
- * Metaforensic version 1.0 - Análisis forense de metadatos en archivos
+ * Metaforensic version 1.1 - Análisis forense de metadatos en archivos
  * electrónicos Copyright (C) 2012-2013 TSU. Andrés de Jesús Hernández Martínez,
  * TSU. Idania Aquino Cruz, All Rights Reserved, https://github.com/andy737   
  * 
@@ -33,7 +33,7 @@ import Windows.WindowsStyle;
  * Clase que muestra las operaciones en una interfaz de usuario
  *
  * @author andy737-1
- * @version 1.0
+ * @version 1.1
  */
 public class OperationViewer extends javax.swing.JFrame {
 

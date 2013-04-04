@@ -1,7 +1,7 @@
 /*
  * *****************************************************************************
  *    
- * Metaforensic version 1.0 - Análisis forense de metadatos en archivos
+ * Metaforensic version 1.1 - Análisis forense de metadatos en archivos
  * electrónicos Copyright (C) 2012-2013 TSU. Andrés de Jesús Hernández Martínez,
  * TSU. Idania Aquino Cruz, All Rights Reserved, https://github.com/andy737   
  * 
@@ -36,7 +36,7 @@ import metadata.FilesCommon;
 /**
  *
  * @author andy737-1
- * @version 1.0
+ * @version 1.1
  */
 public class OutFileLog extends FilesCommon {
 
@@ -46,6 +46,7 @@ public class OutFileLog extends FilesCommon {
     private String txt;
     private ModalDialog md;
     private FileFea fif;
+    private final StringBuffer buffer;
     /**
      * Encabezado de log
      */
@@ -60,6 +61,7 @@ public class OutFileLog extends FilesCommon {
      * Inicia variables
      */
     public OutFileLog() {
+        buffer = new StringBuffer();
         md = new ModalDialog();
         log = null;
         outlog = null;
@@ -75,6 +77,10 @@ public class OutFileLog extends FilesCommon {
     public void setText(String txt) {
 
         this.txt = txt;
+    }
+
+    public void LoadBuffer() {
+        buffer.append(txt);
     }
 
     /**
@@ -102,7 +108,7 @@ public class OutFileLog extends FilesCommon {
     @Override
     public Boolean WriteFile() {
         try {
-            outfinal.write(txt);
+            outfinal.write(buffer.toString());
             outfinal.flush();
         } catch (IOException ex) {
             md.setDialogo("Error de escritura en el archivo " + fif.getNameFile() + ".log" + "ubicado en la carpeta: \n" + fif.getPath());
