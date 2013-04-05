@@ -109,19 +109,4 @@ public class AES {
         byte[] encrypted = cipher.doFinal(plaintext.getBytes(PLAIN_TEXT_ENCODING));
         return Utils.byteArrayToBase64String(encrypted);
     }
-
-    public String decrypt(String ciphertext, String passphrase)
-            throws NoSuchAlgorithmException, UnsupportedEncodingException, InvalidKeyException,
-            InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
-        if (ciphertext.length() == 0 || ciphertext == null) {
-            return null;
-        }
-
-        setStringToKey(passphrase);
-
-        byte[] dec = Utils.base64StringToByteArray(ciphertext);
-        cipher.init(Cipher.DECRYPT_MODE, key, new IvParameterSpec(ivBytes));
-        byte[] decrypted = cipher.doFinal(dec);
-        return new String(decrypted, PLAIN_TEXT_ENCODING);
-    }
 }

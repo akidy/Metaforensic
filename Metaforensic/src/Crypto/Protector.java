@@ -47,11 +47,5 @@ public class Protector {
          * * encrypt
          */
         sec.setTxt(aes.encrypt(sec.getTxt(), key));
-
-        /**
-         * * decrypt
-         */
-        /*String plaintext = aes.decrypt(sec.getTxt(), key);
-        System.out.println(plaintext);*/
     }
 }
