@@ -28,6 +28,7 @@ package Factory;
 
 import Crypto.Protector;
 import Crypto.SecurityFile;
+import Meta.FileMeta;
 import Process.Collector;
 import Process.FileFea;
 import Process.Hash;
@@ -46,7 +47,6 @@ import java.security.spec.InvalidParameterSpecException;
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
-import Meta.FileMeta;
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.parser.AutoDetectParser;

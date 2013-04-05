@@ -1,6 +1,7 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Credits to http://cryptojs.altervista.org/secretkey/doc/doc_aes_java.html
+ * 
+ * @Autor Michele Rosica Email: michelerosica@gmail.com
  */
 package Crypto;
 
@@ -10,10 +11,6 @@ import java.security.SecureRandom;
 import java.util.Random;
 import java.util.regex.Pattern;
 
-/**
- *
- * @author andy737-1
- */
 public class Utils {
 
     public static String pbkdf2(String password, String salt, int iterationCount, int dkLen)

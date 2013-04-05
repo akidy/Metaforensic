@@ -1,13 +1,10 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Credits to http://cryptojs.altervista.org/secretkey/doc/doc_aes_java.html
+ * 
+ * @Autor Michele Rosica Email: michelerosica@gmail.com
  */
 package Crypto;
 
-/**
- *
- * @author andy737-1
- */
 public class SecurityFile {
 
     private String pass;
@@ -20,7 +17,7 @@ public class SecurityFile {
     }
 
     public void setPass(String pass) {
-        this.pass=pass;
+        this.pass = pass;
     }
 
     public String getPass() {
@@ -34,7 +31,7 @@ public class SecurityFile {
     public String getTxt() {
         return txt;
     }
-    
+
     public void setPrivate(String txt) {
         this.hash = hash;
     }

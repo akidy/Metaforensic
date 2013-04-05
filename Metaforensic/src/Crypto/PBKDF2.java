@@ -1,6 +1,7 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Credits to http://cryptojs.altervista.org/secretkey/doc/doc_aes_java.html
+ * 
+ * @Autor Michele Rosica Email: michelerosica@gmail.com
  */
 package Crypto;
 
@@ -9,11 +10,6 @@ import java.security.NoSuchAlgorithmException;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
-/**
- * PBKDF2: deriveKey
- *
- * @author andy737-1
- */
 public class PBKDF2 {
 
     public static byte[] deriveKey(byte[] password, byte[] salt, int iterationCount, int dkLen)
@@ -76,5 +72,4 @@ public class PBKDF2 {
         dest[offset + 2] = (byte) (i / (256));
         dest[offset + 3] = (byte) (i);
     }
-
 }

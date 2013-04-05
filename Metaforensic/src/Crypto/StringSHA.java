@@ -1,16 +1,44 @@
-/*Clase encargada de la encriptación SHA-512 para validación de contraseña de inicio se sesión.
- *Autor: Andrés de Jesús Hernádez Martínez
- *Version: 0.1
- *Fecha de creación: 18 de enero de 2012
- *Fecha de ultima modificación: 18 de enero de 2012
+/*
+ * *****************************************************************************
+ *    
+ * Metaforensic version 1.1 - Análisis forense de metadatos en archivos
+ * electrónicos Copyright (C) 2012-2013 TSU. Andrés de Jesús Hernández Martínez,
+ * TSU. Idania Aquino Cruz, All Rights Reserved, https://github.com/andy737   
+ * 
+ * This file is part of Metaforensic.
+ *
+ * Metaforensic is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Metaforensic is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Metaforensic.  If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * E-mail: andy1818ster@gmail.com
+ * 
+ * *****************************************************************************
  */
 package Crypto;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+/**
+ *
+ * @author andy737-1
+ * @version 1.1
+ */
 public class StringSHA {
 
+    /**
+     * Tipo de cifrado
+     */
     public static String SHA512 = "SHA-512";
 
     private static String toHexadecimal(byte[] digest) {
@@ -25,6 +53,13 @@ public class StringSHA {
         return hash;
     }
 
+    /**
+     *
+     * @param message key a cifrar
+     * @param algorithm tipo de cifrado
+     * @return
+     * @throws NoSuchAlgorithmException
+     */
     public static String getStringMessageDigest(String message, String algorithm) throws NoSuchAlgorithmException {
         byte[] digest;
         byte[] buffer = message.getBytes();

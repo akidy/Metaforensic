@@ -1,13 +1,10 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Credits to http://cryptojs.altervista.org/secretkey/doc/doc_aes_java.html
+ * 
+ * @Autor Michele Rosica Email: michelerosica@gmail.com
  */
 package Crypto;
 
-/**
- *
- * @author andy737-1
- */
 public class Base64Coder {
     // The line separator string of the operating system.  
 
@@ -125,7 +122,7 @@ public class Base64Coder {
      *
      * @param in An array containing the data bytes to be encoded.
      * @param iOff Offset of the first byte in <code>in</code> to be processed.
-     * @param iLen Number of bytes to process in <code>in</code>, starting
+     * @param iLen Number of bytes to process in <code>in</code>, starting *
      * at <code>iOff</code>.
      * @return A character array containing the Base64 encoded data.
      */
@@ -269,5 +266,4 @@ public class Base64Coder {
         }
         return out;
     }
-
 }
