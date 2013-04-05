@@ -38,7 +38,7 @@ import java.util.List;
 import java.util.StringTokenizer;
 import jonelo.jacksum.JacksumAPI;
 import jonelo.jacksum.algorithm.AbstractChecksum;
-import metadata.FileMeta;
+import Meta.FileMeta;
 
 /**
  * Clase encarga del porcesamiento de archivos sometidos a recolección

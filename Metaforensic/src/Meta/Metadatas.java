@@ -24,7 +24,7 @@
  * 
  * *****************************************************************************
  */
-package metadata;
+package Meta;
 
 import Process.Collector;
 import Process.FileFea;

@@ -1,7 +1,7 @@
 /*
  * *****************************************************************************
  *    
- * Metaforensic version 1.0 - Análisis forense de metadatos en archivos
+ * Metaforensic version 1.1 - Análisis forense de metadatos en archivos
  * electrónicos Copyright (C) 2012-2013 TSU. Andrés de Jesús Hernández Martínez,
  * TSU. Idania Aquino Cruz, All Rights Reserved, https://github.com/andy737   
  * 
@@ -24,12 +24,41 @@
  * 
  * *****************************************************************************
  */
-package Cryptho;
+package Meta;
+
+import java.io.File;
 
 /**
+ * Clase para objetos clean
  *
  * @author andy737-1
+ * @version 1.1
  */
-public class AESCipher {
-    
+public class FileMeta {
+
+    private File archivo;
+    private static FileMeta instance = new FileMeta();
+    /**
+     *
+     * @return la instacia de esta clase
+     */
+    public static FileMeta getInstance() {
+        return instance;
+    }
+
+    /**
+     *
+     * @param archivo que sera sometido a recolección
+     */
+    public void setNameFile(File archivo) {
+        this.archivo = archivo;
+    }
+
+    /**
+     *
+     * @return archivo para recolección
+     */
+    public File getNameFile() {
+        return archivo;
+    }
 }

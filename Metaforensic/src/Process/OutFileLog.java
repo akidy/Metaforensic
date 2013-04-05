@@ -31,7 +31,7 @@ import java.io.BufferedWriter;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import metadata.FilesCommon;
+import Meta.FilesCommon;
 
 /**
  *

@@ -24,7 +24,7 @@
  * 
  * *****************************************************************************
  */
-package metadata;
+package Meta;
 
 import Process.Collector;
 import Process.FileFea;
@@ -43,17 +43,18 @@ import org.apache.tika.sax.BodyContentHandler;
 import org.xml.sax.SAXException;
 
 /**
- * Clase encarga de recolectar metadatos en archivos pdf (Sin implemtación)
+ * Clase encarga de la extracion de metadatos en archivos ofimaticos (doc, xls,
+ * ppt, docx, xlsx, pptx, odt, ods, odp) (Sin implemtación)
  *
  * @author andy737-1
  * @version 1.1
  */
-public class Pdf extends Metadatas {
+public class Ofimatico extends Metadatas {
 
     /**
-     * Inicialización de variables
+     *
      */
-    public Pdf() {
+    public Ofimatico() {
         entrada = null;
         metadatos = null;
         handler = null;

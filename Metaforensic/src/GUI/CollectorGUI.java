@@ -26,6 +26,7 @@
  */
 package GUI;
 
+import Crypto.SecurityFile;
 import Process.Collector;
 import Process.ValidateInfo;
 import Windows.Clean;
@@ -39,6 +40,10 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 /**
@@ -54,6 +59,7 @@ public class CollectorGUI extends javax.swing.JFrame {
     private ModalDialog md;
     private Thread t;
     private FrameIcons ic;
+    private SecurityFile sec;
 
     /**
      * Constructor de GUI
@@ -73,6 +79,7 @@ public class CollectorGUI extends javax.swing.JFrame {
      * Inicializa variable locales
      */
     private void InitVar() {
+        sec = SecurityFile.getInstance();
         t = null;
         gs = null;
         valinfo = null;
@@ -275,21 +282,57 @@ public class CollectorGUI extends javax.swing.JFrame {
 
     }
 
+    private Boolean GetPass() {
+        String tmp1, tmp2;
+        JPanel pn = new JPanel();
+        JPasswordField pwd = new JPasswordField(25);
+        JLabel lb = new JLabel("Ingresa un password: \n");
+        pn.add(lb);
+        pn.add(pwd);
+
+        if (JOptionPane.showConfirmDialog(null, pn, "Encriptación del archivo .afa", JOptionPane.OK_CANCEL_OPTION) == 0) {
+            tmp1 = new String(pwd.getPassword());
+            pn = new JPanel();
+            pwd = new JPasswordField(25);
+            lb.setText("Confirma el password: \n");
+            pn.add(lb);
+            pn.add(pwd);
+            if (JOptionPane.showConfirmDialog(null, pn, "Encriptación del archivo .afa", JOptionPane.OK_CANCEL_OPTION) == 0) {
+                tmp2 = new String(pwd.getPassword());
+
+                if (tmp1.equals(tmp2)) {
+                    sec.setPass(tmp2);
+                    return true;
+                } else {
+                    JOptionPane.showMessageDialog(null, "El password no es identico.", "Error de validación", JOptionPane.WARNING_MESSAGE);
+                    return false;
+                }
+
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
     /*
      * Incia recolección de metadatos y visuzalición del proceso
      */
+
     private void CollectMetadata() throws IOException {
+        if (GetPass()) {
+            this.setVisible(false);
+            SetValues();
+            RunnableViewer vw = new RunnableViewer(this);
+            Thread op = new Thread(vw);
+            op.start();
 
-        this.setVisible(false);
-        SetValues();
-        RunnableViewer vw = new RunnableViewer(this);
-        Thread op = new Thread(vw);
-        op.start();
+        }
     }
-
     /*
      * Validación en tiempo real de los directorios ingresados por el usuario
      */
+
     private Boolean InputDir(JTextField txt) {
 
         if (!txt.getText().equals("")) {

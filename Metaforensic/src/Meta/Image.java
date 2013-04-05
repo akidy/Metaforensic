@@ -24,7 +24,7 @@
  * 
  * *****************************************************************************
  */
-package metadata;
+package Meta;
 
 import Process.Collector;
 import Process.FileFea;
@@ -43,18 +43,19 @@ import org.apache.tika.sax.BodyContentHandler;
 import org.xml.sax.SAXException;
 
 /**
- * Clase encarga de la extracion de metadatos en archivos ofimaticos (doc, xls,
- * ppt, docx, xlsx, pptx, odt, ods, odp) (Sin implemtación)
+ *
+ * Clase encargada de la recolección de metadatos en archivos de imagen
+ * (jpg,png)(Sin implemtación)
  *
  * @author andy737-1
  * @version 1.1
  */
-public class Ofimatico extends Metadatas {
+public class Image extends Metadatas {
 
     /**
-     *
+     * Inicialización de variables
      */
-    public Ofimatico() {
+    public Image() {
         entrada = null;
         metadatos = null;
         handler = null;
@@ -115,6 +116,10 @@ public class Ofimatico extends Metadatas {
 
     }
 
+    /**
+     *
+     * @return el tamaño del archivo sometido a recolección (KB)
+     */
     @Override
     public double SizeFile() {
         double bytes = fim.getNameFile().length();

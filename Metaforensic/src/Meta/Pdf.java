@@ -24,7 +24,7 @@
  * 
  * *****************************************************************************
  */
-package metadata;
+package Meta;
 
 import Process.Collector;
 import Process.FileFea;
@@ -43,19 +43,17 @@ import org.apache.tika.sax.BodyContentHandler;
 import org.xml.sax.SAXException;
 
 /**
- *
- * Clase encargada de la recolección de metadatos en archivos de imagen
- * (jpg,png)(Sin implemtación)
+ * Clase encarga de recolectar metadatos en archivos pdf (Sin implemtación)
  *
  * @author andy737-1
  * @version 1.1
  */
-public class Image extends Metadatas {
+public class Pdf extends Metadatas {
 
     /**
      * Inicialización de variables
      */
-    public Image() {
+    public Pdf() {
         entrada = null;
         metadatos = null;
         handler = null;
@@ -116,10 +114,6 @@ public class Image extends Metadatas {
 
     }
 
-    /**
-     *
-     * @return el tamaño del archivo sometido a recolección (KB)
-     */
     @Override
     public double SizeFile() {
         double bytes = fim.getNameFile().length();

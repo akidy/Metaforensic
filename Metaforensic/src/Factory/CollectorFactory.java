@@ -26,6 +26,8 @@
  */
 package Factory;
 
+import Crypto.Protector;
+import Crypto.SecurityFile;
 import Process.Collector;
 import Process.FileFea;
 import Process.Hash;
@@ -36,7 +38,15 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import metadata.FileMeta;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.spec.InvalidParameterSpecException;
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import Meta.FileMeta;
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.parser.AutoDetectParser;
@@ -50,7 +60,7 @@ import org.xml.sax.SAXException;
  * @version 1.1
  */
 public class CollectorFactory implements CollectorFactoryMethod {
-    
+
     private Boolean estado;
     private File test;
     private FileOutputStream mt;
@@ -67,14 +77,18 @@ public class CollectorFactory implements CollectorFactoryMethod {
     private String[] metadatosN;
     private Collector cll;
     private Hash hash;
-    
+    private SecurityFile sec;
+    private Protector ptr;
+
     /**
      * Incializa variables
      */
     public CollectorFactory() {
+        ptr = Protector.getInstance();
+        sec = SecurityFile.getInstance();
         fim = FileMeta.getInstance();
         fif = FileFea.getInstance();
-        cll = Collector.getInstance();        
+        cll = Collector.getInstance();
         hash = Hash.getInstance();
         buffer = new StringBuffer();
         estado = false;
@@ -87,20 +101,23 @@ public class CollectorFactory implements CollectorFactoryMethod {
         outmeta = "";
         test = null;
         mt = null;
-        metadatosN = null;        
+        metadatosN = null;
     }
-    
+
     @Override
     public Boolean WriteFile() {
         try {
-            outfinal.write(buffer.toString());
+            sec.setTxt(buffer.toString());
+            ptr.main();
+            outfinal.write(sec.getTxt());
+            outfinal.append("\n\nKey: " + sec.getPass());
             outfinal.flush();
             return true;
-        } catch (Exception ex) {
+        } catch (NoSuchAlgorithmException | NoSuchPaddingException | NoSuchProviderException | InvalidParameterSpecException | InvalidKeyException | InvalidAlgorithmParameterException | IllegalBlockSizeException | BadPaddingException | IOException ex) {
             return false;
         }
     }
-    
+
     @Override
     public Boolean CloseFile() {
         try {
@@ -110,7 +127,7 @@ public class CollectorFactory implements CollectorFactoryMethod {
             return false;
         }
     }
-    
+
     @Override
     public Boolean CreateFile() {
         test = new File(NameFileC());
@@ -129,20 +146,20 @@ public class CollectorFactory implements CollectorFactoryMethod {
         } catch (IOException ex) {
             return false;
         }
-        
+
     }
-    
+
     private double SizeFile() {
         double bytes = fim.getNameFile().length();
         double kb = bytes / 1024;
         return kb;
     }
-    
+
     private String NameFileC() {
         outmeta = fif.getPath() + "\\" + fif.getNameFile() + ".afa";
         return outmeta;
     }
-    
+
     /**
      *
      * @return true si no hay error de escritura en buffer, false=error
@@ -190,7 +207,7 @@ public class CollectorFactory implements CollectorFactoryMethod {
             case "ppt":
             case "ods":
             case "odt":
-            case "odp":                
+            case "odp":
                 if (LoadBuffer()) {
                     estado = true;
                 }
