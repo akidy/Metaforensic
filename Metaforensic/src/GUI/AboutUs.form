@@ -112,7 +112,7 @@
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Microsoft YaHei" size="10" style="1"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="1.1"/>
+        <Property name="text" type="java.lang.String" value="[Recolector] 1.1"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel9">

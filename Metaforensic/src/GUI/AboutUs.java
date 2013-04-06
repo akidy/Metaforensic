@@ -91,7 +91,7 @@ public class AboutUs extends javax.swing.JDialog {
         jLabel3.setToolTipText("");
 
         jLabel2.setFont(new java.awt.Font("Microsoft YaHei", 1, 10)); // NOI18N
-        jLabel2.setText("1.1");
+        jLabel2.setText("[Recolector] 1.1");
 
         jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/user-card.png"))); // NOI18N
 
