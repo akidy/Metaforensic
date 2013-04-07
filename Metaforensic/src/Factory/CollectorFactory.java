@@ -109,9 +109,11 @@ public class CollectorFactory implements CollectorFactoryMethod {
         try {
             sec.setTxt(buffer.toString());
             ptr.main();
-            outfinal.write(sec.getTxt());
-            outfinal.append("\n\nKey: " + sec.getPass());
-            outfinal.flush();
+            if (sec.getTxt() != null) {
+                outfinal.write(sec.getTxt());
+                outfinal.append("\n\nKey: " + sec.getPass());
+                outfinal.flush();
+            }
             return true;
         } catch (NoSuchAlgorithmException | NoSuchPaddingException | NoSuchProviderException | InvalidParameterSpecException | InvalidKeyException | InvalidAlgorithmParameterException | IllegalBlockSizeException | BadPaddingException | IOException ex) {
             return false;
@@ -122,6 +124,10 @@ public class CollectorFactory implements CollectorFactoryMethod {
     public Boolean CloseFile() {
         try {
             outfinal.close();
+            if (sec.getTxt() == null) {
+                File del = new File(NameFileC());
+                del.delete();
+            }
             return true;
         } catch (IOException ex) {
             return false;

@@ -30,6 +30,7 @@ import Factory.CollectorFactory;
 import Factory.CollectorFactoryMethod;
 import GUI.CollectorGUI;
 import GUI.OperationViewer;
+import Meta.FileMeta;
 import java.io.File;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
@@ -38,7 +39,6 @@ import java.util.List;
 import java.util.StringTokenizer;
 import jonelo.jacksum.JacksumAPI;
 import jonelo.jacksum.algorithm.AbstractChecksum;
-import Meta.FileMeta;
 
 /**
  * Clase encarga del porcesamiento de archivos sometidos a recolección
