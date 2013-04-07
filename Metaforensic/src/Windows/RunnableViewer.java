@@ -26,8 +26,8 @@
  */
 package Windows;
 
-import Process.CollectorFiles;
 import GUI.CollectorGUI;
+import Process.CollectorFiles;
 
 /**
  * Clase que implemnta runnable para el visor de operaciones
