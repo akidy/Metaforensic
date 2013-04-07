@@ -173,17 +173,17 @@ public class CollectorFactory implements CollectorFactoryMethod {
             parser.parse(entrada, handler, metadatos);
             metadatosN = metadatos.names();
             buffer.append("******************************************************************************************************\n");
-            buffer.append("[host:Name]:").append(InfoCompu.getPCName()).append("\n");
-            buffer.append("[host:User]:").append(InfoCompu.getUser()).append("\n");
-            buffer.append("[host:OS]:").append(InfoCompu.getSO()).append("\n");
-            buffer.append("[Host:VerOS]:").append(InfoCompu.getSOVer()).append("\n");
-            buffer.append("[host:Arq]:").append(InfoCompu.getSOAq()).append("\n");
-            buffer.append("[file:Name]:").append(fim.getNameFile().toString()).append("\n");
-            buffer.append("[file:Size]:").append(SizeFile()).append(" KB\n");
-            buffer.append("[checksum:Type]:").append(cll.getTipoHash()).append(" KB\n");
-            buffer.append("[checksum:Hash]:").append(hash.getHash()).append("\n");
+            buffer.append("hostName:").append(InfoCompu.getPCName()).append("\n");
+            buffer.append("hostUser:").append(InfoCompu.getUser()).append("\n");
+            buffer.append("hostOS:").append(InfoCompu.getSO()).append("\n");
+            buffer.append("hostVerOS:").append(InfoCompu.getSOVer()).append("\n");
+            buffer.append("hostArq:").append(InfoCompu.getSOAq()).append("\n");
+            buffer.append("fileName:").append(fim.getNameFile().toString()).append("\n");
+            buffer.append("fileSize:").append(SizeFile()).append(" KB\n");
+            buffer.append("checksumType:").append(cll.getTipoHash()).append(" KB\n");
+            buffer.append("checksumHash:").append(hash.getHash()).append("\n");
             for (String name : metadatosN) {
-                buffer.append("[").append(name).append("]" + ":").append(metadatos.get(name)).append("\n");
+                buffer.append(name).append(":").append(metadatos.get(name)).append("\n");
             }
             return true;
         } catch (IOException | SAXException | TikaException ex) {
