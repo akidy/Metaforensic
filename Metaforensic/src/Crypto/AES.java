@@ -21,11 +21,6 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
-/**
- * AES
- *
- * @author andy737-1
- */
 public class AES {
 
     private final String ALGORITHM = "AES";                               // symmetric algorithm for data encryption  
