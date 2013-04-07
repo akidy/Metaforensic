@@ -290,14 +290,14 @@ public class CollectorGUI extends javax.swing.JFrame {
         pn.add(lb);
         pn.add(pwd);
 
-        if (JOptionPane.showConfirmDialog(null, pn, "Encriptación del archivo .afa", JOptionPane.OK_CANCEL_OPTION) == 0) {
+        if (JOptionPane.showConfirmDialog(null, pn, "Encriptación del archivo .afa", JOptionPane.QUESTION_MESSAGE ,JOptionPane.OK_CANCEL_OPTION) == 0) {
             tmp1 = new String(pwd.getPassword());
             pn = new JPanel();
             pwd = new JPasswordField(25);
             lb.setText("Confirma el password: \n");
             pn.add(lb);
             pn.add(pwd);
-            if (JOptionPane.showConfirmDialog(null, pn, "Encriptación del archivo .afa", JOptionPane.OK_CANCEL_OPTION) == 0) {
+            if (JOptionPane.showConfirmDialog(null, pn, "Encriptación del archivo .afa",JOptionPane.QUESTION_MESSAGE ,JOptionPane.OK_CANCEL_OPTION) == 0) {
                 tmp2 = new String(pwd.getPassword());
 
                 if (tmp1.equals(tmp2)) {
