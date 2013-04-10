@@ -26,7 +26,7 @@
  */
 package Factory;
 
-import Crypto.Protector;
+import Crypto.AESCrypt;
 import Crypto.SecurityFile;
 import Meta.FileMeta;
 import Process.Collector;
@@ -39,14 +39,11 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
-import java.security.spec.InvalidParameterSpecException;
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
+import java.io.UnsupportedEncodingException;
+import java.security.GeneralSecurityException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.parser.AutoDetectParser;
@@ -78,13 +75,12 @@ public class CollectorFactory implements CollectorFactoryMethod {
     private Collector cll;
     private Hash hash;
     private SecurityFile sec;
-    private Protector ptr;
+    private AESCrypt aes;
 
     /**
      * Incializa variables
      */
     public CollectorFactory() {
-        ptr = Protector.getInstance();
         sec = SecurityFile.getInstance();
         fim = FileMeta.getInstance();
         fif = FileFea.getInstance();
@@ -108,30 +104,38 @@ public class CollectorFactory implements CollectorFactoryMethod {
     public Boolean WriteFile() {
         try {
             sec.setTxt(buffer.toString());
-            ptr.main();
-            if (sec.getTxt() != null) {
-                outfinal.write(sec.getTxt());
-                outfinal.append("\n\nKey: " + sec.getPass());
-                outfinal.flush();
-            }
-            return true;
-        } catch (NoSuchAlgorithmException | NoSuchPaddingException | NoSuchProviderException | InvalidParameterSpecException | InvalidKeyException | InvalidAlgorithmParameterException | IllegalBlockSizeException | BadPaddingException | IOException ex) {
-            return false;
-        }
-    }
-
-    @Override
-    public Boolean CloseFile() {
-        try {
+            outfinal.write(sec.getTxt());
+            outfinal.flush();
             outfinal.close();
-            if (sec.getTxt() == null) {
+            sec.setIn(NameFileC());
+            sec.setOut(NameFileC() + ".afa");
+            aes = new AESCrypt(sec.getPass());
+            aes.ProcessEn();
+            if (sec.getTxt() == null || (new File(NameFileC()).length() <= 0) || (new File(NameFileC() + ".afa").length() <= 0)) {
                 File del = new File(NameFileC());
                 del.delete();
+                del = new File(NameFileC() + ".afa");
+                del.delete();
+            } else {
+                if (JOptionPane.showOptionDialog(null, "¿Deseas conservar una copia del archivo sin cifrar, que contiene los metadatos extraídos?", "Archivo original", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"Si", "No"}, "No") == 0) {
+                } else {
+                    File del = new File(NameFileC());
+                    del.delete();
+                }
             }
+
             return true;
+        } catch (GeneralSecurityException ex) {
+            Logger.getLogger(CollectorFactory.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(CollectorFactory.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
         } catch (IOException ex) {
+            Logger.getLogger(CollectorFactory.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
+
     }
 
     @Override
@@ -162,7 +166,7 @@ public class CollectorFactory implements CollectorFactoryMethod {
     }
 
     private String NameFileC() {
-        outmeta = fif.getPath() + "\\" + fif.getNameFile() + ".afa";
+        outmeta = fif.getPath() + "\\" + fif.getNameFile();
         return outmeta;
     }
 
@@ -231,5 +235,10 @@ public class CollectorFactory implements CollectorFactoryMethod {
                 break;
         }
         return estado;
+    }
+
+    @Override
+    public Boolean CloseFile() {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

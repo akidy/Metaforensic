@@ -182,7 +182,7 @@ public class CollectorFiles extends FileName implements ProcessFile {
         InitAction();
         Find(new File(values.getDirectorioRecoleccion()), values.getTipoArchivo());
         PrintErrorExcepFile();
-        if (factory.CreateFile() && factory.WriteFile() && factory.CloseFile()) {
+        if (factory.CreateFile() && factory.WriteFile()) {
             SetProcessTxt("[" + DateTime.getDate() + " " + DateTime.getTimeMilli() + "] [COLLECTOR]:[FILE] Creando y finalizando archivo .afa.\n");
         } else {
             reco++;
