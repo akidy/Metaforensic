@@ -25,7 +25,7 @@ El proyecto de software **Metaforensic** surge a partir del análisis de la prob
 
 ##Requerimientos de hardware y software
 
-**Metaforensic** se distribuye en dos modúlos por separado **Recolector** y **Analizador**, ambos modulos se pueden encontrar en dos tipos de ejecutables: jar y exe, los ejecutables en formato jar son ideales para funcionar en equipos con bajos recursos de hardware o para recolección de archivos con un peso en KB que no exceda los 68 MB aproximadamente al igual que para el análisis de archivos .afa que no exceda el mismo límite respectivamente. En el caso de los ejectutables en formato exe el límite de recolección o análisis es de archivos que tengan un peso aproximado de hasta 1GB.
+**Metaforensic** se distribuye en dos modúlos por separado **Recolector** y **Analizador**, ambos modulos se pueden encontrar en dos tipos de ejecutables: jar y exe, los ejecutables en formato jar son ideales para funcionar en equipos con bajos recursos de hardware o para recolección de archivos con un peso que no exceda los 68 MB aproximadamente, al igual que para el análisis de archivos .afa que no exceda el mismo límite respectivamente. En el caso de los ejectutables en formato exe el límite de recolección o análisis es de archivos que tengan un peso aproximado de hasta 1 GB.
 
 Está aplicación fue probada en equipos que reúnen las siguientes características: 
 
@@ -41,7 +41,7 @@ Está aplicación fue probada en equipos que reúnen las siguientes característ
 * Parche JCE para JRE (http://www.oracle.com/technetwork/java/javase/downloads/jce-6-download-429243.html).
 * Para el uso del analizador se requiere Mysql 5.5 (http://dev.mysql.com/downloads/mysql/).
 
-Notas:
+####Notas:
 
 * El analizador se distribuye con el script para la creación de la base de datos en Mysql y un archivo .ini para configurar los parametros de conexión a la base de datos.
 * Algunos antivirus y firewalls pueden detectar tanto al recolector como el analizador como falsos positivos.
@@ -66,7 +66,7 @@ API utilizada para crear y verificar checksum de los archivos analizados por el 
 * Jacksum ver. 1.7.0 (http://www.jonelo.de/java/jacksum/)  
 * API bajo la licencia GNU (General Public License)
 
-API utilizada para extracción de metadatos de archivos atreves del "Recolector":  
+API utilizada para extracción de metadatos de archivos a través del "Recolector":  
 
 * Apache Tika ver. 1.3 (http://tika.apache.org/1.3/index.html)  
 * API bajo la licencia Apache License  
@@ -74,7 +74,7 @@ API utilizada para extracción de metadatos de archivos atreves del "Recolector"
 ##Licencia
 
 La aplicación de software **Metaforensic** es distribuida bajo la licencia GNU (General Public License) ver. 3  
-Para mayor información sobre la licencia dirigirse a http://www.gnu.org/licenses/gpl.html
+* Para mayor información sobre la licencia dirigirse a http://www.gnu.org/licenses/gpl.html
 
 ##Disclamer
 
