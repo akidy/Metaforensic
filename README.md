@@ -8,10 +8,6 @@ La aplicación de software **Metaforensic**, tiene como objetivo realizar una au
 
 El proyecto de software **Metaforensic** surge a partir del análisis de la problemática que presentan las organizaciones y particulares, en lo que se refiere a saber como, por quien, cuando y porque esta siendo manipulada su información contenida en archivos ofimáticos y de imagen, que se encuentran alojados dentro de su infraestructura tecnología.
 
-##Funcionamiento
-
-
-
 ##Funciones
 
 ###Recolector:
@@ -26,6 +22,10 @@ El proyecto de software **Metaforensic** surge a partir del análisis de la prob
 * Analizar los metadatos filtrados.
 * Mostrar los resultados del análisis (parcialmente implementado) .
 * Generar una línea de tiempo que muestre el estado de los archivos analizados con base en los metadatos obtenidos (sin implementar).
+
+##Esquema de funcionamiento general
+
+![image](http://i.imgur.com/7yfWHl4.png)
 
 ##Requerimientos de hardware y software
 
@@ -61,7 +61,7 @@ El **Analizador** es una aplicación portable sin embargo requiere permanecer en
 
 * La instalación y creación de la base de datos, JRE y aplicación del parche JCE no se mencionara ya que en la red abundan tutoriales sobre el tema.
 
-##
+##Uso
 
 ##Creadores
 
@@ -86,6 +86,6 @@ API utilizada para extracción de metadatos de archivos a través del "Recolecto
 La aplicación de software **Metaforensic** es distribuida bajo la licencia GNU (General Public License) ver. 3  
 * Para mayor información sobre la licencia dirigirse a http://www.gnu.org/licenses/gpl.html
 
-##Disclamer
+##Disclaimer
 
 Tanto el **Analizador** como el **Recolector** que constituyen al proyecto **Metaforensic** contienen algoritmos creados por terceros, por lo cuál los creadores de dicho proyecto no se hacen responsables por el mal funcionamiento de estos o de la propia aplicación, o por algún daño que pudiera ser causado a los archivos o equipos electrónicos durante el funcionamiento de las aplicaciones denominadas **Metaforesic [Recolector]** y **Metaforensic [Analizador]**. 
