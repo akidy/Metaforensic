@@ -26,12 +26,12 @@
  */
 package Process;
 
+import Meta.FilesCommon;
 import Windows.ModalDialog;
 import java.io.BufferedWriter;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import Meta.FilesCommon;
 
 /**
  *

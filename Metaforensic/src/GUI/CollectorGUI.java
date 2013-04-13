@@ -91,7 +91,7 @@ public class CollectorGUI extends javax.swing.JFrame {
      * Dialogo de comprobación de recolección no iniciada.
      */
     private void ExitApp() {
-        int estado = CleanDialog("Salir", "La recolección no se ha completado.\n\n¿Deseas salir de la aplicación?");
+        int estado = CleanDialog("Salir", "La creación del proyecto no se ha completado.\n\n¿Deseas salir de la aplicación?");
         if (estado == 2) {
             System.exit(0);
         } else if (estado == 0) {
@@ -292,23 +292,28 @@ public class CollectorGUI extends javax.swing.JFrame {
 
         if (JOptionPane.showConfirmDialog(null, pn, "Encriptación del archivo .afa", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE) == 0) {
             tmp1 = new String(pwd.getPassword());
-            pn = new JPanel();
-            pwd = new JPasswordField(25);
-            lb.setText("Confirma el password: \n");
-            pn.add(lb);
-            pn.add(pwd);
-            if (JOptionPane.showConfirmDialog(null, pn, "Encriptación del archivo .afa", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE) == 0) {
-                tmp2 = new String(pwd.getPassword());
+            if (!tmp1.equals("") & tmp1 != null) {
+                pn = new JPanel();
+                pwd = new JPasswordField(25);
+                lb.setText("Confirma el password: \n");
+                pn.add(lb);
+                pn.add(pwd);
+                if (JOptionPane.showConfirmDialog(null, pn, "Encriptación del archivo .afa", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE) == 0) {
+                    tmp2 = new String(pwd.getPassword());
 
-                if (tmp1.equals(tmp2)) {
-                    sec.setPass(tmp2);
-                    return true;
+                    if (tmp1.equals(tmp2)) {
+                        sec.setPass(tmp2);
+                        return true;
+                    } else {
+                        JOptionPane.showMessageDialog(null, "El password no es identico.", "Error de validación", JOptionPane.WARNING_MESSAGE);
+                        return false;
+                    }
+
                 } else {
-                    JOptionPane.showMessageDialog(null, "El password no es identico.", "Error de validación", JOptionPane.WARNING_MESSAGE);
                     return false;
                 }
-
             } else {
+                JOptionPane.showMessageDialog(null, "El password no puede ser una caracter nulo o vacío.", "Error de password", JOptionPane.WARNING_MESSAGE);
                 return false;
             }
         } else {

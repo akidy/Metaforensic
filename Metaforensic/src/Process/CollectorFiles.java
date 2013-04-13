@@ -386,7 +386,7 @@ public class CollectorFiles extends FileName implements ProcessFile {
                 SetProcessTxt("\nRecolección finalizada con errores.....\n\n");
             } else {
                 if (very.size() > 0) {
-                    SetProcessTxt("\nRecolección finalizada con exito.....\n\n");
+                    SetProcessTxt("\nRecolección finalizada con éxito.....\n\n");
                 } else {
                     SetProcessTxt("\nNo se encontraron archivos.....\n\n");
                 }

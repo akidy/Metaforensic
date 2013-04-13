@@ -27,6 +27,7 @@
 package Run;
 
 import GUI.CollectorGUI;
+import javax.swing.SwingUtilities;
 
 /**
  * Clase encargada de iniciar la aplicación "Metaforensic"
@@ -46,9 +47,15 @@ public class Run {
     public static void main(String[] args) {
         //BasicConfigurator.configure();
         //logger.info("Ingresando a la aplicación");
-        //Splash.RunSplash(null, false);        
+        //Splash.RunSplash(null, false);  
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                AppInit();
+            }
+        });
         //Run.AppInit();
-        AppInit();
+
     }
 
     private static void AppInit() {
