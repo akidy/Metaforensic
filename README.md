@@ -8,6 +8,10 @@ La aplicación de software **Metaforensic**, tiene como objetivo realizar una au
 
 El proyecto de software **Metaforensic** surge a partir del análisis de la problemática que presentan las organizaciones y particulares, en lo que se refiere a saber como, por quien, cuando y porque esta siendo manipulada su información contenida en archivos ofimáticos y de imagen, que se encuentran alojados dentro de su infraestructura tecnología.
 
+##Funcionamiento
+
+
+
 ##Funciones
 
 ###Recolector:
@@ -32,26 +36,30 @@ Está aplicación fue probada en equipos que reúnen las siguientes característ
 ###Hardware:
 
 * 1 GB de RAM (ejecutables jar), 3GB de RAM (ejecutables exe).
-* Microproceadores Intel Celeron a 1.7 GHz, AMD E-240 a 1.5 GHz e Intel Pentium 4 HT a 3.2 Ghz.
+* Microprocesadores Intel Celeron a 1.7 GHz, AMD E-240 a 1.5 GHz e Intel Pentium 4 HT a 3.2 Ghz.
 
 ###Software
 
-* Windows 7 (todas las versiones)32bits y 64 bits, Windows Vista (todas las versiones) 32 y 64 bits y Windows XP Professional SP3.
+* Windows 7 (todas las versiones) 32 y 64 bits, Windows Vista (todas las versiones) 32 y 64 bits y Windows XP Professional SP3 a 32 bits.
 * JRE ver. 1.7.0_10 (mínimo) (http://www.oracle.com/technetwork/es/java/javase/downloads/index.html).
 * Parche JCE para JRE (http://www.oracle.com/technetwork/java/javase/downloads/jce-6-download-429243.html).
-* Para el uso del analizador se requiere Mysql 5.5 (http://dev.mysql.com/downloads/mysql/).
+* Para el uso del analizador se requiere Mysql 5.5.28 (http://dev.mysql.com/downloads/mysql/).
 
 ####Notas:
 
-* El analizador se distribuye con el script para la creación de la base de datos en Mysql y un archivo .ini para configurar los parametros de conexión a la base de datos.
+* El analizador se distribuye con el script para la creación de la base de datos en Mysql y un archivo .ini para configurar los parametros de conexión a la base de datos. 
 * Algunos antivirus y firewalls pueden detectar tanto al recolector como el analizador como falsos positivos.
 
 ##Instalación
 
 Para la instalación se deben cubrir los requisitos mencionados en el apartado de [**Requerimientos de hardware y software**](https://github.com/andy737/Metaforensic-Recolector/edit/master/README.md#requerimientos-de-hardware-y-software).
 
-El ***Recolector*** es un aplicación portable que no requiere de instalación. [Descarga]()
+El **Recolector** es una aplicación portable que no requiere de instalación. [Descarga](https://github.com/andy737/Metaforensic-Recolector/)  
+El **Analizador** es una aplicación portable sin embargo requiere permanecer en un host que contenga la base de datos creada con el script que se distribuye con el ejecutable. [Descarga](https://github.com/andy737/Metaforensic-Analizador/)
 
+#####Importante
+
+* La instalación y creación de la base de datos, JRE y aplicación del parche JCE no se mencionara ya que en la red abundan tutoriales sobre el tema.
 
 ##
 
