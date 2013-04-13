@@ -48,7 +48,9 @@ Está aplicación fue probada en equipos que reúnen las siguientes característ
 
 ##Instalación
 
-Para la instalación se deben cubrir los requisitos mencionados en el apartado de [**Requerimientos de hardware y software**]:https://github.com/andy737/Metaforensic-Recolector/edit/master/README.md#requerimientos-de-hardware-y-software.
+Para la instalación se deben cubrir los requisitos mencionados en el apartado de [**Requerimientos de hardware y software**](https://github.com/andy737/Metaforensic-Recolector/edit/master/README.md#requerimientos-de-hardware-y-software).
+
+El ***Recolector*** es un aplicación portable que no requiere de instalación. [Descarga]()
 
 
 ##
