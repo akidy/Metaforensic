@@ -89,3 +89,7 @@ La aplicación de software **Metaforensic** es distribuida bajo la licencia GNU 
 ##Disclaimer
 
 Tanto el **Analizador** como el **Recolector** que constituyen al proyecto **Metaforensic** contienen algoritmos creados por terceros, por lo cuál los creadores de dicho proyecto no se hacen responsables por el mal funcionamiento de estos o de la propia aplicación, o por algún daño que pudiera ser causado a los archivos o equipos electrónicos durante el funcionamiento de las aplicaciones denominadas **Metaforesic [Recolector]** y **Metaforensic [Analizador]**. 
+
+##Bugs
+
+Favor de reportar cualquier bug encontrado a **andy1818ster@gmail.com**
