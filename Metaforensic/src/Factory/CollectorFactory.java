@@ -59,6 +59,7 @@ import org.xml.sax.SAXException;
 public class CollectorFactory implements CollectorFactoryMethod {
 
     private Boolean estado;
+    private int i;
     private File test;
     private FileOutputStream mt;
     private OutputStreamWriter metaout;
@@ -182,7 +183,8 @@ public class CollectorFactory implements CollectorFactoryMethod {
             parser = new AutoDetectParser();
             parser.parse(entrada, handler, metadatos);
             metadatosN = metadatos.names();
-            buffer.append("******************************************************************************************************\n");
+            //buffer.append("******************************************************************************************************\n");
+            buffer.append("[fileName]: ").append(fim.getNameFile()).append("\n");
             buffer.append("[fileSize]: ").append(SizeFile()).append(" KB\n");
             buffer.append("[checksumType]: ").append(cll.getTipoHash()).append(" KB\n");
             buffer.append("[checksumHash]: ").append(hash.getHash()).append("\n");
