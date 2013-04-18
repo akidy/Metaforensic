@@ -100,10 +100,9 @@ Para hacer uso de la aplicación **Metaforensic [Analizador]**
 1.- Las aplicaciones (.jar y .exe) pueden ser ejecutadas normalmente y también como administrador si el sistema así lo requiere (.exe solamente). 
 
 2.- Al ejecutar la aplicación se desplegara una ventana que solícitará introducir la contraseña para el acceso a la base de datos.  
-3.- Cargará la ventana principal del analizador, la cual consta de 4 acciones a realizar (Nuevo, Abrir, Consulta y Eliminar), cada una con sus respectivas acciones. 
-4.- Nuevo: Se debe ingresar todos los datos solicitados y lo más importante cargar el archivo (.afa) el cual fue generado con Metaforensic[Recolector].
-5.- Abrir: Se podrá visualizar los datos del apartado donde se creó el archivo, los datos del archivo .afa (ruta donde está guardado, el id, fecha y hora en que fue cargado, entre otros datos),
-al dar en la acción Abrir en el mismo, solicitará la contraseña con la cual fue creado el archivo al inicio (Metaforensic [Recolector]) y enviara a una nueva ventana.
+3.- La conexión a la base de datos puede tardar un lapso tiempo que varia dependiendo del sisetma en donde se ejecute el servidor Mysql, al establecerse la conexión la ventana principal del analizador se desplegara, esta consta de 4 acciones a realizar (Nuevo, Abrir, Consulta y Eliminar), cada una con sus respectivas acciones propias. 
+4.- Nuevo: Se debe ingresar todos los datos solicitados y lo más importante cargar el archivo (.afa) el cual fue generado con la aplicación **Metaforensic [Recolector]**.  
+5.- Abrir: Se podran visualizar los datos de proyecto antes de ser abierto (ruta donde se cargo el archivo .afa, el id del proyecto, fecha y hora en que fue cargado, entre otros datos), al dar clic sobre el botón Abrir se solicitara la contraseña con la cual fue cifrado el archivo .afa y enviara a una nueva ventana.
   5.1.- En esa nueva ventana podremos ver todos los archivos recolectados o bien uno en específico/individual, al igual ver los usuarios encontrados por cada archivo (ya sea por creación o modificación), los tiempos de creación, ultima modificación y ultimo acceso, por ultimo podemos guardar los eventos o proyectos recolectados.
 6.- Consulta: Primeramente selecciona un proyecto y nos mostrara algunos eventos, pero si marca la opción de mostrar todo y luego eventos nos mostrará los eventos de todos los archivos y la opción de guardar. 
 7.- Eliminar: Esta opción elimina el proyecto deseado al seleccionarlo.
