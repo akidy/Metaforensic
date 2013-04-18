@@ -71,16 +71,18 @@ Para hacer uso de la aplicación Metaforensic [Recolector]
 * Configuración archivo de salida
 * Verificación de integridad
 * Tipos de archivos y las Acciones a realizar.  
+  
 3.- Configuración de recolección: Selección de una ruta para la busqueda y recolección de metadatos en archivos.  
 4.- Configuración de archivo: Selección de una ruta para guardar el archivo que contendrá la recolección de metadatos y el archivo log.  
 5.- Verificación de integridad: Selección del algoritmo (checksum) para comprobar la integridad de los archivos sometidos a recolección.  
 6.- Tipos de archivos: Selección de uno o varios tipos de archivos a buscar dentro de la ruta seleccionada anteriormente, con el fin de recolectar sus metadatos.  
 7.- Acciones a realizar: 
-* Recolectar: comienza la recolección de metadatos del archivo(s) elegido(s) y solicitará ingresar un password (para cifrar el archivo final con el porposito de preservar la integridad de este).  
+* Recolectar: comienza la recolección de metadatos sobre los archivo elegido y solicitará ingresar un password (para cifrar el archivo final con el proposito de preservar la integridad de este).  
 * Limpiar: limpia los campos que fueron llenados.
-* Salir: cierra la aplicación por completo.   
-8.- La acción de recolección puede durar varios minutos, al término de esta aparece un dialogo que muestra si se desea guardar o no una copia sin cifrar del archivo encontrado durante la recolección (opcional).
-9.- Al término de la recolección habrá creado de 2 a 3 archivos (3 solo si ha guardado una copia sin cifrar de la recolección).
+* Salir: finaliza la ejecución de la aplicación.   
+
+8.- La acción de recolección puede durar varios minutos, al término de esta aparecera un dialogo qu solicita confirmar si se desea guardar o no una copia sin cifrar del archivo generado (opcional).
+9.- Al término de la recolección se habrán creado de 2 (.log y .afa) a 3 archivos (.log, .afa y S/E), se crearán 3 solo si se optado por guardar una copia sin cifrar del archivo resultane de la recolección.
 
 Para hacer uso de la aplicación Metaforensic [Analizador]
 Para la ejecución de esté, MySql debe tener contraseña se usuario.
