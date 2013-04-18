@@ -105,11 +105,13 @@ Para hacer uso de la aplicación **Metaforensic [Analizador]**
 
 4.- Nuevo: Se debe ingresar todos los datos solicitados y lo más importante cargar el archivo (.afa) el cual fue generado con la aplicación **Metaforensic [Recolector]**.  
 
-5.- Abrir: Se podran visualizar los datos de proyecto antes de ser abierto (ruta donde se cargo el archivo .afa, el id del proyecto, fecha y hora en que fue cargado, entre otros datos), al dar clic sobre el botón Abrir se solicitara la contraseña con la cual fue cifrado el archivo .afa y enviara a una nueva ventana.  
+5.- Abrir: Se podran visualizar los datos de proyecto antes de ser abierto (ruta donde se cargo el archivo .afa, el id del proyecto, fecha y hora en que fue cargado, entre otros), al dar clic sobre el botón "Abrir" se solicitara la contraseña con la cual fue cifrado el archivo .afa y sera desplegada una nueva ventana.    
 
-  5.1.- En esa nueva ventana podremos ver todos los archivos recolectados o bien uno en específico/individual, al igual ver los usuarios encontrados por cada archivo (ya sea por creación o modificación), los tiempos de creación, ultima modificación y ultimo acceso, por ultimo podemos guardar los eventos o proyectos recolectados.
-6.- Consulta: Primeramente selecciona un proyecto y nos mostrara algunos eventos, pero si marca la opción de mostrar todo y luego eventos nos mostrará los eventos de todos los archivos y la opción de guardar. 
-7.- Eliminar: Esta opción elimina el proyecto deseado al seleccionarlo.
+5.1.- En esa nueva ventana podremos ver todos los archivos recolectados o bien uno en específico/individual, al igual ver los usuarios encontrados por cada archivo (ya sea por creación o modificación), los tiempos de creación, ultima modificación y ultimo acceso, por ultimo se tiene la opción de guardar la visualización de cada análisis o filtrado.  
+
+6.- Consulta: Se debe seleccionar un proyecto o la opción eventos, si se selecciona la opción de mostrar todo y luego la opción eventos nos mostrará los eventos de todos los archivos, si se selecciona la opción mostrar todo sin combinar con la opción eventos se mostraran todos los proyectos almacenados y finalmente si se selcciona la un poryecto se mostraran sus detalles y si se selecciona un proyecto y la opcion eventos se mostrarn los eventso especificos de ese proyecto.  
+
+7.- Eliminar: Esta opción elimina el proyecto seleccionado.
 
 ##Creadores
 
