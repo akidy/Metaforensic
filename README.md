@@ -65,10 +65,14 @@ El **Analizador** es una aplicación portable sin embargo requiere permanecer en
 
 Para hacer uso de la aplicación Metaforensic [Recolector] 
 
-1.- Las aplicaciones (.jar y .exe) pueden ser ejecutadas normalmente y también como administrador, se iniciara automáticamente.
-2.- Abrirá una ventana que consta de 5 secciones: Configuración de recolección, Configuración archivo de salida, Verificación de integridad, Tipos de archivos y las Acciones a realizar.
-3.- Configuración de recolección: Selección de una ruta para la búsqueda de archivo(s).
-4.- Configuración de archivo: Selección de ruta para guardar el archivo que contendrá la recolección del archivo a buscar.
+1.- Las aplicaciones (.jar y .exe) pueden ser ejecutadas normalmente y también como administrador si el sistema así lo requiriera.  
+2.- Al ejecutar la aplicación se desplegara una ventana que consta de 5 secciones:
+* Configuración de recolección
+* Configuración archivo de salida
+* Verificación de integridad
+* Tipos de archivos y las Acciones a realizar.
+3.- Configuración de recolección: Selección de una ruta para la busqueda y recolección de metadatos en archivos.  
+4.- Configuración de archivo: Selección de una ruta para guardar el archivo que contendrá la recolección de metadatso y el archivo log.
 5.- Verificación de integridad: Elección de una firma para el tipo(s) de archivo(s) a elegir (encripta en AES al elejir SHA-256).
 6.- Tipos de archivos: Selección de uno o varios tipos de archivos a buscar dentro de la ruta seleccionada anteriormente.
 7.- Acciones a realizar: 
