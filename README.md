@@ -89,11 +89,11 @@ Para hacer uso de la aplicación Metaforensic [Recolector]
 * Limpiar: limpia los campos que fueron llenados o seleccionados.  
 * Salir: finaliza la ejecución de la aplicación.  
 
-8.- La acción de recolección puede durar varios minutos, al término de esta aparecera un dialogo que solicita confirmar si se desea guardar o no una copia sin cifrar del archivo generado (opcional).  
+8.- La acción de recolección puede durar varios minutos, al término de esta se mostrara un dialogo que solicita confirmar si se desea guardar o no una copia sin cifrar del archivo generado (opcional).  
 
 9.- Al término de la recolección se habrán creado 2 archivos (.log y .afa) o 3 archivos (.log, .afa y S/E), se crearán 3 archivos solo si se a optado por guardar una copia sin cifrar del archivo generado durante la recolección.  
 
-Nota: La recolección de metadatos puede ser cancelarda en cualquier momento, sin que los archivos procesados sufran daño alguno, esto se realiza pulsando sobre el icono X (rojo), sin embargo en caso de necesitar abortar abruptamente la recoleccion y finalizar la ejecución de la aplicación al mismo tiempo (opcion "Panic" icono de ojo), se prodrían provocar daños sobre los archivos que se encuentren en ese momento sometidos al proceso de recolección.
+Nota: La recolección de metadatos puede ser cancelada en cualquier momento, sin que los archivos procesados sufran daño alguno, esto se realiza pulsando sobre el icono X (rojo), sin embargo en caso de necesitar abortar abruptamente la recoleccion y finalizar la ejecución de la aplicación al mismo tiempo (opcion "Panic" icono de ojo), se prodrían provocar daños sobre los archivos que se encuentren en proceso de recolección.
 
 Para hacer uso de la aplicación Metaforensic [Analizador]
 Para la ejecución de esté, MySql debe tener contraseña se usuario.
