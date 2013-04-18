@@ -65,14 +65,15 @@ El **Analizador** es una aplicación portable sin embargo requiere permanecer en
 
 Para hacer uso de la aplicación Metaforensic [Recolector] 
 
-1.- Las aplicaciones (.jar y .exe) pueden ser ejecutadas normalmente y también como administrador si el sistema así lo requiere.  
+1.- Las aplicaciones (.jar y .exe) pueden ser ejecutadas normalmente y también como administrador si el sistema así lo requiere (.exe solamente).  
 
 2.- Al ejecutar la aplicación se desplegara una ventana que consta de 5 secciones:
 
 * Configuración de recolección
 * Configuración archivo de salida
 * Verificación de integridad
-* Tipos de archivos y las Acciones a realizar.  
+* Tipos de archivos 
+* Acciones a realizar  
   
 3.- Configuración de recolección: Selección de una ruta para la busqueda y recolección de metadatos en archivos.  
 
@@ -84,15 +85,15 @@ Para hacer uso de la aplicación Metaforensic [Recolector]
 
 7.- Acciones a realizar: 
 
-* Recolectar: comienza la recolección de metadatos sobre los archivo elegido y solicitará ingresar un password (para cifrar el archivo final con el proposito de preservar la integridad de este).  
-* Limpiar: limpia los campos que fueron llenados.  
+* Recolectar: comienza la recolección de metadatos sobre los archivos elegidos y solicitará ingresar un password (para cifrar el archivo final con el proposito de preservar la integridad de este).  
+* Limpiar: limpia los campos que fueron llenados o seleccionados.  
 * Salir: finaliza la ejecución de la aplicación.  
 
 8.- La acción de recolección puede durar varios minutos, al término de esta aparecera un dialogo que solicita confirmar si se desea guardar o no una copia sin cifrar del archivo generado (opcional).  
 
-9.- Al término de la recolección se habrán creado 2 (.log y .afa) o 3 archivos (.log, .afa y S/E), se crearán 3 archivos solo si se optado por guardar una copia sin cifrar del archivo resultane de la recolección.  
+9.- Al término de la recolección se habrán creado 2 archivos (.log y .afa) o 3 archivos (.log, .afa y S/E), se crearán 3 archivos solo si se a optado por guardar una copia sin cifrar del archivo generado durante la recolección.  
 
-Nota: La recolección de metadatos se puede cancelara en cualquier momento si que los archivos procesadso sufran daño alguno, esto se realiza pulsando sobre el icono X (rojo), en casa de necesitar abortar abruptamente la recoleccion yfinalizar la ejecuciónd e la aplicación al mismo tiempo ella la opcion "Panic" (icono de ojo), esta opción podria dañara de forma catastrofica los archivos k se encuentrene porcesamiento en ese momento.
+Nota: La recolección de metadatos puede ser cancelarda en cualquier momento, sin que los archivos procesados sufran daño alguno, esto se realiza pulsando sobre el icono X (rojo), sin embargo en caso de necesitar abortar abruptamente la recoleccion y finalizar la ejecución de la aplicación al mismo tiempo (opcion "Panic" icono de ojo), se prodrían provocar daños sobre los archivos que se encuentren en ese momento sometidos al proceso de recolección.
 
 Para hacer uso de la aplicación Metaforensic [Analizador]
 Para la ejecución de esté, MySql debe tener contraseña se usuario.
