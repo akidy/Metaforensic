@@ -109,7 +109,7 @@ Para hacer uso de la aplicación **Metaforensic [Analizador]**
 
 5.1.- En esa nueva ventana podremos ver todos los archivos recolectados o bien uno en específico/individual, al igual ver los usuarios encontrados por cada archivo (ya sea por creación o modificación), los tiempos de creación, ultima modificación y ultimo acceso, por ultimo se tiene la opción de guardar la visualización de cada análisis o filtrado.  
 
-6.- Consulta: Se debe seleccionar un proyecto o la opción eventos, si se selecciona la opción de mostrar todo y luego la opción eventos nos mostrará los eventos de todos los archivos, si se selecciona la opción mostrar todo sin combinar con la opción eventos se mostraran todos los proyectos almacenados y finalmente si se selcciona la un poryecto se mostraran sus detalles y si se selecciona un proyecto y la opcion eventos se mostrarn los eventso especificos de ese proyecto.  
+6.- Consulta: Se debe seleccionar un proyecto o la opción eventos, si se selecciona la opción de mostrar todo y luego la opción eventos nos mostrará los eventos de todos los archivos, si se selecciona la opción mostrar todo sin combinar con la opción eventos se mostrarán todos los proyectos almacenados y finalmente si se selecciona un proyecto individual se mostrarán sus detalles y si se selecciona un proyecto y la opción eventos se mostraran los eventos específicos de ese proyecto.  
 
 7.- Eliminar: Esta opción elimina el proyecto seleccionado.
 
