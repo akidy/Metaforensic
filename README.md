@@ -63,7 +63,7 @@ El **Analizador** es una aplicación portable sin embargo requiere permanecer en
 
 ##Uso
 
-Para hacer uso de la aplicación Metaforensic [Recolector] 
+Para hacer uso de la aplicación **Metaforensic [Recolector]**   
 
 1.- Las aplicaciones (.jar y .exe) pueden ser ejecutadas normalmente y también como administrador si el sistema así lo requiere (.exe solamente).  
 
@@ -85,7 +85,7 @@ Para hacer uso de la aplicación Metaforensic [Recolector]
 
 7.- Acciones a realizar: 
 
-* Recolectar: comienza la recolección de metadatos sobre los archivos elegidos y solicitará ingresar un password (para cifrar el archivo final con el proposito de preservar la integridad de este).  
+* Recolectar: comienza la recolección de metadatos sobre los archivos elegidos y solicitara ingresar un password (para cifrar el archivo final con el proposito de preservar la integridad de este).  
 * Limpiar: limpia los campos que fueron llenados o seleccionados.  
 * Salir: finaliza la ejecución de la aplicación.  
 
@@ -95,11 +95,11 @@ Para hacer uso de la aplicación Metaforensic [Recolector]
 
 Nota: La recolección de metadatos puede ser cancelada en cualquier momento, sin que los archivos procesados sufran daño alguno, esto se realiza pulsando sobre el icono X (rojo), sin embargo en caso de necesitar abortar abruptamente la recoleccion y finalizar la ejecución de la aplicación al mismo tiempo (opcion "Panic" icono de ojo), se prodrían provocar daños sobre los archivos que se encuentren en proceso de recolección.
 
-Para hacer uso de la aplicación Metaforensic [Analizador]
-Para la ejecución de esté, MySql debe tener contraseña se usuario.
+Para hacer uso de la aplicación **Metaforensic [Analizador]**  
 
-1.- Las aplicaciones (.jar y .exe) pueden ser ejecutadas normalmente y también como administrador, se iniciara automáticamente.
-2.- Abrirá una ventana en la que solícitará introducir la contraseña para el acceso a la base de datos.
+1.- Las aplicaciones (.jar y .exe) pueden ser ejecutadas normalmente y también como administrador si el sistema así lo requiere (.exe solamente). 
+
+2.- Al ejecutar la aplicación se desplegara una ventana que solícitará introducir la contraseña para el acceso a la base de datos.  
 3.- Cargará la ventana principal del analizador, la cual consta de 4 acciones a realizar (Nuevo, Abrir, Consulta y Eliminar), cada una con sus respectivas acciones. 
 4.- Nuevo: Se debe ingresar todos los datos solicitados y lo más importante cargar el archivo (.afa) el cual fue generado con Metaforensic[Recolector].
 5.- Abrir: Se podrá visualizar los datos del apartado donde se creó el archivo, los datos del archivo .afa (ruta donde está guardado, el id, fecha y hora en que fue cargado, entre otros datos),
