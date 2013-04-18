@@ -65,20 +65,20 @@ El **Analizador** es una aplicación portable sin embargo requiere permanecer en
 
 Para hacer uso de la aplicación Metaforensic [Recolector] 
 
-1.- Las aplicaciones (.jar y .exe) pueden ser ejecutadas normalmente y también como administrador si el sistema así lo requiriera.  
+1.- Las aplicaciones (.jar y .exe) pueden ser ejecutadas normalmente y también como administrador si el sistema así lo requiere.  
 2.- Al ejecutar la aplicación se desplegara una ventana que consta de 5 secciones:
 * Configuración de recolección
 * Configuración archivo de salida
 * Verificación de integridad
-* Tipos de archivos y las Acciones a realizar.
+* Tipos de archivos y las Acciones a realizar.  
 3.- Configuración de recolección: Selección de una ruta para la busqueda y recolección de metadatos en archivos.  
-4.- Configuración de archivo: Selección de una ruta para guardar el archivo que contendrá la recolección de metadatso y el archivo log.
-5.- Verificación de integridad: Elección de una firma para el tipo(s) de archivo(s) a elegir (encripta en AES al elejir SHA-256).
-6.- Tipos de archivos: Selección de uno o varios tipos de archivos a buscar dentro de la ruta seleccionada anteriormente.
+4.- Configuración de archivo: Selección de una ruta para guardar el archivo que contendrá la recolección de metadatos y el archivo log.  
+5.- Verificación de integridad: Selección del algoritmo (checksum) para comprobar la integridad de los archivos sometidos a recolección.  
+6.- Tipos de archivos: Selección de uno o varios tipos de archivos a buscar dentro de la ruta seleccionada anteriormente, con el fin de recolectar sus metadatos.  
 7.- Acciones a realizar: 
-  * Recolectar: comienza la recolección de metadatos del archivo(s) elegido(s) y solicitará ingresar un password (encripta en AES usando SHA-256, para preservar la integridad del archivo .afa que contiene los metadatos extraídos durante su transporte hasta el host que tiene al analizador).
-	* Limpiar: limpia los campos que fueron llenados.
-	* Salir: cierra la aplicación por completo. 
+* Recolectar: comienza la recolección de metadatos del archivo(s) elegido(s) y solicitará ingresar un password (para cifrar el archivo final con el porposito de preservar la integridad de este).  
+* Limpiar: limpia los campos que fueron llenados.
+* Salir: cierra la aplicación por completo.   
 8.- La acción de recolección puede durar varios minutos, al término de esta aparece un dialogo que muestra si se desea guardar o no una copia sin cifrar del archivo encontrado durante la recolección (opcional).
 9.- Al término de la recolección habrá creado de 2 a 3 archivos (3 solo si ha guardado una copia sin cifrar de la recolección).
 
